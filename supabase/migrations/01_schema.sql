@@ -106,7 +106,7 @@ create table if not exists public.users (
 create table if not exists public.clubs (
   id uuid primary key default gen_random_uuid(),
   name text not null,
-  location extensions.geography(point, 4326) not null,
+  location extensions.geography(POINT, 4326) not null,
   lucky_draw_threshold_amount numeric(12,2) not null default 1500,
   active_promo_category text,
   display_enabled boolean not null default true,
@@ -805,40 +805,5 @@ begin
   end loop;
 end $$;
 
--- ---------------------------------------------------------------------------
--- Seed games
--- ---------------------------------------------------------------------------
-insert into public.games_pool (title, game_type, rules_json, is_active)
-select * from (values
-  (
-    'Shot Roulette',
-    'ROULETTE'::public.game_type,
-    '{"chambers":6,"outcomes":["Safe","Safe","Safe","Safe","Shot","Double Shot"],"penalty_item":{"name":"Tequila Shot","quantity":1,"unit_price":280}}'::jsonb,
-    true
-  ),
-  (
-    'Truth or Shot',
-    'TRUTH_OR_SHOT'::public.game_type,
-    '{"prompts":["Who at this table has the wildest dating story?","Confess your most expensive impulse buy."],"penalty_item":{"name":"Tequila Shot","quantity":1,"unit_price":280}}'::jsonb,
-    true
-  ),
-  (
-    'Dare Wheel',
-    'DARE_WHEEL'::public.game_type,
-    '{"dares":["Buy the next round for the table","Dance for 20 seconds","Swap seats with someone"],"penalty_item":{"name":"Heineken","quantity":1,"unit_price":350}}'::jsonb,
-    true
-  ),
-  (
-    'Never Have I Ever',
-    'NEVER_HAVE_I_EVER'::public.game_type,
-    '{"statements":["Never have I ever snuck into a VIP section.","Never have I ever left my card open at a bar."],"voting":true,"penalty_item":{"name":"Corona","quantity":1,"unit_price":380}}'::jsonb,
-    true
-  ),
-  (
-    'Spin the Bottle',
-    'SPIN_THE_BOTTLE'::public.game_type,
-    '{"actions":["Ask a question","Share a dare","Order a shared starter"],"penalty_item":{"name":"Tequila Shot","quantity":2,"unit_price":280}}'::jsonb,
-    true
-  )
-) as v(title, game_type, rules_json, is_active)
-where not exists (select 1 from public.games_pool limit 1);
+-- Game catalog rows are loaded later via seed.sql / seed_games.sql
+-- (kept out of 01 so SQL Editor cannot misparse JSON text like "into a ...")
