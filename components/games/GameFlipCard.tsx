@@ -41,20 +41,22 @@ export function PromptRevealCard({
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="relative overflow-hidden rounded-2xl border border-white/15 bg-nightlife-elevated p-6 text-center"
+      className="relative overflow-hidden rounded-2xl border border-violet-200 bg-pastel-lavender/80 p-6 text-center shadow-soft backdrop-blur-md"
     >
       {flash ? (
         <motion.div
-          className="pointer-events-none absolute inset-0 bg-accent-violet/30"
+          className="pointer-events-none absolute inset-0 bg-accent-violet/20"
           initial={{ opacity: 0.9 }}
           animate={{ opacity: 0 }}
           transition={{ duration: 0.6 }}
         />
       ) : null}
-      <p className="text-xs uppercase tracking-[0.22em] text-nightlife-muted">
+      <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
         {title}
       </p>
-      <p className="mt-3 font-display text-2xl font-bold text-white">{body}</p>
+      <p className="type-title mt-3 text-2xl text-foreground">
+        {body}
+      </p>
     </motion.div>
   );
 }

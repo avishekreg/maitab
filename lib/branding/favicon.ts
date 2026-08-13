@@ -3,13 +3,13 @@ export function maitabFaviconDataUri(size = 64): string {
 <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 64 64" fill="none">
   <defs>
     <linearGradient id="g" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#7C3AED"/>
-      <stop offset="0.55" stop-color="#A78BFA"/>
-      <stop offset="1" stop-color="#F59E0B"/>
+      <stop stop-color="#8B5CF6"/>
+      <stop offset="0.55" stop-color="#A855F7"/>
+      <stop offset="1" stop-color="#06B6D4"/>
     </linearGradient>
     <linearGradient id="ai" x1="40" y1="18" x2="56" y2="34" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#A78BFA"/>
-      <stop offset="1" stop-color="#00E5FF"/>
+      <stop stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#06B6D4"/>
     </linearGradient>
   </defs>
   <rect x="4" y="10" width="56" height="44" rx="10" fill="#08090C" stroke="url(#g)" stroke-width="3"/>

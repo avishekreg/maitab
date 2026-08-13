@@ -37,7 +37,7 @@ export function MostLikelyPanel({
         <p className="text-[11px] uppercase tracking-[0.2em] text-accent-gold">
           Most Likely To…
         </p>
-        <p className="mt-2 font-display text-xl font-bold text-white">{prompt}</p>
+        <p className="type-title mt-2 text-xl text-foreground">{prompt}</p>
       </motion.div>
 
       <div className="grid grid-cols-2 gap-3">
@@ -50,11 +50,11 @@ export function MostLikelyPanel({
       </div>
 
       <div className="space-y-2">
-        <div className="flex justify-between text-xs text-nightlife-muted">
+        <div className="flex justify-between text-xs text-muted-foreground">
           <span>Nominated {yes}</span>
           <span>Pass {no}</span>
         </div>
-        <div className="flex h-3 overflow-hidden rounded-full bg-white/10">
+        <div className="flex h-3 overflow-hidden rounded-full bg-slate-100">
           <motion.div
             className="bg-accent-gold"
             animate={{ width: `${yesPct}%`, scale: burst ? 1.02 : 1 }}

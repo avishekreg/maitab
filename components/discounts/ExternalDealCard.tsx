@@ -26,7 +26,7 @@ export function ExternalDealApprovedModal({
     <AnimatePresence>
       {open ? (
         <motion.div
-          className="fixed inset-0 z-[80] grid place-items-center bg-black/70 px-4"
+          className="fixed inset-0 z-[80] grid place-items-center bg-slate-900/40 px-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -36,20 +36,20 @@ export function ExternalDealApprovedModal({
             initial={{ scale: 0.94, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.96, opacity: 0 }}
-            className="w-full max-w-md rounded-2xl border border-champagne/20 bg-[#12151A] p-6 text-white shadow-2xl backdrop-blur-2xl"
+            className="w-full max-w-md rounded-2xl border border-border bg-background p-6 text-foreground shadow-2xl backdrop-blur-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-[11px] uppercase tracking-[0.2em] text-accent-gold">
               Deal activated
             </p>
-            <h3 className="mt-2 font-display text-2xl font-bold leading-tight">
+            <h3 className="type-title mt-2 text-2xl leading-tight">
               Zomato / Swiggy {session.discount_percentage}% Deal Activated!
             </h3>
-            <p className="mt-3 text-sm leading-relaxed text-nightlife-muted">
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               Note: External deals cannot be combined with mAITab Native 1:1
               Flash Promos or Hourly 25% Lucky Draws.
             </p>
-            <p className="mt-2 text-xs text-nightlife-muted">
+            <p className="mt-2 text-xs text-muted-foreground">
               Ordering, Surprise Games, KDS haptics, and Geo-AutoPay stay fully
               active.
             </p>
@@ -128,11 +128,11 @@ export function ExternalDealCard({
 
   return (
     <>
-      <div className="mb-4 rounded-2xl border border-champagne/20 bg-white/[0.04] p-4 backdrop-blur-2xl">
+      <div className="optimus-glass mb-4 rounded-xl p-4">
         <p className="text-xs uppercase tracking-[0.18em] text-accent-gold">
           Partner reservation
         </p>
-        <h2 className="mt-1 font-display text-lg font-semibold text-white">
+        <h2 className="type-title mt-1 text-lg text-foreground">
           Have a Zomato / Swiggy / District Reservation?
         </h2>
 
@@ -168,7 +168,7 @@ export function ExternalDealCard({
           </div>
         ) : (
           <div className="mt-3 space-y-3">
-            <p className="text-sm text-nightlife-muted">
+            <p className="text-sm text-muted-foreground">
               Enter your deal code. Staff verifies on KDS — once approved,
               native 1:1 Flash Promos and Hourly Lucky Draws lock out for this
               tab (anti double-dip). Ordering, games, and AutoPay stay on.
@@ -182,11 +182,11 @@ export function ExternalDealCard({
                   className={cn(
                     "rounded-xl border px-3 py-2 text-left text-sm transition",
                     provider === p.id
-                      ? "border-accent-violet bg-accent-violet/15 text-white"
-                      : "border-champagne/20 text-nightlife-muted hover:border-champagne/40"
+                      ? "border-accent-violet bg-pastel-lavender text-foreground"
+                      : "border-border text-muted-foreground hover:border-champagne/40"
                   )}
                 >
-                  <span className="font-medium text-white">{p.label}</span>
+                  <span className="font-medium text-foreground">{p.label}</span>
                   <span className="mt-0.5 block text-xs">
                     Default {p.defaultPercent}%
                   </span>
@@ -197,7 +197,7 @@ export function ExternalDealCard({
               value={code}
               onChange={(e) => setCode(e.target.value.toUpperCase())}
               placeholder="Voucher code"
-              className="h-11 w-full rounded-xl border border-champagne/20 bg-black/30 px-3 text-sm text-white placeholder:text-nightlife-muted focus:border-accent-violet focus:outline-none"
+              className="h-11 w-full rounded-xl border border-border bg-white px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent-violet focus:outline-none"
             />
             {error ? (
               <p className="text-xs text-accent-ruby">{error}</p>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Camera, ChevronRight, MapPin, Sparkles, Vibrate } from "lucide-react";
+import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 import { AppShell } from "@/components/layout/AppShell";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -29,13 +30,14 @@ function HomeBody() {
           transition={{ duration: 0.45 }}
           className="relative flex min-h-[42vh] flex-col justify-end"
         >
-          <p className="font-display text-5xl font-extrabold tracking-tight text-white sm:text-6xl">
-            mAITab
-          </p>
-          <h1 className="mt-3 max-w-md text-balance text-2xl font-semibold text-white sm:text-3xl">
+          <MaiTabLogo
+            variant="FullLogoWithText"
+            className="h-14 w-auto sm:h-16"
+          />
+          <h1 className="mt-5 max-w-md text-balance text-2xl font-semibold text-foreground sm:text-3xl">
             Your night, one prepaid tab.
           </h1>
-          <p className="mt-3 max-w-sm text-sm text-nightlife-muted">
+          <p className="mt-3 max-w-sm text-sm text-muted-foreground">
             {theme.label} hospitality active · scan, order, settle on exit.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
@@ -61,13 +63,13 @@ function HomeBody() {
         <TierGlassCard className="p-5">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-nightlife-muted">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
                 Active session
               </p>
-              <h2 className="mt-1 font-display text-2xl font-bold text-white">
+              <h2 className="mt-1 font-display text-2xl font-bold text-foreground">
                 {DEMO_CLUB.name}
               </h2>
-              <p className="mt-1 text-sm text-nightlife-muted">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Table {primary?.table_code ?? "—"} · Host {user.full_name}
               </p>
             </div>
@@ -76,7 +78,7 @@ function HomeBody() {
 
           <div className="mt-4 flex items-end justify-between">
             <div>
-              <p className="text-xs text-nightlife-muted">Running tab</p>
+              <p className="text-xs text-muted-foreground">Running tab</p>
               <p
                 className="font-display text-4xl font-bold"
                 style={{ color: theme.accent }}
@@ -93,7 +95,7 @@ function HomeBody() {
                 }
                 tone={session.is_lucky_draw_eligible ? "gold" : "emerald"}
               />
-              <p className="mt-2 text-xs text-nightlife-muted">
+              <p className="mt-2 text-xs text-muted-foreground">
                 {orders.filter((o) => o.status !== "DELIVERED").length} open
                 tickets
               </p>
@@ -102,22 +104,22 @@ function HomeBody() {
         </TierGlassCard>
 
         <TierGlassCard className="p-5" glow={false}>
-          <p className="text-xs uppercase tracking-[0.2em] text-nightlife-muted">
+          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
             Device permissions
           </p>
           <ul className="mt-4 space-y-3 text-sm">
-            <li className="flex items-center gap-3 text-white/85">
+            <li className="flex items-center gap-3 text-foreground/80">
               <Camera className="h-4 w-4" style={{ color: theme.accent }} />
               Camera · table QR scan
             </li>
-            <li className="flex items-center gap-3 text-white/85">
+            <li className="flex items-center gap-3 text-foreground/80">
               <MapPin
                 className="h-4 w-4"
                 style={{ color: theme.accentSecondary }}
               />
               GPS · 50m auto-debit fence
             </li>
-            <li className="flex items-center gap-3 text-white/85">
+            <li className="flex items-center gap-3 text-foreground/80">
               <Vibrate className="h-4 w-4 text-accent-emerald" />
               Haptics · ready alerts
             </li>
@@ -135,7 +137,7 @@ function HomeBody() {
       <section className="mt-8">
         <div className="mb-3 flex items-center gap-2">
           <Sparkles className="h-4 w-4" style={{ color: theme.accent }} />
-          <h3 className="font-display text-lg font-semibold text-white">
+          <h3 className="type-title text-lg text-foreground">
             Quick moves
           </h3>
         </div>
@@ -154,8 +156,8 @@ function HomeBody() {
             >
               <Link href={item.href} className="block">
                 <TierGlassCard className="h-full p-4" glow={false}>
-                  <p className="font-semibold text-white">{item.title}</p>
-                  <p className="mt-1 text-sm text-nightlife-muted">{item.copy}</p>
+                  <p className="font-semibold text-foreground">{item.title}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{item.copy}</p>
                 </TierGlassCard>
               </Link>
             </motion.div>

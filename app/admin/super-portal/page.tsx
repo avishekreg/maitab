@@ -44,11 +44,11 @@ export default function SuperAdminPortalPage() {
   }
 
   return (
-    <div className="grid min-h-[100dvh] place-items-center bg-nightlife-bg px-4 text-white">
-      <div className="w-full max-w-md rounded-2xl border border-champagne/20 bg-white/[0.04] p-8 backdrop-blur-2xl">
+    <div className="grid min-h-[100dvh] place-items-center bg-background px-4 text-foreground">
+      <div className="w-full max-w-md rounded-2xl border border-border bg-secondary p-8 backdrop-blur-2xl">
         <MaiTabLogo variant="IconOnly" className="h-10 w-10" />
         <h1 className="mt-5 font-display text-2xl font-bold">Secure access</h1>
-        <p className="mt-2 text-sm text-nightlife-muted">
+        <p className="mt-2 text-sm text-muted-foreground">
           Restricted console. Enter the environment portal key to continue.
         </p>
         <input
@@ -57,7 +57,7 @@ export default function SuperAdminPortalPage() {
           value={key}
           onChange={(e) => setKey(e.target.value)}
           placeholder="Portal key"
-          className="mt-6 h-12 w-full rounded-xl border border-champagne/20 bg-black/30 px-3 text-sm text-white placeholder:text-nightlife-muted focus:border-accent-violet focus:outline-none"
+          className="mt-6 h-12 w-full rounded-xl border border-border bg-white px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent-violet focus:outline-none"
         />
         {error ? (
           <p className="mt-3 text-sm text-accent-ruby">{error}</p>

@@ -160,16 +160,16 @@ export default function KdsPage() {
   );
 
   return (
-    <div className="min-h-[100dvh] bg-nightlife-bg px-4 py-5 text-white">
+    <div className="min-h-[100dvh] bg-nightlife-radial px-4 py-5 text-foreground">
       <div className="mx-auto max-w-6xl">
-        <div className="mb-5 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <MaiTabLogo variant="IconOnly" className="h-9 w-9" />
-            <div>
-              <h1 className="font-display text-3xl font-bold text-white">
+        <div className="optimus-glass mb-5 flex items-center justify-between gap-3 rounded-xl px-4 py-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <MaiTabLogo variant="FullLogoWithText" className="h-8 w-auto" />
+            <div className="min-w-0">
+              <h1 className="font-display text-3xl font-bold text-foreground">
                 Bar KDS
               </h1>
-              <p className="text-sm text-nightlife-muted">
+              <p className="text-sm text-muted-foreground">
                 Mark Ready · verify external deals · realtime to guest tab
               </p>
             </div>
@@ -192,7 +192,7 @@ export default function KdsPage() {
 
         {pendingDeals.length ? (
           <div className="mb-5 space-y-3">
-            <p className="text-xs uppercase tracking-[0.18em] text-nightlife-muted">
+            <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
               External deal verification
             </p>
             {pendingDeals.map((deal) => (
@@ -202,18 +202,18 @@ export default function KdsPage() {
                 glow="gold"
               >
                 <div>
-                  <p className="font-display text-lg font-semibold text-white">
+                  <p className="type-title text-lg text-foreground">
                     {providerLabel(deal.external_provider)}{" "}
                     {deal.discount_percentage}% · pending
                   </p>
-                  <p className="mt-1 text-sm text-nightlife-muted">
+                  <p className="mt-1 text-sm text-muted-foreground">
                     Code{" "}
                     <span className="font-mono text-accent-gold">
                       {deal.external_voucher_code}
                     </span>
                     {deal.table_hint ? ` · ${deal.table_hint}` : null}
                   </p>
-                  <p className="mt-1 text-xs text-nightlife-muted">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     Approve locks native flash promos + lucky draw for this
                     session.
                   </p>
@@ -266,7 +266,7 @@ export default function KdsPage() {
                   {order.items.map((item) => (
                     <li
                       key={`${order.id}-${item.name}`}
-                      className="font-medium text-white"
+                      className="font-medium text-foreground"
                     >
                       {item.quantity}× {item.name}
                     </li>

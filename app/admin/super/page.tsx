@@ -137,8 +137,8 @@ export default function SuperAdminPage() {
         >
           <label className="block">
             <div className="flex items-center justify-between gap-3 text-sm">
-              <span className="text-nightlife-muted">PostGIS lockout radius</span>
-              <span className="font-display font-semibold text-white">
+              <span className="text-muted-foreground">PostGIS lockout radius</span>
+              <span className="type-title text-foreground">
                 {radiusKm} km
               </span>
             </div>
@@ -151,13 +151,13 @@ export default function SuperAdminPage() {
               onChange={(e) => void persistRadius(Number(e.target.value))}
               className="mt-3 w-full accent-[#7C3AED]"
             />
-            <div className="mt-1 flex justify-between text-[11px] text-nightlife-muted">
+            <div className="mt-1 flex justify-between text-[11px] text-muted-foreground">
               <span>0.5 km</span>
               <span>3.0 km</span>
             </div>
           </label>
 
-          <div className="mt-6 divide-y divide-white/10 rounded-xl border border-white/10">
+          <div className="mt-6 divide-y divide-white/10 rounded-xl border border-border">
             {FLAGS.map((flag) => {
               const enabled = getFlag(flag.key);
               return (
@@ -166,8 +166,8 @@ export default function SuperAdminPage() {
                   className="flex items-center justify-between gap-4 px-4 py-3.5"
                 >
                   <div>
-                    <p className="text-sm font-medium text-white">{flag.label}</p>
-                    <p className="text-[11px] text-nightlife-muted">
+                    <p className="text-sm font-medium text-foreground">{flag.label}</p>
+                    <p className="text-[11px] text-muted-foreground">
                       {saving === flag.key ? "Saving…" : flag.key}
                     </p>
                   </div>
@@ -201,7 +201,7 @@ export default function SuperAdminPage() {
           title="Fraud & health"
           description="Latest platform signals that need attention."
         >
-          <ul className="space-y-0 divide-y divide-white/10 rounded-xl border border-white/10">
+          <ul className="space-y-0 divide-y divide-white/10 rounded-xl border border-border">
             {FRAUD_LOGS.map((log) => (
               <li key={log.id} className="px-4 py-3.5">
                 <div className="flex items-center justify-between gap-3">
@@ -216,7 +216,7 @@ export default function SuperAdminPage() {
                     {log.event}
                   </p>
                 </div>
-                <p className="mt-1 text-sm leading-relaxed text-nightlife-muted">
+                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                   {log.detail}
                 </p>
               </li>
@@ -237,7 +237,7 @@ export default function SuperAdminPage() {
               return (
                 <div key={tier}>
                   <div className="mb-1.5 flex items-center justify-between text-sm">
-                    <span className="text-white/90">{tier}</span>
+                    <span className="text-foreground/90">{tier}</span>
                     <span className="tabular-nums text-accent-gold">{count}</span>
                   </div>
                   <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
@@ -264,24 +264,24 @@ export default function SuperAdminPage() {
           }
         >
           <div className="grid grid-cols-2 gap-4">
-            <div className="rounded-xl border border-white/10 bg-white/[0.02] px-4 py-4">
-              <p className="text-[11px] uppercase tracking-[0.16em] text-nightlife-muted">
+            <div className="rounded-xl border border-border bg-white/[0.02] px-4 py-4">
+              <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
                 Secrets
               </p>
-              <p className="mt-2 font-display text-3xl font-bold text-white">
+              <p className="mt-2 font-display text-3xl font-bold text-foreground">
                 {secretCount}
               </p>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/[0.02] px-4 py-4">
-              <p className="text-[11px] uppercase tracking-[0.16em] text-nightlife-muted">
+            <div className="rounded-xl border border-border bg-white/[0.02] px-4 py-4">
+              <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
                 Runtime keys
               </p>
-              <p className="mt-2 font-display text-3xl font-bold text-white">
+              <p className="mt-2 font-display text-3xl font-bold text-foreground">
                 {configs.filter((c) => !c.is_secret).length}
               </p>
             </div>
           </div>
-          <p className="mt-4 text-sm text-nightlife-muted">
+          <p className="mt-4 text-sm text-muted-foreground">
             Razorpay, Cashfree, WhatsApp, Maps, and AI providers live in the
             no-code hub — encrypted at rest before write.
           </p>

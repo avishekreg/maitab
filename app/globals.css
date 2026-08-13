@@ -2,41 +2,143 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Optimus (v0) design tokens — extracted from
+  https://v0-optimus-delta.vercel.app / Optimus template family.
+  Mapped into mAITab nightlife aliases so existing routes inherit automatically.
+*/
 :root {
-  --nightlife-bg: #12151a;
-  --nightlife-elevated: #1a1e26;
-  --accent-violet: #8b5cf6;
-  --accent-gold: #e2b857;
-  --accent-emerald: #10b981;
-  --accent-ruby: #f43f5e;
-  --text-muted: #cbd5e1;
-  --champagne: #e2b857;
-  color-scheme: dark;
+  /* Optimus core */
+  --background: #faf9f5;
+  --foreground: #080503;
+  /* HSL channels so hsl(var(--card) / a) works with @apply-adjacent CSS */
+  --card: 0 0% 100%;
+  --card-foreground: #080503;
+  --popover: #ffffff;
+  --popover-foreground: #080503;
+  --primary: #080503;
+  --primary-foreground: #fafaf9;
+  --secondary: #f3f2ee;
+  --secondary-foreground: #080503;
+  --muted: #ecebe7;
+  --muted-foreground: #5e534a;
+  --accent: #e7e4dd;
+  --accent-foreground: #080503;
+  --destructive: #e40014;
+  --destructive-foreground: #e40014;
+  --border: #dad7d0;
+  --input: #e7e4dd;
+  --ring: #080503;
+  --radius: 0.5rem;
+  --chart-1: #080503;
+  --chart-2: #433830;
+  --chart-3: #7b6f66;
+  --chart-4: #a89c92;
+  --chart-5: #d3ccc7;
+
+  /* mAITab brand accents (kept for product semantics) */
+  --brand-violet: #7c3aed;
+  --brand-cyan: #06b6d4;
+  --brand-gold: #d97706;
+  --brand-mint: #059669;
+  --brand-ruby: #e11d48;
+
+  /* Legacy aliases used across the app */
+  --nightlife-bg: var(--background);
+  --nightlife-elevated: #ffffff;
+  --nightlife-panel: var(--secondary);
+  --nightlife-ink: var(--foreground);
+  --type-gold: #a38b5e;
+  --accent-violet: var(--brand-violet);
+  --accent-gold: var(--type-gold);
+  --accent-emerald: var(--brand-mint);
+  --accent-ruby: var(--brand-ruby);
+  --text-muted: var(--muted-foreground);
+  --champagne: var(--type-gold);
+
+  color-scheme: light;
 }
 
 html,
 body {
   min-height: 100%;
-  background: var(--nightlife-bg);
-  color: #ffffff;
+  background: var(--background);
+  color: var(--foreground);
 }
 
+/*
+  Site typography (from How-it-works reference) — hero may override locally:
+  - Eyebrow: sans, uppercase, champagne gold, wide tracking
+  - Section display titles: Syne via .font-display only
+  - Step/card titles + body: Plus Jakarta Sans, tracking-normal, leading-relaxed
+*/
 body {
-  font-family: var(--font-body), "DM Sans", sans-serif;
+  font-family: var(--font-sans), "Plus Jakarta Sans", Inter, ui-sans-serif,
+    system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
+/* Default headings are readable sans — display is opt-in */
 h1,
 h2,
 h3,
+h4,
+p,
+a,
+li,
+button,
+input,
+textarea,
+label,
+td,
+th,
+small,
+nav {
+  font-family: var(--font-sans), "Plus Jakarta Sans", Inter, ui-sans-serif,
+    system-ui, sans-serif;
+  letter-spacing: normal;
+}
+
+/* Wide display face — section heroes / primary titles only */
 .font-display {
-  font-family: var(--font-display), Syne, sans-serif;
-  color: #ffffff;
+  font-family: var(--font-display), Syne, ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+.type-eyebrow {
+  font-family: var(--font-sans), "Plus Jakarta Sans", Inter, ui-sans-serif,
+    system-ui, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--type-gold);
+}
+
+.type-body {
+  font-family: var(--font-sans), "Plus Jakarta Sans", Inter, ui-sans-serif,
+    system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.65;
+}
+
+.type-title {
+  font-family: var(--font-sans), "Plus Jakarta Sans", Inter, ui-sans-serif,
+    system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: normal;
+  line-height: 1.3;
 }
 
 * {
   box-sizing: border-box;
+  border-color: var(--border);
 }
 
 ::-webkit-scrollbar {
@@ -45,8 +147,44 @@ h3,
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(226, 184, 87, 0.22);
+  background: color-mix(in oklab, var(--muted-foreground) 35%, transparent);
   border-radius: 999px;
+}
+
+@layer base {
+  :root {
+    --tw-ring-color: color-mix(in oklab, var(--ring) 20%, transparent);
+  }
+}
+
+@layer components {
+  .optimus-glass {
+    @apply border backdrop-blur-xl;
+    background-color: hsl(var(--card) / 0.75);
+    border-color: color-mix(in oklab, var(--border) 85%, transparent);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+  }
+
+  .optimus-panel {
+    border: 1px solid var(--border);
+    background: color-mix(in oklab, var(--secondary) 80%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .optimus-cta {
+    @apply inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold transition hover:opacity-90;
+    border-radius: var(--radius);
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  .optimus-cta-brand {
+    @apply inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+    box-shadow: 0 10px 28px rgba(124, 58, 237, 0.22);
+  }
 }
 
 @layer utilities {
@@ -55,24 +193,34 @@ h3,
   }
 
   .text-muted {
-    color: var(--text-muted);
+    color: var(--muted-foreground);
   }
 
   .surface-frost {
-    @apply border border-champagne/20 bg-white/[0.04] backdrop-blur-2xl;
+    @apply border backdrop-blur-xl;
+    background-color: hsl(var(--card) / 0.75);
+    border-color: color-mix(in oklab, var(--border) 85%, transparent);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
   }
 
   .glow-border {
     box-shadow:
-      inset 0 0 0 1px rgba(226, 184, 87, 0.22),
-      0 0 24px rgba(139, 92, 246, 0.12);
+      inset 0 0 0 1px color-mix(in oklab, var(--brand-violet) 22%, transparent),
+      0 10px 28px rgba(124, 58, 237, 0.08);
   }
 
   .amount-gold {
-    color: var(--accent-gold);
+    color: var(--brand-gold);
   }
 
   .perspective-game {
     perspective: 1200px;
+  }
+
+  .pastel-card {
+    @apply border backdrop-blur-xl rounded-xl;
+    background-color: hsl(var(--card) / 0.75);
+    border-color: color-mix(in oklab, var(--border) 85%, transparent);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
   }
 }

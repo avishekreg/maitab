@@ -141,16 +141,16 @@ export default function GateScannerPage() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-nightlife-radial px-4 py-6 text-white">
+    <div className="min-h-[100dvh] bg-nightlife-radial px-4 py-6 text-foreground">
       <div className="mx-auto max-w-5xl">
-        <div className="mb-6 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <MaiTabLogo variant="IconOnly" className="h-9 w-9" />
-            <div>
-              <h1 className="font-display text-2xl font-bold text-white">
+        <div className="optimus-glass mb-6 flex items-center justify-between gap-3 rounded-xl px-4 py-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <MaiTabLogo variant="FullLogoWithText" className="h-8 w-auto" />
+            <div className="min-w-0">
+              <h1 className="font-display text-2xl font-bold text-foreground">
                 Gate Scanner
               </h1>
-              <p className="text-sm text-nightlife-muted">
+              <p className="text-sm text-muted-foreground">
                 Live channel · gate_entry_events · zero revenue access
               </p>
             </div>
@@ -162,13 +162,13 @@ export default function GateScannerPage() {
           <GlassPanel className="p-4">
             <div
               id="gate-qr-reader"
-              className="overflow-hidden rounded-xl border border-white/10 bg-black/40"
+              className="overflow-hidden rounded-xl border border-border bg-slate-200/80"
             />
             {!scanning ? (
               <div className="grid min-h-[240px] place-items-center text-center">
                 <div>
                   <Camera className="mx-auto h-10 w-10 text-accent-violet" />
-                  <p className="mt-3 text-sm text-nightlife-muted">
+                  <p className="mt-3 text-sm text-muted-foreground">
                     Request camera permission to scan Member Passes.
                   </p>
                 </div>
@@ -193,14 +193,14 @@ export default function GateScannerPage() {
               <div>
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.18em] text-nightlife-muted">
+                    <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
                       Guest
                     </p>
-                    <h2 className="mt-1 font-display text-2xl font-bold text-white">
+                    <h2 className="mt-1 font-display text-2xl font-bold text-foreground">
                       {guest.profile.full_name}
                     </h2>
                   </div>
-                  <UserRound className="h-6 w-6 text-nightlife-muted" />
+                  <UserRound className="h-6 w-6 text-muted-foreground" />
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <span
@@ -214,23 +214,23 @@ export default function GateScannerPage() {
                   />
                 </div>
                 <div className="mt-5">
-                  <p className="text-xs uppercase tracking-[0.18em] text-nightlife-muted">
+                  <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
                     Favorite drinks
                   </p>
-                  <ul className="mt-2 space-y-1 text-sm text-white/80">
+                  <ul className="mt-2 space-y-1 text-sm text-foreground/80">
                     {guest.profile.favorite_drinks.map((drink) => (
                       <li key={drink.name}>{drink.name}</li>
                     ))}
                   </ul>
                 </div>
-                <div className="mt-5 rounded-xl border border-white/10 bg-white/[0.03] p-3">
+                <div className="mt-5 rounded-xl border border-border bg-secondary p-3">
                   <div className="flex items-center gap-2">
                     <ShieldCheck className="h-4 w-4 text-accent-emerald" />
-                    <p className="text-sm font-medium text-white">
+                    <p className="text-sm font-medium text-foreground">
                       Micro-hold check
                     </p>
                   </div>
-                  <p className="mt-1 text-sm text-nightlife-muted">
+                  <p className="mt-1 text-sm text-muted-foreground">
                     {guest.microHold?.ok
                       ? `AutoPay verified · ₹${guest.microHold.amount} hold ${guest.microHold.holdId}`
                       : guest.microHold?.reason ?? "Pending"}
@@ -238,7 +238,7 @@ export default function GateScannerPage() {
                 </div>
               </div>
             ) : (
-              <div className="grid min-h-[280px] place-items-center text-center text-nightlife-muted">
+              <div className="grid min-h-[280px] place-items-center text-center text-muted-foreground">
                 Scan a pass to surface guest hospitality context.
               </div>
             )}
@@ -246,16 +246,16 @@ export default function GateScannerPage() {
         </div>
 
         <GlassPanel className="mt-4 p-4">
-          <p className="mb-3 text-xs uppercase tracking-[0.18em] text-nightlife-muted">
+          <p className="mb-3 text-xs uppercase tracking-[0.18em] text-muted-foreground">
             Recent entries (realtime)
           </p>
           <div className="space-y-2">
             {events.map((event) => (
               <div
                 key={event.id}
-                className="flex items-center justify-between gap-3 border-b border-white/10 pb-2 text-sm last:border-0"
+                className="flex items-center justify-between gap-3 border-b border-border pb-2 text-sm last:border-0"
               >
-                <span className="text-white">{event.guest_name}</span>
+                <span className="text-foreground">{event.guest_name}</span>
                 <span className="text-accent-gold">{event.spend_tier}</span>
               </div>
             ))}

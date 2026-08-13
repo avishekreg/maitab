@@ -15,7 +15,7 @@ export function NeonSpinWheel({
   labels,
   spinning,
   onComplete,
-  accent = "#7C3AED",
+  accent = "#A855F7",
 }: NeonWheelProps) {
   const controls = useAnimation();
   const items = useMemo(
@@ -56,7 +56,7 @@ export function NeonSpinWheel({
           style={{
             background: `conic-gradient(${items
               .map((_, i) => {
-                const a = i % 2 === 0 ? accent : "#151018";
+                const a = i % 2 === 0 ? "#DDD6FE" : "#A7F3D0";
                 const start = (i / items.length) * 100;
                 const end = ((i + 1) / items.length) * 100;
                 return `${a} ${start}% ${end}%`;
@@ -69,7 +69,7 @@ export function NeonSpinWheel({
           return (
             <div
               key={`${label}-${i}`}
-              className="absolute left-1/2 top-1/2 origin-left text-[10px] font-semibold uppercase tracking-wide text-white"
+              className="absolute left-1/2 top-1/2 origin-left text-[10px] font-semibold uppercase tracking-wide text-foreground"
               style={{
                 transform: `rotate(${angle}deg) translate(28px, -50%)`,
                 width: "92px",
@@ -85,9 +85,9 @@ export function NeonSpinWheel({
           className="pointer-events-none absolute inset-0 rounded-full"
           animate={{
             boxShadow: [
-              "0 0 0 rgba(124,58,237,0)",
-              "0 0 40px rgba(244,63,94,0.45)",
-              "0 0 0 rgba(124,58,237,0)",
+              "0 0 0 rgba(168,85,247,0)",
+              "0 0 36px rgba(168,85,247,0.35)",
+              "0 0 0 rgba(168,85,247,0)",
             ],
           }}
           transition={{ duration: 1.2, repeat: Infinity }}

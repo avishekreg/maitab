@@ -75,17 +75,17 @@ export function ShotRouletteEngine({
       ctx.moveTo(cx, cy);
       ctx.arc(cx, cy, radius, start, start + slice);
       ctx.closePath();
-      ctx.fillStyle = i % 2 === 0 ? "#7C3AED" : "#1F1630";
-      if (label.toLowerCase().includes("shot")) ctx.fillStyle = "#F43F5E";
-      if (label.toLowerCase().includes("safe")) ctx.fillStyle = "#0F766E";
+      ctx.fillStyle = i % 2 === 0 ? "#C4B5FD" : "#A7F3D0";
+      if (label.toLowerCase().includes("shot")) ctx.fillStyle = "#F9A8D4";
+      if (label.toLowerCase().includes("safe")) ctx.fillStyle = "#6EE7B7";
       ctx.fill();
-      ctx.strokeStyle = "rgba(255,255,255,0.2)";
+      ctx.strokeStyle = "rgba(15,23,42,0.12)";
       ctx.stroke();
 
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(start + slice / 2);
-      ctx.fillStyle = "#fff";
+      ctx.fillStyle = "#0F172A";
       ctx.font = "600 11px DM Sans, sans-serif";
       ctx.textAlign = "right";
       ctx.fillText(label.slice(0, 12), radius - 14, 4);

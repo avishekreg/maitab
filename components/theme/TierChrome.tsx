@@ -9,39 +9,55 @@ interface TierGlassCardProps {
   children: React.ReactNode;
   className?: string;
   glow?: boolean;
+  /** Soft colored blob behind the card (Member Pass / status surfaces) */
+  showAura?: boolean;
 }
 
 export function TierGlassCard({
   children,
   className,
   glow = true,
+  showAura = false,
 }: TierGlassCardProps) {
   const theme = useTierTheme();
 
   return (
-    <div
-      className={cn(
-        "relative overflow-hidden rounded-2xl border",
-        theme.panel,
-        glow && theme.glow,
-        theme.pulse && "animate-tier-pulse",
-        className
-      )}
-    >
-      {theme.shimmer ? (
-        <motion.div
+    <div className={cn("relative", showAura && "isolate")}>
+      {showAura ? (
+        <div
           aria-hidden
-          className="pointer-events-none absolute inset-y-0 w-1/4 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent"
-          animate={{ x: ["-40%", "280%"] }}
-          transition={{
-            duration: 4.5,
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatDelay: 2.5,
-          }}
+          className={cn(
+            "pointer-events-none absolute -inset-6 -z-10 rounded-[2rem] blur-2xl",
+            theme.aura,
+            theme.pulse && "animate-tier-pulse"
+          )}
         />
       ) : null}
-      <div className="relative z-[1]">{children}</div>
+      <div
+        className={cn(
+          "relative overflow-hidden rounded-2xl border",
+          theme.panel,
+          theme.border,
+          glow && theme.glow,
+          theme.pulse && glow && "animate-tier-pulse",
+          className
+        )}
+      >
+        {theme.shimmer ? (
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 w-1/4 bg-gradient-to-r from-transparent via-white/55 to-transparent"
+            animate={{ x: ["-40%", "280%"] }}
+            transition={{
+              duration: 4.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              repeatDelay: 2.5,
+            }}
+          />
+        ) : null}
+        <div className="relative z-[1]">{children}</div>
+      </div>
     </div>
   );
 }
@@ -56,8 +72,9 @@ export function TierBadge({ className }: { className?: string }) {
         className
       )}
     >
-      {theme.vip ? <Crown className="h-3.5 w-3.5 text-rose-300" /> : null}
+      {theme.vip ? <Crown className="h-3.5 w-3.5 text-violet-600" /> : null}
       {theme.label}
+      {theme.vip ? " · VIP" : ""}
     </span>
   );
 }
@@ -104,8 +121,8 @@ export function TierProgressRing({
       </svg>
       <div className="absolute inset-0 grid place-items-center text-center">
         <div>
-          <p className="font-display text-sm font-bold text-white">{pct}%</p>
-          <p className="text-[9px] text-nightlife-muted">{label}</p>
+          <p className="type-title text-sm text-foreground">{pct}%</p>
+          <p className="text-[9px] text-muted-foreground">{label}</p>
         </div>
       </div>
     </div>

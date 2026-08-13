@@ -48,8 +48,8 @@ export function TableJoinClient({
         <h1 className="font-display text-2xl font-bold text-accent-ruby">
           Session attach failed
         </h1>
-        <p className="mt-2 text-sm text-nightlife-muted">{error}</p>
-        <p className="mt-2 text-xs text-nightlife-muted">
+        <p className="mt-2 text-sm text-muted-foreground">{error}</p>
+        <p className="mt-2 text-xs text-muted-foreground">
           Scanned hint: {tableCodeHint}
         </p>
       </GlassPanel>
@@ -59,13 +59,13 @@ export function TableJoinClient({
   if (!result) {
     return (
       <GlassPanel className="p-6">
-        <p className="text-xs uppercase tracking-[0.2em] text-nightlife-muted">
+        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
           HMAC verified
         </p>
-        <h1 className="mt-2 font-display text-2xl font-bold text-white">
+        <h1 className="mt-2 font-display text-2xl font-bold text-foreground">
           Attaching {tableCodeHint}…
         </h1>
-        <p className="mt-2 text-sm text-nightlife-muted">
+        <p className="mt-2 text-sm text-muted-foreground">
           Resolving parent table and upserting active_sessions.
         </p>
       </GlassPanel>
@@ -74,13 +74,13 @@ export function TableJoinClient({
 
   return (
     <GlassPanel className="p-6" glow="violet">
-      <p className="text-xs uppercase tracking-[0.2em] text-nightlife-muted">
+      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
         HMAC verified · {result.mode} session
       </p>
-      <h1 className="mt-2 font-display text-3xl font-bold text-white">
+      <h1 className="mt-2 font-display text-3xl font-bold text-foreground">
         Scanned {result.scannedTableCode}
       </h1>
-      <p className="mt-2 text-sm text-nightlife-muted">
+      <p className="mt-2 text-sm text-muted-foreground">
         {result.scannedTableCode === result.primaryTableCode
           ? result.created
             ? "Opened primary host session on active_sessions."

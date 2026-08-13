@@ -127,8 +127,8 @@ export default function SuperAdminConfigPage() {
             className={cn(
               "shrink-0 rounded-lg px-3 py-2 text-xs font-medium uppercase tracking-[0.12em] transition",
               active === category
-                ? "bg-accent-violet/20 text-white ring-1 ring-accent-violet/40"
-                : "bg-white/[0.03] text-nightlife-muted ring-1 ring-white/10 hover:text-white"
+                ? "bg-pastel-lavender text-accent-violet ring-1 ring-accent-violet/40"
+                : "bg-secondary text-muted-foreground ring-1 ring-white/10 hover:text-foreground"
             )}
           >
             {category.replaceAll("_", " ")}
@@ -147,12 +147,12 @@ export default function SuperAdminConfigPage() {
             return (
               <div
                 key={item.config_key}
-                className="rounded-xl border border-white/10 bg-white/[0.02] px-4 py-4"
+                className="rounded-xl border border-border bg-white/[0.02] px-4 py-4"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="font-medium text-white">{item.label}</p>
-                    <p className="mt-0.5 truncate text-xs text-nightlife-muted">
+                    <p className="font-medium text-foreground">{item.label}</p>
+                    <p className="mt-0.5 truncate text-xs text-muted-foreground">
                       {item.config_key}
                     </p>
                   </div>
@@ -172,7 +172,7 @@ export default function SuperAdminConfigPage() {
                           [item.config_key]: e.target.value,
                         }))
                       }
-                      className="min-w-[200px] flex-1 rounded-xl border border-white/10 bg-nightlife-bg px-3 py-2.5 text-sm text-white outline-none focus:border-accent-violet/50"
+                      className="min-w-[200px] flex-1 rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:border-accent-violet/50"
                     >
                       <option value="true">Enabled</option>
                       <option value="false">Disabled</option>
@@ -190,14 +190,14 @@ export default function SuperAdminConfigPage() {
                           [item.config_key]: e.target.value,
                         }))
                       }
-                      className="min-w-[200px] flex-1 rounded-xl border border-white/10 bg-nightlife-bg px-3 py-2.5 text-sm text-white outline-none focus:border-accent-violet/50"
+                      className="min-w-[200px] flex-1 rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:border-accent-violet/50"
                     />
                   )}
 
                   {item.is_secret ? (
                     <button
                       type="button"
-                      className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 text-nightlife-muted transition hover:border-white/20 hover:text-white"
+                      className="grid h-10 w-10 place-items-center rounded-xl border border-border text-muted-foreground transition hover:border-border hover:text-foreground"
                       onClick={() =>
                         setRevealed((prev) => ({
                           ...prev,
@@ -221,7 +221,7 @@ export default function SuperAdminConfigPage() {
                 </div>
 
                 {item.is_secret && item.value_encrypted ? (
-                  <p className="mt-2 text-xs text-nightlife-muted">
+                  <p className="mt-2 text-xs text-muted-foreground">
                     Stored · {maskSecret(item.value_encrypted)}
                   </p>
                 ) : null}

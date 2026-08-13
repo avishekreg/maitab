@@ -6,6 +6,8 @@ interface MAITabLogoProps {
   variant?: LogoVariant;
   className?: string;
   title?: string;
+  /** When true, `m` + `Tab` render pure white for dark hero/nav surfaces */
+  onDark?: boolean;
 }
 
 function GradientDefs({ idPrefix }: { idPrefix: string }) {
@@ -21,19 +23,18 @@ function GradientDefs({ idPrefix }: { idPrefix: string }) {
       >
         <stop stopColor="#8B5CF6" />
         <stop offset="0.55" stopColor="#A855F7" />
-        <stop offset="1" stopColor="#E2B857" />
+        <stop offset="1" stopColor="#06B6D4" />
       </linearGradient>
-      {/* Electric Amethyst → Cyan — ONLY for letters A + I */}
       <linearGradient
         id={`${idPrefix}-ai`}
         x1="0"
         y1="0"
-        x2="80"
+        x2="100"
         y2="0"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#A855F7" />
-        <stop offset="1" stopColor="#00F0FF" />
+        <stop stopColor="#8B5CF6" />
+        <stop offset="1" stopColor="#06B6D4" />
       </linearGradient>
       <filter
         id={`${idPrefix}-glow`}
@@ -42,7 +43,7 @@ function GradientDefs({ idPrefix }: { idPrefix: string }) {
         width="200%"
         height="200%"
       >
-        <feGaussianBlur stdDeviation="1.8" result="blur" />
+        <feGaussianBlur stdDeviation="1.6" result="blur" />
         <feMerge>
           <feMergeNode in="blur" />
           <feMergeNode in="SourceGraphic" />
@@ -55,7 +56,7 @@ function GradientDefs({ idPrefix }: { idPrefix: string }) {
         width="260%"
         height="260%"
       >
-        <feGaussianBlur stdDeviation="2.8" result="blur" />
+        <feGaussianBlur stdDeviation="2" result="blur" />
         <feMerge>
           <feMergeNode in="blur" />
           <feMergeNode in="SourceGraphic" />
@@ -65,7 +66,7 @@ function GradientDefs({ idPrefix }: { idPrefix: string }) {
   );
 }
 
-/** Bar-tab receipt mark with a small AI-engine accent node. */
+/** Signature bar-tab card with AI-node accent */
 function IconMark({
   monochrome = false,
   idPrefix,
@@ -74,7 +75,7 @@ function IconMark({
   idPrefix: string;
 }) {
   const stroke = monochrome ? "currentColor" : `url(#${idPrefix}-brand)`;
-  const fillCard = monochrome ? "currentColor" : "#12151A";
+  const fillCard = monochrome ? "currentColor" : "#0a0a0c";
   const aiNode = monochrome ? "currentColor" : `url(#${idPrefix}-ai)`;
 
   return (
@@ -126,27 +127,30 @@ function IconMark({
 function Wordmark({
   monochrome,
   idPrefix,
-  x = 78,
-  y = 40,
+  onDark = false,
+  x = 72,
+  y = 42,
 }: {
   monochrome?: boolean;
   idPrefix: string;
+  onDark?: boolean;
   x?: number;
   y?: number;
 }) {
-  // Soft Slate · Electric Amethyst→Cyan (AI only) · Champagne Gold
-  const mFill = monochrome ? "currentColor" : "#94A3B8";
+  // Dark surfaces: pure white m/Tab. Light chrome: ink (never gold/orange).
+  const ink = onDark ? "#FFFFFF" : "#080503";
+  const mFill = monochrome ? "currentColor" : ink;
   const aiFill = monochrome ? "currentColor" : `url(#${idPrefix}-ai)`;
-  const tabFill = monochrome ? "currentColor" : "#E2B857";
+  const tabFill = monochrome ? "currentColor" : ink;
 
   return (
     <text
       x={x}
       y={y}
-      fontFamily="Syne, sans-serif"
-      fontSize="30"
-      fontWeight="700"
-      letterSpacing="0.02em"
+      fontFamily="Syne, 'Plus Jakarta Sans', Inter, ui-sans-serif, system-ui, sans-serif"
+      fontSize="36"
+      fontWeight="800"
+      letterSpacing="-0.03em"
     >
       <tspan fill={mFill}>m</tspan>
       <tspan
@@ -164,8 +168,9 @@ export function MAITabLogo({
   variant = "FullLogoWithText",
   className,
   title = "mAITab",
+  onDark = false,
 }: MAITabLogoProps) {
-  const idPrefix = `maitab-${variant.toLowerCase()}`;
+  const idPrefix = `maitab-${variant.toLowerCase()}-${onDark ? "dark" : "light"}`;
 
   if (variant === "IconOnly" || variant === "FaviconSVG") {
     return (
@@ -173,7 +178,7 @@ export function MAITabLogo({
         viewBox="0 0 64 64"
         role="img"
         aria-label={title}
-        className={cn("h-10 w-10", className)}
+        className={cn("h-10 w-10 shrink-0", className)}
       >
         <title>{title}</title>
         <GradientDefs idPrefix={idPrefix} />
@@ -185,13 +190,13 @@ export function MAITabLogo({
   if (variant === "Monochrome") {
     return (
       <svg
-        viewBox="0 0 240 64"
+        viewBox="0 0 268 64"
         role="img"
         aria-label={title}
-        className={cn("h-10 w-auto text-white", className)}
+        className={cn("h-10 w-auto shrink-0 text-foreground", className)}
       >
         <title>{title}</title>
-        <g transform="translate(0,0)">
+        <g transform="translate(0,2) scale(0.88)">
           <IconMark monochrome idPrefix={`${idPrefix}-m`} />
         </g>
         <Wordmark monochrome idPrefix={`${idPrefix}-m`} />
@@ -201,17 +206,18 @@ export function MAITabLogo({
 
   return (
     <svg
-      viewBox="0 0 260 64"
+      viewBox="0 0 268 64"
       role="img"
       aria-label={title}
-      className={cn("h-11 w-auto", className)}
+      className={cn("h-9 w-auto shrink-0 overflow-visible sm:h-10", className)}
     >
       <title>{title}</title>
       <GradientDefs idPrefix={idPrefix} />
-      <g transform="translate(0,0)">
+      {/* Slightly smaller icon badge so wordmark reads at text-xl/2xl weight */}
+      <g transform="translate(0,2) scale(0.88)">
         <IconMark idPrefix={idPrefix} />
       </g>
-      <Wordmark idPrefix={idPrefix} y={42} />
+      <Wordmark idPrefix={idPrefix} onDark={onDark} />
     </svg>
   );
 }

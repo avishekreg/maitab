@@ -231,9 +231,9 @@ export default function ClubAdminPage() {
             </div>
           }
         >
-          <div className="overflow-hidden rounded-xl border border-white/10">
+          <div className="overflow-hidden rounded-xl border border-border">
             <table className="w-full text-left text-sm">
-              <thead className="bg-white/[0.03] text-[11px] uppercase tracking-[0.14em] text-nightlife-muted">
+              <thead className="bg-secondary text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
                 <tr>
                   <th className="px-3 py-2.5 font-medium">Item</th>
                   <th className="px-3 py-2.5 font-medium">Category</th>
@@ -245,14 +245,14 @@ export default function ClubAdminPage() {
                   <tr
                     key={item.name}
                     className={cn(
-                      "border-t border-white/10",
+                      "border-t border-border",
                       index % 2 === 1 && "bg-white/[0.015]"
                     )}
                   >
-                    <td className="px-3 py-3 font-medium text-white">
+                    <td className="px-3 py-3 font-medium text-foreground">
                       {item.name}
                     </td>
-                    <td className="px-3 py-3 text-nightlife-muted">
+                    <td className="px-3 py-3 text-muted-foreground">
                       {item.category}
                     </td>
                     <td className="px-3 py-3 text-right tabular-nums text-accent-gold">
@@ -301,14 +301,14 @@ export default function ClubAdminPage() {
             {tables.map((table) => (
               <li
                 key={table.id}
-                className="flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 transition hover:bg-white/[0.03]"
+                className="flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 transition hover:bg-secondary"
               >
                 <div>
-                  <p className="font-display text-base font-semibold text-white">
+                  <p className="type-title text-base text-foreground">
                     {table.table_code}
                   </p>
                   {table.status === "MERGED_CHILD" && table.parent_table_id ? (
-                    <p className="text-[11px] text-nightlife-muted">
+                    <p className="text-[11px] text-muted-foreground">
                       Routes to host table
                     </p>
                   ) : null}
@@ -329,7 +329,7 @@ export default function ClubAdminPage() {
             ))}
           </ul>
           {mergeNote ? (
-            <p className="mt-4 text-sm text-nightlife-muted">{mergeNote}</p>
+            <p className="mt-4 text-sm text-muted-foreground">{mergeNote}</p>
           ) : null}
         </AdminSection>
       </div>

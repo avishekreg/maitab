@@ -1,13 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, type ReactNode } from "react";
+import { motion } from "framer-motion";
+import type { ReactNode } from "react";
 import {
   MarketingFooter,
   MarketingHeader,
 } from "@/components/marketing/MarketingChrome";
+import { HeroSection } from "@/components/marketing/HeroSection";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 
 const PAINS = [
@@ -197,105 +197,51 @@ const FAQ = [
   },
 ];
 
-function SectionEyebrow({ children }: { children: ReactNode }) {
+function SectionEyebrow({
+  children,
+  onDark = false,
+}: {
+  children: ReactNode;
+  onDark?: boolean;
+}) {
   return (
-    <p className="text-[11px] uppercase tracking-[0.2em] text-accent-gold">
+    <p className={onDark ? "type-eyebrow text-[#A38B5E]" : "type-eyebrow"}>
       {children}
     </p>
   );
 }
 
-function SectionTitle({ children }: { children: ReactNode }) {
+function SectionTitle({
+  children,
+  onDark = false,
+}: {
+  children: ReactNode;
+  onDark?: boolean;
+}) {
   return (
-    <h2 className="mt-3 max-w-3xl font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+    <h2
+      className={
+        onDark
+          ? "mt-3 max-w-3xl font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-[2.75rem]"
+          : "mt-3 max-w-3xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-[2.75rem]"
+      }
+    >
       {children}
     </h2>
   );
 }
 
 export default function MarketingLandingPage() {
-  const heroRef = useRef<HTMLElement | null>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
-
   return (
-    <div className="min-h-[100dvh] bg-nightlife-bg text-white">
+    <div className="min-h-[100dvh] bg-[#FAF9F5] text-[#080503]">
       <MarketingHeader />
 
-      {/* HERO — brand first, image as atmosphere, peek next section */}
-      <section
-        ref={heroRef}
-        className="relative isolate min-h-[88svh] overflow-hidden"
-      >
-        <motion.div style={{ y: imageY }} className="absolute inset-0 -z-10">
-          <Image
-            src="/marketing/hero-nightlife.jpg"
-            alt="Premium nightlife bar floor — warm bottle lights, violet stage wash, mobile-first ordering energy"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[center_35%]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#050608]/94 via-[#050608]/70 to-[#050608]/35" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050608] via-[#050608]/20 to-[#050608]/50" />
-        </motion.div>
-
-        <div className="mx-auto flex min-h-[88svh] max-w-6xl flex-col justify-end px-4 pb-14 pt-28 sm:px-6 sm:pb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-2xl"
-          >
-            <div className="mb-5 flex items-center gap-3">
-              <MaiTabLogo variant="IconOnly" className="h-11 w-11" />
-              <p className="font-display text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-                mAITab
-              </p>
-            </div>
-            <h1 className="text-balance font-display text-3xl font-bold leading-[1.12] tracking-tight text-white sm:text-4xl md:text-[2.65rem]">
-              Turn every night into a prepaid, self-settling revenue machine.
-            </h1>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-white/78 sm:text-lg">
-              mAITab is the zero-hardware nightlife OS for clubs and lounges:
-              cryptographic table tabs, gate hospitality, bartender KDS, AV
-              legends, social games that upsell, and geo-fenced AutoPay when
-              guests walk out.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href="#system"
-                className="inline-flex h-12 items-center rounded-xl bg-accent-violet px-5 text-sm font-semibold text-white shadow-glow-violet transition hover:brightness-110"
-              >
-                See how the system works
-              </a>
-              <Link
-                href="/login"
-                className="inline-flex h-12 items-center rounded-xl border border-white/20 bg-white/[0.05] px-5 text-sm font-semibold text-white backdrop-blur-md transition hover:border-white/35"
-              >
-                Open live demo roles
-              </Link>
-            </div>
-            <a
-              href="#problem"
-              className="mt-10 inline-flex items-center gap-2 text-sm text-white/55 transition hover:text-white"
-            >
-              Scroll for the full platform story
-              <span aria-hidden className="animate-bounce">
-                ↓
-              </span>
-            </a>
-          </motion.div>
-        </div>
-      </section>
+      <HeroSection />
 
       {/* PROBLEM */}
       <section
         id="problem"
-        className="scroll-mt-20 border-t border-white/10 bg-[#07080b]"
+        className="scroll-mt-20 border-t border-border bg-secondary/70"
       >
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>The problem</SectionEyebrow>
@@ -303,7 +249,7 @@ export default function MarketingLandingPage() {
             Nightlife still runs on trust, paper, and panic — and it costs you
             more than you think.
           </SectionTitle>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-nightlife-muted sm:text-lg">
+          <p className="type-body mt-5 max-w-2xl text-lg text-slate-800">
             Your best nights are also your messiest: open tabs, slow bars,
             forgotten settlements, VIP confusion, and promo wars with the venue
             down the street. Guests feel the friction. Staff absorb the chaos.
@@ -318,12 +264,12 @@ export default function MarketingLandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ delay: i * 0.06 }}
-                className="border-t border-white/10 pt-6"
+                className="border-t border-border pt-6"
               >
-                <h3 className="font-display text-xl font-semibold text-white">
+                <h3 className="type-title text-xl text-foreground sm:text-2xl">
                   {pain.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-nightlife-muted sm:text-base">
+                <p className="type-body mt-3 text-base text-slate-800 sm:text-lg">
                   {pain.copy}
                 </p>
               </motion.div>
@@ -333,13 +279,13 @@ export default function MarketingLandingPage() {
       </section>
 
       {/* SYSTEM */}
-      <section id="system" className="scroll-mt-20 border-t border-white/10">
+      <section id="system" className="scroll-mt-20 border-t border-border">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>The system</SectionEyebrow>
           <SectionTitle>
             One operating layer above the floor — not another terminal on it.
           </SectionTitle>
-          <p className="mt-5 max-w-3xl text-base leading-relaxed text-nightlife-muted sm:text-lg">
+          <p className="mt-5 max-w-3xl font-sans text-lg leading-relaxed tracking-normal text-slate-800">
             mAITab connects the guest phone, the door, the bar, the LED wall,
             and the manager console into a single session pipeline. A guest
             enters with a verified mandate, spends against a live prepaid tab,
@@ -348,7 +294,7 @@ export default function MarketingLandingPage() {
             staring at data they don’t need.
           </p>
 
-          <div className="mt-14 grid gap-10 border-y border-white/10 py-10 lg:grid-cols-3">
+          <div className="mt-14 grid gap-10 border-y border-border py-10 lg:grid-cols-3">
             {[
               {
                 k: "Guest web app",
@@ -364,17 +310,17 @@ export default function MarketingLandingPage() {
               },
             ].map((item) => (
               <div key={item.k}>
-                <p className="font-display text-lg font-semibold text-white">
+                <p className="font-sans text-lg font-semibold tracking-normal text-foreground">
                   {item.k}
                 </p>
-                <p className="mt-3 text-sm leading-relaxed text-nightlife-muted">
+                <p className="mt-3 font-sans text-base leading-relaxed tracking-normal text-slate-800 sm:text-lg">
                   {item.v}
                 </p>
               </div>
             ))}
           </div>
 
-          <p className="mt-10 max-w-3xl text-sm leading-relaxed text-nightlife-muted sm:text-base">
+          <p className="mt-10 max-w-3xl font-sans text-base leading-relaxed tracking-normal text-slate-800 sm:text-lg">
             Under the hood: Next.js surfaces, Supabase Postgres with RLS,
             Realtime channels, PostGIS for promo lockouts, HMAC QR security,
             and payment provider hooks for Razorpay / Cashfree AutoPay. You sell
@@ -383,14 +329,14 @@ export default function MarketingLandingPage() {
         </div>
       </section>
 
-      {/* JOURNEY */}
+      {/* JOURNEY — typography reference surface (dark) */}
       <section
         id="journey"
-        className="scroll-mt-20 border-t border-white/10 bg-[#07080b]"
+        className="scroll-mt-20 border-t border-white/10 bg-black"
       >
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-          <SectionEyebrow>How it works</SectionEyebrow>
-          <SectionTitle>
+          <SectionEyebrow onDark>How it works</SectionEyebrow>
+          <SectionTitle onDark>
             From door to dancefloor to debit — the full guest journey.
           </SectionTitle>
 
@@ -404,14 +350,14 @@ export default function MarketingLandingPage() {
                 transition={{ delay: i * 0.05 }}
                 className="grid gap-4 border-t border-white/10 py-8 md:grid-cols-[88px_1fr]"
               >
-                <p className="font-display text-sm font-semibold text-accent-violet">
+                <p className="font-sans text-sm font-normal tracking-normal text-white/55">
                   {step.n}
                 </p>
                 <div>
-                  <h3 className="font-display text-xl font-semibold text-white sm:text-2xl">
+                  <h3 className="type-title text-xl text-white sm:text-2xl">
                     {step.title}
                   </h3>
-                  <p className="mt-3 max-w-3xl text-sm leading-relaxed text-nightlife-muted sm:text-base">
+                  <p className="type-body mt-3 max-w-3xl text-base text-white/75 sm:text-lg">
                     {step.copy}
                   </p>
                 </div>
@@ -420,10 +366,10 @@ export default function MarketingLandingPage() {
           </div>
 
           <div className="mt-16">
-            <h3 className="font-display text-2xl font-bold text-white">
+            <h3 className="type-title text-2xl text-white">
               Meanwhile, every staff role stays on-mission
             </h3>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-nightlife-muted sm:text-base">
+            <p className="type-body mt-3 max-w-2xl text-base text-white/75 sm:text-lg">
               RBAC isn’t a checkbox — it’s how you keep the floor fast. Each
               surface is purpose-built and deliberately incomplete for anyone
               outside that job.
@@ -434,10 +380,10 @@ export default function MarketingLandingPage() {
                   key={row.role}
                   className="grid gap-2 py-5 sm:grid-cols-[160px_1fr] sm:gap-8"
                 >
-                  <p className="font-display font-semibold text-accent-gold">
+                  <p className="type-title text-base text-[#A38B5E]">
                     {row.role}
                   </p>
-                  <p className="text-sm leading-relaxed text-nightlife-muted sm:text-base">
+                  <p className="type-body text-base text-white/75 sm:text-lg">
                     {row.copy}
                   </p>
                 </div>
@@ -448,13 +394,13 @@ export default function MarketingLandingPage() {
       </section>
 
       {/* FEATURES */}
-      <section id="features" className="scroll-mt-20 border-t border-white/10">
+      <section id="features" className="scroll-mt-20 border-t border-border">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>Feature depth</SectionEyebrow>
           <SectionTitle>
             Everything that makes a night run — engineered as one product.
           </SectionTitle>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-nightlife-muted">
+          <p className="type-body mt-5 max-w-2xl text-lg text-slate-800">
             These aren’t bolted-on widgets. Each capability feeds the same
             session, the same spend ledger, and the same hospitality memory.
           </p>
@@ -467,21 +413,21 @@ export default function MarketingLandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ delay: Math.min(i * 0.03, 0.2) }}
-                className="grid gap-4 border-t border-white/10 pt-10 lg:grid-cols-[1fr_1fr] lg:gap-12"
+                className="grid gap-4 border-t border-border pt-10 lg:grid-cols-[1fr_1fr] lg:gap-12"
               >
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-nightlife-muted">
+                  <p className="type-eyebrow text-[#A38B5E]/90">
                     Module {String(i + 1).padStart(2, "0")}
                   </p>
-                  <h3 className="mt-2 font-display text-2xl font-semibold text-white">
+                  <h3 className="type-title mt-2 text-2xl text-foreground">
                     {feature.title}
                   </h3>
                 </div>
                 <div>
-                  <p className="text-sm leading-relaxed text-white/80 sm:text-base">
+                  <p className="type-body text-base text-slate-800 sm:text-lg">
                     {feature.body}
                   </p>
-                  <p className="mt-4 text-sm leading-relaxed text-accent-gold/90">
+                  <p className="type-body mt-4 text-base text-[#A38B5E] sm:text-lg">
                     Business effect: {feature.outcome}
                   </p>
                 </div>
@@ -491,10 +437,10 @@ export default function MarketingLandingPage() {
         </div>
       </section>
 
-      {/* GROWTH */}
+      {/* GROWTH — forced light stone canvas (fixes blackout contrast bug) */}
       <section
         id="growth"
-        className="scroll-mt-20 border-t border-white/10 bg-nightlife-radial"
+        className="scroll-mt-20 border-t border-[#DAD7D0] bg-[#FAF9F5]"
       >
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>Why it grows the business</SectionEyebrow>
@@ -502,13 +448,13 @@ export default function MarketingLandingPage() {
             Not just “digitized ops” — measurable traction on spend, return
             visits, and night integrity.
           </SectionTitle>
-          <p className="mt-5 max-w-3xl text-base leading-relaxed text-nightlife-muted sm:text-lg">
+          <p className="type-body mt-5 max-w-3xl text-lg text-slate-800">
             Venue owners don’t buy software for novelty. They buy it when it
             moves money, reduces leakage, and makes regulars choose their room
             again. mAITab is designed around those three outcomes.
           </p>
 
-          <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {GROWTH.map((item, i) => (
               <motion.div
                 key={item.title}
@@ -516,25 +462,25 @@ export default function MarketingLandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="border-t border-white/15 pt-6"
+                className="rounded-xl border border-[#DAD7D0] bg-white/80 p-5 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.08)] backdrop-blur-xl"
               >
-                <div className="mb-4 h-px w-10 bg-accent-violet" />
-                <h3 className="font-display text-lg font-semibold text-white">
+                <div className="mb-4 h-px w-10 bg-[#A38B5E]" />
+                <h3 className="type-title text-lg text-[#080503]">
                   {item.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-nightlife-muted">
+                <p className="type-body mt-3 text-base text-slate-800 sm:text-lg">
                   {item.copy}
                 </p>
               </motion.div>
             ))}
           </div>
 
-          <div className="mt-16 max-w-3xl border-l-2 border-accent-violet/60 pl-6">
-            <p className="font-display text-xl font-semibold text-white sm:text-2xl">
+          <div className="mt-16 max-w-3xl rounded-xl border border-[#DAD7D0] border-l-4 border-l-[#A38B5E] bg-white/70 p-6">
+            <p className="type-title text-xl text-[#080503] sm:text-2xl">
               Repeat visitors aren’t luck. They’re recognition, status, and a
               night that never punished them with checkout friction.
             </p>
-            <p className="mt-4 text-sm leading-relaxed text-nightlife-muted sm:text-base">
+            <p className="type-body mt-4 text-base text-slate-800 sm:text-lg">
               Spend tiers, Member Pass history, AV celebration, and lucky-draw
               near-misses create a loop: show up → get recognized → spend
               easily → leave cleanly → come back for the next drop. That’s how
@@ -545,27 +491,29 @@ export default function MarketingLandingPage() {
       </section>
 
       {/* COMPARE */}
-      <section className="border-t border-white/10">
+      <section className="border-t border-border">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>Why mAITab vs the old way</SectionEyebrow>
           <SectionTitle>
             Replace fragile night rituals with a system guests can feel.
           </SectionTitle>
 
-          <div className="mt-12 overflow-hidden rounded-2xl border border-white/10">
-            <div className="grid grid-cols-[1fr_1fr] bg-white/[0.03] px-4 py-3 text-[11px] uppercase tracking-[0.16em] text-nightlife-muted sm:px-6">
+          <div className="mt-12 overflow-hidden rounded-2xl border border-border">
+            <div className="grid grid-cols-[1fr_1fr] bg-secondary px-4 py-3 type-eyebrow text-[#A38B5E]/80 sm:px-6">
               <span>Traditional night</span>
-              <span className="text-accent-gold">With mAITab</span>
+              <span className="text-[#A38B5E]">With mAITab</span>
             </div>
             {COMPARE.map((row) => (
               <div
                 key={row.old}
-                className="grid grid-cols-1 gap-2 border-t border-white/10 px-4 py-5 sm:grid-cols-2 sm:gap-8 sm:px-6"
+                className="grid grid-cols-1 gap-2 border-t border-border px-4 py-5 sm:grid-cols-2 sm:gap-8 sm:px-6"
               >
-                <p className="text-sm text-nightlife-muted line-through decoration-white/20">
+                <p className="type-body text-base text-slate-800/70 line-through decoration-slate-400">
                   {row.old}
                 </p>
-                <p className="text-sm font-medium text-white">{row.next}</p>
+                <p className="type-body text-base font-medium text-slate-800 sm:text-lg">
+                  {row.next}
+                </p>
               </div>
             ))}
           </div>
@@ -573,17 +521,17 @@ export default function MarketingLandingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="border-t border-white/10 bg-[#07080b]">
+      <section className="border-t border-border bg-pastel-mint/30">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>FAQ</SectionEyebrow>
           <SectionTitle>Straight answers for operators evaluating us.</SectionTitle>
-          <div className="mt-12 divide-y divide-white/10 border-y border-white/10">
+          <div className="mt-12 divide-y divide-black/10 border-y border-border">
             {FAQ.map((item) => (
               <div key={item.q} className="grid gap-3 py-7 md:grid-cols-[0.9fr_1.1fr] md:gap-10">
-                <h3 className="font-display text-lg font-semibold text-white">
+                <h3 className="type-title text-lg text-foreground">
                   {item.q}
                 </h3>
-                <p className="text-sm leading-relaxed text-nightlife-muted sm:text-base">
+                <p className="type-body text-base text-slate-800 sm:text-lg">
                   {item.a}
                 </p>
               </div>
@@ -595,15 +543,15 @@ export default function MarketingLandingPage() {
       {/* CTA */}
       <section
         id="onboard"
-        className="scroll-mt-20 border-t border-white/10 bg-[#050608]"
+        className="scroll-mt-20 border-t border-border bg-secondary"
       >
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <MaiTabLogo variant="FullLogoWithText" className="h-10 w-auto" />
-          <h2 className="mt-8 max-w-2xl font-display text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="mt-8 max-w-2xl font-display text-3xl font-bold text-foreground sm:text-4xl">
             Put mAITab on your next busy night — then decide with real floor
             evidence.
           </h2>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-nightlife-muted">
+          <p className="type-body mt-5 max-w-2xl text-lg text-slate-800">
             We’ll walk gate, bar, AV, admin, and guest flows with your team,
             map your rooms and tables, and connect AutoPay when you’re ready
             for production. Start with the live demo roles today; onboard the
@@ -618,13 +566,13 @@ export default function MarketingLandingPage() {
             </a>
             <Link
               href="/login"
-              className="inline-flex h-12 items-center rounded-xl border border-white/15 px-5 text-sm font-semibold text-white transition hover:border-white/30"
+              className="inline-flex h-12 items-center rounded-xl border border-border px-5 text-sm font-semibold text-foreground transition hover:border-border"
             >
               Try venue demo roles
             </Link>
             <Link
               href="/home"
-              className="inline-flex h-12 items-center rounded-xl px-5 text-sm font-semibold text-nightlife-muted transition hover:text-white"
+              className="inline-flex h-12 items-center rounded-xl px-5 text-sm font-semibold text-muted-foreground transition hover:text-foreground"
             >
               Preview guest app →
             </Link>

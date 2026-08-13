@@ -6,6 +6,7 @@ interface GlassPanelProps {
   glow?: "violet" | "gold" | "emerald" | "cyan" | "purple" | "none";
 }
 
+/** Optimus-inspired frosted glass surface */
 export function GlassPanel({
   children,
   className,
@@ -14,7 +15,7 @@ export function GlassPanel({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-champagne/20 bg-white/[0.04] backdrop-blur-2xl",
+        "optimus-glass relative overflow-hidden rounded-xl",
         glow === "violet" && "shadow-glow-violet",
         glow === "gold" && "shadow-glow-gold",
         glow === "emerald" && "shadow-glow-emerald",
@@ -22,7 +23,7 @@ export function GlassPanel({
         className
       )}
     >
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-glass-shine opacity-70" />
       <div className="relative">{children}</div>
     </div>
   );

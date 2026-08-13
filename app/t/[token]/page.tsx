@@ -17,7 +17,7 @@ export default function TableScanPage({ params }: PageProps) {
           <h1 className="font-display text-2xl font-bold text-accent-ruby">
             HMAC secret required
           </h1>
-          <p className="mt-2 text-sm text-nightlife-muted">
+          <p className="mt-2 text-sm text-muted-foreground">
             Set TABLE_QR_HMAC_SECRET in `.env.local`, then mint tokens via{" "}
             <code className="text-accent-gold">POST /api/qr/table</code>.
           </p>
@@ -34,7 +34,7 @@ export default function TableScanPage({ params }: PageProps) {
           <h1 className="font-display text-2xl font-bold text-accent-ruby">
             Invalid or tampered QR
           </h1>
-          <p className="mt-2 text-sm text-nightlife-muted">
+          <p className="mt-2 text-sm text-muted-foreground">
             Cryptographic verification failed. Ask staff for a fresh table code.
           </p>
         </GlassPanel>
@@ -54,7 +54,7 @@ export default function TableScanPage({ params }: PageProps) {
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid min-h-[100dvh] place-items-center bg-nightlife-radial px-4 text-white">
+    <div className="grid min-h-[100dvh] place-items-center bg-nightlife-radial px-4 text-foreground">
       <div className="w-full max-w-md">
         <MaiTabLogo variant="FullLogoWithText" className="mb-4 h-12 w-auto" />
         {children}

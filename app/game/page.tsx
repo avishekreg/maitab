@@ -18,7 +18,16 @@ import { useGameVotesRealtime } from "@/lib/hooks/use-game-votes-realtime";
 import { useSurpriseGame } from "@/lib/hooks/use-surprise-game";
 import { publishBus } from "@/lib/realtime/bus";
 import { useSessionStore } from "@/lib/store/session-store";
-import { triggerHaptic } from "@/lib/utils";
+import { cn, triggerHaptic } from "@/lib/utils";
+
+const PARTY_TINTs = [
+  "from-[#fafaf9] to-[#fce7f3] border-border",
+  "from-[#fafaf9] to-[#efe8ff] border-border",
+  "from-[#fafaf9] to-[#dcfce7] border-border",
+  "from-[#fafaf9] to-[#e0f2fe] border-border",
+  "from-[#fafaf9] to-[#ffedd5] border-border",
+  "from-[#fafaf9] to-[#f3f2ee] border-border",
+];
 
 export default function GamePage() {
   const session = useSessionStore((s) => s.session);
@@ -109,7 +118,7 @@ export default function GamePage() {
       <div className="mb-5">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className="font-display text-3xl font-bold text-white">
+            <h1 className="font-display text-3xl font-bold text-nightlife-ink">
               Surprise Engine
             </h1>
             <p className="mt-1 text-sm text-nightlife-muted">
@@ -125,7 +134,7 @@ export default function GamePage() {
           {Object.entries(stats).map(([type, count]) => (
             <span
               key={type}
-              className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1"
+              className="rounded-full border border-slate-200/80 bg-white px-2.5 py-1 shadow-soft"
             >
               {type.replaceAll("_", " ")} · {count}
             </span>
@@ -134,13 +143,13 @@ export default function GamePage() {
       </div>
 
       <GameFlipCard flipKey={game?.id ?? "empty"}>
-        <TierGlassCard className="p-5">
+        <TierGlassCard className="bg-gradient-to-br from-card via-secondary/40 to-pastel-lavender/50 p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-nightlife-muted">
                 {loading ? "Loading pool…" : "Now playing"}
               </p>
-              <h2 className="mt-1 font-display text-2xl font-bold text-white">
+              <h2 className="mt-1 font-display text-2xl font-bold text-nightlife-ink">
                 {game?.title ?? "Shuffling the night…"}
               </h2>
             </div>
@@ -151,9 +160,9 @@ export default function GamePage() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={game?.id ?? "none"}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
+                initial={{ opacity: 0, scale: 0.98, y: 8 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.98, y: -8 }}
                 transition={{ duration: 0.28 }}
               >
                 {game?.game_type === "ROULETTE" ? (
@@ -178,7 +187,7 @@ export default function GamePage() {
                     spinning={spinning}
                     onComplete={completeRound}
                     accent={
-                      game.game_type === "DARE_WHEEL" ? "#F59E0B" : "#8B5CF6"
+                      game.game_type === "DARE_WHEEL" ? "#FB923C" : "#A855F7"
                     }
                   />
                 ) : null}
@@ -234,9 +243,7 @@ export default function GamePage() {
                 Next Statement
               </NeonButton>
             ) : game?.game_type === "MOST_LIKELY_TO" ? (
-              <NeonButton
-                onClick={() => completeRound(mostLikelyPrompt)}
-              >
+              <NeonButton onClick={() => completeRound(mostLikelyPrompt)}>
                 Lock Votes / Reveal
               </NeonButton>
             ) : (
@@ -252,6 +259,7 @@ export default function GamePage() {
 
             <NeonButton
               tone="gold"
+              className="shadow-glow-gold"
               onClick={() => void onPayPenalty()}
               disabled={
                 !penalty ||
@@ -261,7 +269,7 @@ export default function GamePage() {
               }
             >
               <Wine className="h-4 w-4" />
-              {upsellLabel}
+              {upsellLabel || "Pay Penalty / Order Round"}
             </NeonButton>
           </div>
 
@@ -272,7 +280,7 @@ export default function GamePage() {
             </p>
           ) : null}
           {orderedNote ? (
-            <p className="mt-2 flex items-center gap-1.5 text-sm text-accent-emerald">
+            <p className="mt-2 flex items-center gap-1.5 text-sm text-emerald-700">
               <Sparkles className="h-3.5 w-3.5" />
               {orderedNote}
             </p>
@@ -285,13 +293,22 @@ export default function GamePage() {
           Pool preview · {catalogSize} total
         </p>
         <div className="grid gap-3 sm:grid-cols-2">
-          {recentPool.map((item) => (
-            <div
+          {recentPool.map((item, index) => (
+            <motion.div
               key={item.id}
-              className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 backdrop-blur-xl"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: Math.min(index * 0.03, 0.24) }}
+              whileHover={{ y: -3, scale: 1.01 }}
+              className={cn(
+                "rounded-xl border bg-gradient-to-br px-4 py-3 shadow-soft backdrop-blur-xl",
+                PARTY_TINTs[index % PARTY_TINTs.length]
+              )}
             >
               <div className="flex items-center justify-between gap-2">
-                <p className="truncate font-medium text-white">{item.title}</p>
+                <p className="truncate font-medium text-nightlife-ink">
+                  {item.title}
+                </p>
                 <StatusPill
                   label={playedGameIds.includes(item.id) ? "Played" : "Pool"}
                   tone={playedGameIds.includes(item.id) ? "muted" : "violet"}
@@ -300,7 +317,7 @@ export default function GamePage() {
               <p className="mt-1 text-[11px] text-nightlife-muted">
                 {item.game_type.replaceAll("_", " ")}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

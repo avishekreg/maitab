@@ -102,13 +102,13 @@ export default function AvPanelPage() {
   const queue = useMemo(() => events.slice(0, 6), [events]);
 
   return (
-    <div className="relative min-h-[100dvh] overflow-hidden bg-nightlife-bg text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(124,58,237,0.18),transparent_40%),radial-gradient(circle_at_80%_10%,rgba(245,158,11,0.1),transparent_35%),linear-gradient(180deg,#08090C,#050608)]" />
+    <div className="relative min-h-[100dvh] overflow-hidden bg-background text-foreground">
+      <div className="absolute inset-0 bg-nightlife-radial" />
 
       <div className="relative z-10 flex min-h-[100dvh] flex-col">
         <header className="flex items-center justify-between px-8 py-6">
           <MaiTabLogo variant="FullLogoWithText" className="h-12 w-auto" />
-          <p className="text-sm uppercase tracking-[0.24em] text-nightlife-muted">
+          <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">
             LED / AV · Realtime
           </p>
         </header>
@@ -117,19 +117,19 @@ export default function AvPanelPage() {
           <p className="text-sm uppercase tracking-[0.28em] text-accent-violet">
             VIP Entry Queue
           </p>
-          <h1 className="mt-3 max-w-4xl font-display text-5xl font-extrabold leading-tight text-white md:text-7xl">
+          <h1 className="mt-3 max-w-4xl font-display text-5xl font-extrabold leading-tight text-foreground md:text-7xl">
             Hospitality hits the wall.
           </h1>
           <div className="mt-10 grid gap-3 md:grid-cols-3">
             {queue.map((event) => (
               <div
                 key={event.id}
-                className="border-l-2 border-accent-violet/60 bg-white/[0.03] px-4 py-3 backdrop-blur-xl"
+                className="optimus-glass border-l-2 border-l-accent-violet/60 px-4 py-3"
               >
-                <p className="text-xs uppercase tracking-[0.18em] text-nightlife-muted">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
                   {event.spend_tier}
                 </p>
-                <p className="mt-1 font-display text-2xl font-semibold text-white">
+                <p className="type-title mt-1 text-2xl text-foreground">
                   {event.guest_name}
                 </p>
               </div>
@@ -137,9 +137,9 @@ export default function AvPanelPage() {
           </div>
         </main>
 
-        <div className="relative h-14 overflow-hidden border-t border-white/10 bg-black/50">
+        <div className="relative h-14 overflow-hidden border-t border-border bg-white/80">
           {luckyBanner ? (
-            <div className="absolute inset-y-0 flex items-center whitespace-nowrap animate-ticker text-xl font-semibold text-accent-emerald">
+            <div className="absolute inset-y-0 flex items-center whitespace-nowrap animate-ticker text-xl font-semibold text-emerald-600">
               {luckyBanner} · {luckyBanner}
             </div>
           ) : ticker ? (
@@ -147,7 +147,7 @@ export default function AvPanelPage() {
               {ticker} · mAITab Gold arrival · {ticker}
             </div>
           ) : (
-            <div className="flex h-full items-center px-6 text-sm text-nightlife-muted">
+            <div className="flex h-full items-center px-6 text-sm text-muted-foreground">
               Listening on gate_entry_events…
             </div>
           )}
@@ -162,7 +162,7 @@ export default function AvPanelPage() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.1 }}
-            className="absolute inset-0 z-50 grid place-items-center bg-nightlife-bg/95"
+            className="absolute inset-0 z-50 grid place-items-center bg-background/95"
           >
             <div className="animate-hero-burst text-center">
               <p className="text-sm uppercase tracking-[0.35em] text-accent-gold">
@@ -171,7 +171,7 @@ export default function AvPanelPage() {
               <h2 className="mt-4 bg-luxury-gradient bg-clip-text font-display text-5xl font-extrabold text-transparent md:text-7xl">
                 mAITab LEGEND IN THE HOUSE
               </h2>
-              <p className="mt-4 text-2xl text-white/80">{hero.guest_name}</p>
+              <p className="mt-4 text-2xl text-foreground/80">{hero.guest_name}</p>
             </div>
           </motion.div>
         ) : null}

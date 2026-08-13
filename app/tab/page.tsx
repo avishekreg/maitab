@@ -251,7 +251,7 @@ function TabBody() {
       ) : null}
 
       {!sessionCanUseNativePromos(session) ? (
-        <div className="mb-4 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-xs text-nightlife-muted">
+        <div className="mb-4 rounded-2xl border border-border bg-secondary px-4 py-3 text-xs text-muted-foreground">
           Native exclusivity lock: Hourly Lucky Draw and Flash Promos are
           disabled while the external deal is approved. Ordering, games, and
           AutoPay remain on.
@@ -260,49 +260,58 @@ function TabBody() {
 
       <ExternalDealCard />
 
-      <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="font-display text-3xl font-bold text-white">
-            Prepaid Tab
-          </h1>
-          <p className="mt-1 text-sm text-nightlife-muted">
-            Add drinks without PIN or OTP.
-          </p>
-        </div>
-        <div className="flex items-center gap-4">
-          <TierProgressRing value={session.total_session_spend} max={5000} />
-          <div className="text-right">
-            <p className="text-xs text-nightlife-muted">Session total</p>
+      <TierGlassCard className="mb-5 p-4" showAura>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
             <p
-              className="font-display text-2xl font-bold"
+              className="text-[11px] font-semibold uppercase tracking-[0.2em]"
               style={{ color: theme.accent }}
             >
-              {formatINR(session.total_session_spend)}
+              {theme.label}
+              {theme.vip ? " · VIP" : ""} · Active session
+            </p>
+            <h1 className="mt-1 font-display text-3xl font-bold text-foreground">
+              Prepaid Tab
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Add drinks without PIN or OTP.
             </p>
           </div>
+          <div className="flex items-center gap-4">
+            <TierProgressRing value={session.total_session_spend} max={5000} />
+            <div className="text-right">
+              <p className="text-xs text-muted-foreground">Session total</p>
+              <p
+                className="font-display text-2xl font-bold"
+                style={{ color: theme.accent }}
+              >
+                {formatINR(session.total_session_spend)}
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
+      </TierGlassCard>
 
-      <p className="mb-4 text-xs text-nightlife-muted">{geoNote}</p>
+      <p className="mb-4 text-xs text-muted-foreground">{geoNote}</p>
 
       <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
         <TierGlassCard className="p-4">
-          <p className="mb-3 text-xs uppercase tracking-[0.18em] text-nightlife-muted">
+          <p className="mb-3 text-xs uppercase tracking-[0.18em] text-muted-foreground">
             Menu
           </p>
           <div className="space-y-3">
             {MENU_ITEMS.map((item) => (
               <div
                 key={item.name}
-                className="flex items-center justify-between gap-3 border-b border-white/10 pb-3 last:border-0"
+                className="flex items-center justify-between gap-3 border-b border-border pb-3 last:border-0"
               >
                 <div>
-                  <p className="font-medium text-white">{item.name}</p>
-                  <p className="text-xs text-nightlife-muted">
+                  <p className="font-medium text-foreground">{item.name}</p>
+                  <p className="text-xs text-muted-foreground">
                     {item.category} ·{" "}
                     {externalActive ? (
                       <>
-                        <span className="mr-1.5 text-nightlife-muted/70 line-through decoration-white/30">
+                        <span className="mr-1.5 text-muted-foreground/70 line-through decoration-white/30">
                           {formatINR(item.unit_price)}
                         </span>
                         <span className="font-semibold text-accent-emerald">
@@ -318,11 +327,11 @@ function TabBody() {
                   <button
                     type="button"
                     onClick={() => bump(item.name, -1)}
-                    className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-white/[0.03]"
+                    className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-secondary"
                   >
                     <Minus className="h-4 w-4" />
                   </button>
-                  <span className="w-6 text-center tabular-nums text-white">
+                  <span className="w-6 text-center tabular-nums text-foreground">
                     {qty[item.name] ?? 0}
                   </span>
                   <button
@@ -340,7 +349,7 @@ function TabBody() {
             ))}
           </div>
           <div className="mt-4 flex items-center justify-between gap-3">
-            <p className="text-sm text-nightlife-muted">
+            <p className="text-sm text-muted-foreground">
               Cart{" "}
               {externalActive && cartMrp !== cartTotal ? (
                 <>
@@ -372,7 +381,7 @@ function TabBody() {
         </TierGlassCard>
 
         <TierGlassCard className="p-4" glow={false}>
-          <p className="mb-3 text-xs uppercase tracking-[0.18em] text-nightlife-muted">
+          <p className="mb-3 text-xs uppercase tracking-[0.18em] text-muted-foreground">
             Tickets
           </p>
           <div className="space-y-3">
@@ -381,10 +390,10 @@ function TabBody() {
               .map((order) => (
                 <div
                   key={order.id}
-                  className="rounded-xl border border-white/10 bg-white/[0.03] p-3"
+                  className="rounded-xl border border-border bg-secondary p-3"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <p className="font-semibold text-white">
+                    <p className="font-semibold text-foreground">
                       Token #{order.token_number}
                     </p>
                     <StatusPill
@@ -398,7 +407,7 @@ function TabBody() {
                       }
                     />
                   </div>
-                  <ul className="mt-2 space-y-1 text-sm text-nightlife-muted">
+                  <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
                     {order.items.map((item) => {
                       const mrpMatch = item.notes?.match(/MRP\s+(\d+)/i);
                       const mrp = mrpMatch ? Number(mrpMatch[1]) : null;

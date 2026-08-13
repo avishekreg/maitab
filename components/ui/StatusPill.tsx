@@ -16,15 +16,15 @@ interface StatusPillProps {
 }
 
 const TONE: Record<NonNullable<StatusPillProps["tone"]>, string> = {
-  violet: "border-accent-violet/40 bg-accent-violet/10 text-accent-violet",
-  gold: "border-accent-gold/40 bg-accent-gold/10 text-accent-gold",
-  emerald: "border-accent-emerald/40 bg-accent-emerald/10 text-accent-emerald",
-  ruby: "border-accent-ruby/40 bg-accent-ruby/10 text-accent-ruby",
-  muted: "border-white/10 bg-white/[0.03] text-nightlife-muted",
-  cyan: "border-accent-violet/40 bg-accent-violet/10 text-accent-violet",
-  purple: "border-accent-violet/40 bg-accent-violet/10 text-accent-violet",
-  ready: "border-accent-emerald/40 bg-accent-emerald/10 text-accent-emerald",
-  danger: "border-accent-ruby/40 bg-accent-ruby/10 text-accent-ruby",
+  violet: "border-violet-200 bg-pastel-lavender text-accent-violet",
+  gold: "border-amber-200 bg-pastel-peach text-accent-gold",
+  emerald: "border-emerald-200 bg-pastel-mint text-emerald-700",
+  ruby: "border-rose-200 bg-pastel-rose text-accent-ruby",
+  muted: "border-border bg-secondary text-muted-foreground",
+  cyan: "border-sky-200 bg-pastel-sky text-cyan-700",
+  purple: "border-violet-200 bg-pastel-lavender text-accent-violet",
+  ready: "border-emerald-200 bg-pastel-mint text-emerald-700",
+  danger: "border-rose-200 bg-pastel-rose text-accent-ruby",
 };
 
 export function StatusPill({

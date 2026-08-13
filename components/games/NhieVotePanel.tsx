@@ -23,7 +23,7 @@ export function NhieVotePanel({
   const noPct = total === 0 ? 0 : 100 - yesPct;
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-xl">
+    <div className="relative overflow-hidden rounded-2xl border border-border bg-secondary p-5 backdrop-blur-xl">
       {burst
         ? Array.from({ length: 12 }).map((_, i) => (
             <motion.span
@@ -41,17 +41,17 @@ export function NhieVotePanel({
           ))
         : null}
 
-      <p className="text-center text-lg font-semibold text-white">{statement}</p>
+      <p className="text-center text-lg font-semibold text-foreground">{statement}</p>
 
       <div className="mt-5 space-y-3">
         <div>
-          <div className="mb-1 flex justify-between text-xs text-nightlife-muted">
+          <div className="mb-1 flex justify-between text-xs text-muted-foreground">
             <span>I have</span>
             <span className="rounded-full bg-accent-violet/20 px-2 py-0.5 text-accent-violet">
               {yes}
             </span>
           </div>
-          <div className="h-3 overflow-hidden rounded-full bg-white/5">
+          <div className="h-3 overflow-hidden rounded-full bg-slate-100">
             <motion.div
               className="h-full rounded-full bg-accent-violet"
               animate={{ width: `${yesPct}%` }}
@@ -60,13 +60,13 @@ export function NhieVotePanel({
           </div>
         </div>
         <div>
-          <div className="mb-1 flex justify-between text-xs text-nightlife-muted">
+          <div className="mb-1 flex justify-between text-xs text-muted-foreground">
             <span>Never</span>
             <span className="rounded-full bg-accent-ruby/20 px-2 py-0.5 text-accent-ruby">
               {no}
             </span>
           </div>
-          <div className="h-3 overflow-hidden rounded-full bg-white/5">
+          <div className="h-3 overflow-hidden rounded-full bg-slate-100">
             <motion.div
               className="h-full rounded-full bg-accent-ruby"
               animate={{ width: `${noPct}%` }}

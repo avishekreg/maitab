@@ -4,19 +4,20 @@ import { motion, type HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 type NeonButtonProps = HTMLMotionProps<"button"> & {
-  tone?: "violet" | "gold" | "emerald" | "ghost" | "cyan" | "purple";
+  tone?: "violet" | "gold" | "emerald" | "ghost" | "cyan" | "purple" | "primary";
   size?: "sm" | "md" | "lg";
 };
 
 const TONE: Record<NonNullable<NeonButtonProps["tone"]>, string> = {
+  primary:
+    "bg-primary text-primary-foreground shadow-soft hover:opacity-90",
   violet:
     "bg-accent-violet text-white shadow-glow-violet hover:brightness-110",
-  gold: "bg-accent-gold text-nightlife-bg shadow-glow-gold hover:brightness-110",
+  gold: "bg-accent-gold text-white shadow-glow-gold hover:brightness-110",
   emerald:
-    "bg-accent-emerald text-nightlife-bg shadow-glow-emerald hover:brightness-110",
+    "bg-accent-emerald text-white shadow-glow-mint hover:brightness-110",
   ghost:
-    "border border-white/10 bg-white/[0.03] text-white hover:border-accent-violet/40 hover:bg-white/[0.06]",
-  // aliases
+    "border border-border bg-card/80 text-foreground hover:bg-secondary",
   cyan: "bg-accent-violet text-white shadow-glow-violet hover:brightness-110",
   purple:
     "bg-accent-violet text-white shadow-glow-violet hover:brightness-110",
@@ -44,7 +45,7 @@ export function NeonButton({
       type={type}
       disabled={disabled}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-xl font-semibold tracking-wide transition disabled:cursor-not-allowed disabled:opacity-40",
+        "inline-flex items-center justify-center gap-2 rounded-lg font-semibold tracking-wide transition disabled:cursor-not-allowed disabled:opacity-40",
         TONE[tone],
         SIZE[size],
         className

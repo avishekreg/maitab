@@ -1,18 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, Syne } from "next/font/google";
+import { Plus_Jakarta_Sans, Syne } from "next/font/google";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { maitabFaviconDataUri } from "@/lib/branding/favicon";
 import "./globals.css";
 
+/** Display — titles & section headings only */
 const display = Syne({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["500", "600", "700", "800"],
+  weight: ["600", "700", "800"],
 });
 
-const body = DM_Sans({
+/** Body — high-legibility standard-width sans for all UI copy */
+const sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-body",
+  variable: "--font-sans",
   weight: ["400", "500", "600", "700"],
 });
 
@@ -27,7 +29,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     title: "mAITab",
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "default",
   },
   openGraph: {
     title: "mAITab — Smart Bar Tab",
@@ -39,8 +41,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#08090C",
-  colorScheme: "dark",
+  themeColor: "#faf9f5",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -49,8 +51,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
-      <body className="min-h-[100dvh] bg-nightlife-bg antialiased">
+    <html lang="en" className={`${display.variable} ${sans.variable}`}>
+      <body className="min-h-[100dvh] bg-background font-sans text-foreground antialiased tracking-normal">
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

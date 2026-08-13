@@ -23,7 +23,7 @@ export function tierAccent(tier: SpendTier): string {
     case "BRONZE":
       return "text-status-bronze border-status-bronze/40 bg-status-bronze/10";
     case "SILVER":
-      return "text-nightlife-muted border-white/15 bg-white/[0.03]";
+      return "text-nightlife-muted border-slate-200/80 bg-white";
     case "GOLD":
       return "text-accent-gold border-accent-gold/40 bg-accent-gold/10";
     case "TITAN":
