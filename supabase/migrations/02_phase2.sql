@@ -1,4 +1,23 @@
 -- Phase 2: JWT claim helpers, game vote sync, lucky-draw broadcast extras
+-- Prerequisite: 01_schema.sql must have completed successfully in this project.
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_type t
+    join pg_namespace n on n.oid = t.typnamespace
+    where n.nspname = 'public' and t.typname = 'user_role'
+  ) then
+    raise exception
+      'Phase 2 blocked: public.user_role is missing. Re-run the FULL updated 01_schema.sql and confirm Success before Phase 2.';
+  end if;
+
+  if to_regclass('public.users') is null then
+    raise exception
+      'Phase 2 blocked: public.users is missing. Migration 01 did not apply — fix 01 first.';
+  end if;
+end $$;
 
 -- Prefer JWT app_metadata.role when present, else public.users.role
 create or replace function public.current_user_role()

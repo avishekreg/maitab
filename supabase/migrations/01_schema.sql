@@ -1,8 +1,22 @@
 -- mAITab MVP schema: PostGIS, RBAC RLS, triggers, realtime
 -- Run against a fresh Supabase project after enabling required extensions.
+-- Tip: Supabase SQL Editor runs this as one transaction — any error rolls EVERYTHING back.
 
-create extension if not exists "pgcrypto";
-create extension if not exists "postgis";
+-- Prefer Supabase's extensions schema; fall back if already installed elsewhere
+do $$ begin
+  create extension if not exists "pgcrypto" with schema extensions;
+exception when others then
+  create extension if not exists "pgcrypto";
+end $$;
+
+do $$ begin
+  create extension if not exists "postgis" with schema extensions;
+exception when others then
+  create extension if not exists "postgis";
+end $$;
+
+-- Ensure geography / crypto types resolve after public schema resets
+set search_path to public, extensions, auth;
 
 -- ---------------------------------------------------------------------------
 -- Enums
@@ -763,12 +777,33 @@ with check (
 -- AV_CONTROLLER has no access to orders / active_sessions financial fields via policies above.
 
 -- ---------------------------------------------------------------------------
--- Realtime
+-- Realtime (idempotent — a failure here used to roll back the whole migration)
 -- ---------------------------------------------------------------------------
-alter publication supabase_realtime add table public.orders;
-alter publication supabase_realtime add table public.gate_entry_events;
-alter publication supabase_realtime add table public.active_sessions;
-alter publication supabase_realtime add table public.lucky_draw_awards;
+do $$
+declare
+  t text;
+begin
+  foreach t in array array[
+    'orders',
+    'gate_entry_events',
+    'active_sessions',
+    'lucky_draw_awards'
+  ]
+  loop
+    if not exists (
+      select 1
+      from pg_publication_tables
+      where pubname = 'supabase_realtime'
+        and schemaname = 'public'
+        and tablename = t
+    ) then
+      execute format(
+        'alter publication supabase_realtime add table public.%I',
+        t
+      );
+    end if;
+  end loop;
+end $$;
 
 -- ---------------------------------------------------------------------------
 -- Seed games
