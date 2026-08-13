@@ -1,6 +1,6 @@
 -- Phase 5: 105 nightlife games for games_pool (run after 04_games_engine.sql)
 
-insert → public.games_pool (title, game_type, rules_json, is_active)
+insert into public.games_pool (title, game_type, rules_json, is_active)
 select v.title, v.game_type, v.rules_json, v.is_active
 from (values
   ('Classic Shot Roulette', 'ROULETTE'::public.game_type, '{"chambers":6,"outcomes":["Safe","Safe","Safe","Safe","Shot","Double Shot"],"upsell_label":"Pay Penalty / Order Round","catalog_id":"g-roulette-01","weight":1.4,"min_group_size":2,"min_spend":0,"category":"SHOT_ROULETTE","penalty_item":{"name":"Tequila Shot","quantity":1,"unit_price":280,"category":"SHOT"}}'::jsonb, true),
