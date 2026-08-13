@@ -28,7 +28,7 @@ create or replace function public.mark_session_game_played(
 returns void
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_token text := coalesce(nullif(p_catalog_id, ''), p_game_id::text);

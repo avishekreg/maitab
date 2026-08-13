@@ -25,7 +25,7 @@ returns public.user_role
 language sql
 stable
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
   select coalesce(
     nullif(auth.jwt() -> 'app_metadata' ->> 'role', '')::public.user_role,
@@ -38,7 +38,7 @@ returns uuid
 language sql
 stable
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
   select coalesce(
     nullif(auth.jwt() -> 'app_metadata' ->> 'club_id', '')::uuid,
@@ -122,7 +122,7 @@ returns table (yes_count bigint, no_count bigint)
 language sql
 stable
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
   select
     count(*) filter (where vote = 'YES') as yes_count,
@@ -142,10 +142,10 @@ create or replace function public.can_create_flash_promo(
 returns boolean
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
-  v_loc geography;
+  v_loc extensions.geography;
   v_conflict boolean;
 begin
   select location into v_loc from public.clubs where id = p_club_id;

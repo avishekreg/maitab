@@ -4,6 +4,7 @@
 -- (bcrypt hash below generated for that password)
 
 create extension if not exists "pgcrypto";
+set search_path to public, extensions, auth;
 
 -- Fixed IDs
 -- Clubs

@@ -106,7 +106,7 @@ create table if not exists public.users (
 create table if not exists public.clubs (
   id uuid primary key default gen_random_uuid(),
   name text not null,
-  location geography(point, 4326) not null,
+  location extensions.geography(point, 4326) not null,
   lucky_draw_threshold_amount numeric(12,2) not null default 1500,
   active_promo_category text,
   display_enabled boolean not null default true,
@@ -133,7 +133,7 @@ returns public.user_role
 language sql
 stable
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
   select role from public.users where id = auth.uid();
 $$;
@@ -143,7 +143,7 @@ returns uuid
 language sql
 stable
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
   select club_id from public.users where id = auth.uid();
 $$;
@@ -153,7 +153,7 @@ returns boolean
 language sql
 stable
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
   select exists (
     select 1
@@ -284,7 +284,7 @@ create or replace function public.next_order_token(p_club_id uuid)
 returns integer
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_date date := (now() at time zone 'Asia/Kolkata')::date;
@@ -308,7 +308,7 @@ create or replace function public.set_order_token()
 returns trigger
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 begin
   if new.token_number is null then
@@ -335,7 +335,7 @@ create or replace function public.recalculate_session_spend(p_session_id uuid)
 returns void
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_total numeric(12,2);
@@ -367,7 +367,7 @@ create or replace function public.trg_orders_recalc_session()
 returns trigger
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 begin
   perform public.recalculate_session_spend(coalesce(new.session_id, old.session_id));
@@ -391,7 +391,7 @@ create or replace function public.assert_table_merge_allowed(
 returns void
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_club uuid;
@@ -432,7 +432,7 @@ create or replace function public.merge_tables(
 returns void
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 begin
   perform public.assert_table_merge_allowed(p_parent, p_children);
@@ -452,7 +452,7 @@ returns uuid
 language sql
 stable
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
   select case
     when t.status = 'MERGED_CHILD' and t.parent_table_id is not null
@@ -475,10 +475,10 @@ create or replace function public.can_create_flash_promo(
 returns boolean
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
-  v_loc geography;
+  v_loc extensions.geography;
   v_conflict boolean;
 begin
   select location into v_loc from public.clubs where id = p_club_id;
@@ -525,7 +525,7 @@ create or replace function public.run_hourly_lucky_draw(p_club_id uuid)
 returns uuid
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_session uuid;
@@ -573,7 +573,7 @@ create or replace function public.mark_session_auto_settled(
 returns void
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 begin
   update public.active_sessions
