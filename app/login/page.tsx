@@ -46,29 +46,36 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-background px-4 py-10 text-foreground">
-      <div className="pointer-events-none fixed inset-0 bg-nightlife-radial opacity-90" />
+    <div className="min-h-[100dvh] bg-[#0B0E14] px-4 py-10 text-[#F8FAFC]">
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 bg-[radial-gradient(900px_480px_at_12%_-8%,rgba(139,92,246,0.18),transparent_55%),radial-gradient(780px_420px_at_92%_0%,rgba(6,182,212,0.12),transparent_50%)]"
+      />
       <div className="relative mx-auto max-w-3xl">
         <div className="mb-8">
-          <MaiTabLogo variant="FullLogoWithText" className="h-11 w-auto" />
-          <h1 className="mt-6 font-display text-3xl font-bold tracking-tight">
+          <MaiTabLogo
+            variant="FullLogoWithText"
+            onDark
+            className="h-11 w-auto min-w-[11rem]"
+          />
+          <h1 className="mt-6 font-display text-3xl font-bold tracking-tight text-[#F8FAFC]">
             Venue demo logins
           </h1>
-          <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+          <p className="mt-2 max-w-xl text-base leading-relaxed text-[#E2E8F0]">
             One-click entry for floor roles. Shared demo password{" "}
-            <code className="rounded border border-border bg-secondary px-1.5 py-0.5 text-accent-gold">
+            <code className="rounded border border-white/15 bg-white/10 px-1.5 py-0.5 text-amber-400">
               {DEMO_PASSWORD}
             </code>
             .
           </p>
           {denied ? (
-            <p className="mt-3 text-sm text-accent-ruby">
+            <p className="mt-3 text-sm text-rose-400">
               Access denied for {denied}. Pick a role that can open that route.
             </p>
           ) : null}
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2">
           {PUBLIC_DEMO_USERS.map((user) => {
             const busy = loadingRole === user.role;
             return (
@@ -78,34 +85,37 @@ function LoginForm() {
                 disabled={loadingRole !== null}
                 onClick={() => void enterDemo(user.role, user.home)}
                 className={cn(
-                  "rounded-2xl border border-border bg-secondary p-4 text-left backdrop-blur-2xl transition",
-                  "hover:border-accent-violet/40 hover:bg-white",
+                  "flex flex-col rounded-2xl border border-white/10 bg-[#12151A]/90 p-5 text-left shadow-[0_12px_40px_-16px_rgba(0,0,0,0.65)] backdrop-blur-xl transition",
+                  "hover:border-[#A855F7]/50 hover:bg-[#161B22]",
                   "disabled:cursor-wait disabled:opacity-60",
-                  busy && "ring-1 ring-accent-violet/50"
+                  busy && "ring-1 ring-[#A855F7]/60"
                 )}
               >
-                <div className="flex items-start justify-between gap-2">
-                  <p className="type-title text-lg text-foreground">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-lg font-semibold tracking-normal text-[#F8FAFC]">
                     {user.name}
                   </p>
-                  <span className="rounded-lg border border-border px-2 py-0.5 text-[10px] uppercase tracking-wide text-muted-foreground">
+                  <span className="shrink-0 rounded-lg border border-white/15 bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[#E2E8F0]">
                     {user.role.replaceAll("_", " ")}
                   </span>
                 </div>
-                <p className="mt-1 text-sm text-muted-foreground">
+
+                <p className="mt-2 text-sm leading-relaxed text-[#E2E8F0]">
                   {user.description}
                 </p>
-                <div className="mt-3 space-y-1 text-xs">
-                  <p>
-                    <span className="text-muted-foreground">Email · </span>
-                    <span className="text-foreground">{user.email}</span>
+
+                <div className="mt-4 space-y-1.5 text-sm">
+                  <p className="break-all">
+                    <span className="text-[#94A3B8]">Email · </span>
+                    <span className="font-medium text-cyan-400">{user.email}</span>
                   </p>
                   <p>
-                    <span className="text-muted-foreground">Opens · </span>
-                    <span className="text-accent-gold">{user.home}</span>
+                    <span className="text-[#94A3B8]">Opens · </span>
+                    <span className="font-medium text-amber-400">{user.home}</span>
                   </p>
                 </div>
-                <p className="mt-3 text-xs font-semibold text-accent-violet">
+
+                <p className="mt-4 block text-sm font-semibold text-[#A855F7]">
                   {busy ? "Signing in…" : "Enter as this role →"}
                 </p>
               </button>
@@ -114,13 +124,14 @@ function LoginForm() {
         </div>
 
         {note ? (
-          <p className="mt-4 text-xs text-muted-foreground">{note}</p>
+          <p className="mt-4 text-sm text-[#E2E8F0]/80">{note}</p>
         ) : null}
 
         <div className="mt-6">
           <NeonButton
             tone="ghost"
             size="sm"
+            className="border-white/20 bg-white/5 text-[#F8FAFC] hover:bg-white/10"
             onClick={() => router.push("/home")}
           >
             Open customer demo
@@ -135,7 +146,7 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="grid min-h-[100dvh] place-items-center bg-background text-muted-foreground">
+        <div className="grid min-h-[100dvh] place-items-center bg-[#0B0E14] text-[#E2E8F0]">
           Loading demo logins…
         </div>
       }

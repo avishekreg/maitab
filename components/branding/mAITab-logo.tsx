@@ -128,8 +128,8 @@ function Wordmark({
   monochrome,
   idPrefix,
   onDark = false,
-  x = 72,
-  y = 42,
+  x = 74,
+  y = 41,
 }: {
   monochrome?: boolean;
   idPrefix: string;
@@ -137,7 +137,8 @@ function Wordmark({
   x?: number;
   y?: number;
 }) {
-  // Dark surfaces: pure white m/Tab. Light chrome: ink (never gold/orange).
+  // onDark: pure white m/Tab for dark surfaces. Light chrome: ink.
+  // AI always uses neon gradient #8B5CF6 → #06B6D4 (never gold/orange).
   const ink = onDark ? "#FFFFFF" : "#080503";
   const mFill = monochrome ? "currentColor" : ink;
   const aiFill = monochrome ? "currentColor" : `url(#${idPrefix}-ai)`;
@@ -151,6 +152,7 @@ function Wordmark({
       fontSize="36"
       fontWeight="800"
       letterSpacing="-0.03em"
+      dominantBaseline="auto"
     >
       <tspan fill={mFill}>m</tspan>
       <tspan
@@ -190,13 +192,13 @@ export function MAITabLogo({
   if (variant === "Monochrome") {
     return (
       <svg
-        viewBox="0 0 268 64"
+        viewBox="0 0 270 64"
         role="img"
         aria-label={title}
         className={cn("h-10 w-auto shrink-0 text-foreground", className)}
       >
         <title>{title}</title>
-        <g transform="translate(0,2) scale(0.88)">
+        <g transform="translate(0,3) scale(0.9)">
           <IconMark monochrome idPrefix={`${idPrefix}-m`} />
         </g>
         <Wordmark monochrome idPrefix={`${idPrefix}-m`} />
@@ -206,15 +208,15 @@ export function MAITabLogo({
 
   return (
     <svg
-      viewBox="0 0 268 64"
+      viewBox="0 0 270 64"
       role="img"
       aria-label={title}
       className={cn("h-9 w-auto shrink-0 overflow-visible sm:h-10", className)}
     >
       <title>{title}</title>
       <GradientDefs idPrefix={idPrefix} />
-      {/* Slightly smaller icon badge so wordmark reads at text-xl/2xl weight */}
-      <g transform="translate(0,2) scale(0.88)">
+      {/* Icon + wordmark share one optical baseline */}
+      <g transform="translate(0,3) scale(0.9)">
         <IconMark idPrefix={idPrefix} />
       </g>
       <Wordmark idPrefix={idPrefix} onDark={onDark} />
