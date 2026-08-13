@@ -25,6 +25,7 @@ interface AdminShellProps {
 const CLUB_NAV = [
   { href: "/admin/club", label: "Venue" },
   { href: "/admin/club/promos", label: "Flash" },
+  { href: "/admin/club/settings", label: "Settings" },
   { href: "/admin/manager", label: "Floor" },
   { href: "/kds", label: "KDS" },
   { href: "/waiter", label: "Waiter" },
@@ -36,6 +37,7 @@ const MANAGER_NAV = [
   { href: "/admin/manager", label: "Shifts" },
   { href: "/admin/club", label: "Venue" },
   { href: "/admin/club/promos", label: "Flash" },
+  { href: "/admin/club/settings", label: "Settings" },
   { href: "/kds", label: "KDS" },
   { href: "/waiter", label: "Waiter" },
 ];

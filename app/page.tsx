@@ -84,18 +84,12 @@ const ENTERPRISE_OPS = [
   },
   {
     code: "02",
-    title: "Swiggy / Zomato District Exclusivity Bridge",
-    body: "Automated Table Hold Lockouts — prevents double bookings by automatically syncing active live tabs with Swiggy SteppinOut and Zomato District.",
-    accent: "#F97316",
-  },
-  {
-    code: "03",
     title: "Flash Promo & Geo-Push Engine",
-    body: "1-Tap Instant Happy Hours for checked-in guests, plus monetized Geo-Targeted Flash Campaigns to drive instant footfall.",
+    body: "1-Tap Instant Happy Hours for checked-in guests, plus monetized Geo-Targeted Flash Campaigns powered by Platform Promo Credits to drive instant footfall.",
     accent: "#A78BFA",
   },
   {
-    code: "04",
+    code: "03",
     title: "Multi-Venue Owner Switcher",
     body: "Manage multiple clubs, lounges, and rooftops under a single unified executive console with real-time GMV and KDS telemetry.",
     accent: "#34D399",

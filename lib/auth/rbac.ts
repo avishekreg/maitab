@@ -49,6 +49,10 @@ export const PROTECTED_API_ROUTES: { prefix: string; roles: UserRole[] }[] = [
     roles: ["CLUB_ADMIN", "SUPER_ADMIN"],
   },
   {
+    prefix: "/api/club/aggregator",
+    roles: ["CLUB_ADMIN", "SUPER_ADMIN"],
+  },
+  {
     prefix: "/api/staff/shifts",
     roles: [
       "FLOOR_MANAGER",

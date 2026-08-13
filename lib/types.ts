@@ -90,6 +90,8 @@ export interface Club {
   owner_group_id?: string | null;
   credit_balance?: number;
   short_name?: string | null;
+  aggregator_sync_active?: boolean;
+  external_table_lockout_enabled?: boolean;
 }
 
 export interface ClubTable {
