@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 import { GlassPanel } from "@/components/ui/GlassPanel";
@@ -11,9 +11,11 @@ import { fetchClubOrders } from "@/lib/data/orders";
 import { providerLabel } from "@/lib/discounts/bridge";
 import { useDiscountBridgeRealtime } from "@/lib/hooks/use-discount-bridge-realtime";
 import { useOrdersRealtime } from "@/lib/hooks/use-orders-realtime";
+import { DEMO_BAR_COUNTERS } from "@/lib/kds/routing";
 import { publishBus } from "@/lib/realtime/bus";
+import { formatTokenDisplay } from "@/lib/kds/token";
 import { useSessionStore } from "@/lib/store/session-store";
-import { NEON_CLUB_ID } from "@/lib/supabase/env";
+import { selectActiveVenue, useVenueStore } from "@/lib/store/venue-store";
 import type { ActiveSession } from "@/lib/types";
 import { triggerHaptic } from "@/lib/utils";
 
@@ -22,20 +24,30 @@ type PendingDeal = DiscountBridgePayload & { seenAt: number };
 export default function KdsPage() {
   const orders = useSessionStore((s) => s.orders);
   const markOrderReady = useSessionStore((s) => s.markOrderReady);
+  const releaseOrderHandshake = useSessionStore((s) => s.releaseOrderHandshake);
   const hydrateOrders = useSessionStore((s) => s.hydrateOrders);
   const patchOrder = useSessionStore((s) => s.patchOrder);
+  const venueId = useVenueStore((s) => s.activeVenueId);
+  const venue = useVenueStore(selectActiveVenue);
   const [pendingDeals, setPendingDeals] = useState<PendingDeal[]>([]);
   const [toast, setToast] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [counterFilter, setCounterFilter] = useState<string>("ALL");
+
+  const counters = useMemo(
+    () => DEMO_BAR_COUNTERS.filter((c) => c.venue_id === venueId),
+    [venueId]
+  );
 
   useEffect(() => {
-    void fetchClubOrders(NEON_CLUB_ID).then((live) => {
+    setCounterFilter("ALL");
+    void fetchClubOrders(venueId).then((live) => {
       if (live?.length) hydrateOrders(live);
     });
-  }, [hydrateOrders]);
+  }, [hydrateOrders, venueId]);
 
   useEffect(() => {
-    void fetch(`/api/discounts/pending?clubId=${NEON_CLUB_ID}`)
+    void fetch(`/api/discounts/pending?clubId=${venueId}`)
       .then((r) => r.json())
       .then((data: { sessions?: ActiveSession[] }) => {
         if (!data.sessions?.length) return;
@@ -55,7 +67,7 @@ export default function KdsPage() {
         );
       })
       .catch(() => undefined);
-  }, []);
+  }, [venueId]);
 
   const onOrderChange = useCallback(
     (patch: Parameters<typeof patchOrder>[0]) => {
@@ -64,9 +76,9 @@ export default function KdsPage() {
     [patchOrder]
   );
 
-  useOrdersRealtime(NEON_CLUB_ID, onOrderChange);
+  useOrdersRealtime(venueId, onOrderChange);
 
-  useDiscountBridgeRealtime(NEON_CLUB_ID, (payload, event) => {
+  useDiscountBridgeRealtime(venueId, (payload, event) => {
     if (payload.discount_status === "PENDING_VERIFICATION") {
       setPendingDeals((prev) => {
         const without = prev.filter((p) => p.session_id !== payload.session_id);
@@ -155,14 +167,16 @@ export default function KdsPage() {
     }
   }
 
-  const queue = orders.filter((order) =>
-    ["PENDING", "PREPARING", "READY"].includes(order.status)
-  );
+  const queue = orders.filter((order) => {
+    if (!["PENDING", "PREPARING", "READY"].includes(order.status)) return false;
+    if (counterFilter === "ALL") return true;
+    return order.assigned_counter_id === counterFilter;
+  });
 
   return (
     <div className="min-h-[100dvh] bg-nightlife-radial px-4 py-5 text-foreground">
       <div className="mx-auto max-w-6xl">
-        <div className="optimus-glass mb-5 flex items-center justify-between gap-3 rounded-xl px-4 py-3">
+        <div className="optimus-glass mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl px-4 py-3">
           <div className="flex min-w-0 items-center gap-3">
             <MaiTabLogo variant="FullLogoWithText" className="h-8 w-auto" />
             <div className="min-w-0">
@@ -170,11 +184,26 @@ export default function KdsPage() {
                 Bar KDS
               </h1>
               <p className="text-sm text-muted-foreground">
-                Mark Ready · verify external deals · realtime to guest tab
+                {venue.short_name} · multi-counter routing · token handshake
               </p>
             </div>
           </div>
-          <StatusPill label="BARTENDER" tone="gold" />
+          <div className="flex flex-wrap items-center gap-2">
+            <select
+              className="rounded-lg border border-border bg-background px-2.5 py-1.5 text-sm"
+              value={counterFilter}
+              onChange={(e) => setCounterFilter(e.target.value)}
+              aria-label="Filter by bar counter"
+            >
+              <option value="ALL">All counters</option>
+              {counters.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.counter_name}
+                </option>
+              ))}
+            </select>
+            <StatusPill label="BARTENDER" tone="gold" />
+          </div>
         </div>
 
         <AnimatePresence>
@@ -254,14 +283,30 @@ export default function KdsPage() {
                 glow={order.status === "READY" ? "emerald" : "none"}
               >
                 <div className="flex items-start justify-between gap-2">
-                  <p className="font-display text-3xl font-bold text-accent-gold">
-                    #{order.token_number}
+                  <p className="font-display text-5xl font-extrabold tracking-tight text-[#E2B857] drop-shadow-[0_0_18px_rgba(226,184,87,0.35)]">
+                    {formatTokenDisplay(order.token_number)}
                   </p>
                   <StatusPill
                     label={order.status}
-                    tone={order.status === "READY" ? "emerald" : "gold"}
+                    tone={
+                      order.status === "READY"
+                        ? "emerald"
+                        : order.status === "RELEASED"
+                          ? "violet"
+                          : "gold"
+                    }
                   />
                 </div>
+                {order.assigned_counter_name ? (
+                  <p className="mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-accent-gold">
+                    {order.assigned_counter_name}
+                  </p>
+                ) : null}
+                {order.assigned_waiter_name ? (
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                    Waiter · {order.assigned_waiter_name}
+                  </p>
+                ) : null}
                 <ul className="mt-4 flex-1 space-y-2 text-lg">
                   {order.items.map((item) => (
                     <li
@@ -272,7 +317,7 @@ export default function KdsPage() {
                     </li>
                   ))}
                 </ul>
-                {order.status !== "READY" ? (
+                {order.status === "PENDING" || order.status === "PREPARING" ? (
                   <NeonButton
                     size="lg"
                     className="mt-4 w-full"
@@ -283,9 +328,24 @@ export default function KdsPage() {
                   >
                     Mark Ready
                   </NeonButton>
+                ) : order.status === "READY" ? (
+                  <NeonButton
+                    size="lg"
+                    tone="emerald"
+                    className="mt-4 w-full text-base font-bold"
+                    onClick={() => {
+                      void releaseOrderHandshake(order.id);
+                      void triggerHaptic([20, 40, 20]);
+                      setToast(
+                        `${formatTokenDisplay(order.token_number)} released & handed over`
+                      );
+                    }}
+                  >
+                    Tap · Release {formatTokenDisplay(order.token_number)}
+                  </NeonButton>
                 ) : (
                   <p className="mt-4 text-center text-sm text-accent-emerald">
-                    Waiting for two-shelf pickup
+                    Handshake complete · token closed
                   </p>
                 )}
               </GlassPanel>

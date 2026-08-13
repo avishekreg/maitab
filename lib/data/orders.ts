@@ -1,7 +1,10 @@
 import type { Order, OrderItem, OrderStatus } from "@/lib/types";
+import { formatTokenDisplay, generateOrderTokenCode } from "@/lib/kds/token";
 import { getBrowserSupabase } from "@/lib/supabase/browser";
 import { isSupabaseConfigured, NEON_CLUB_ID } from "@/lib/supabase/env";
 import { publishBus } from "@/lib/realtime/bus";
+import { resolveBarCounterForTableId } from "@/lib/kds/routing";
+import { resolveWaiterForTableId } from "@/lib/waiter/allocation";
 
 function mapOrder(row: Record<string, unknown>): Order {
   return {
@@ -14,6 +17,21 @@ function mapOrder(row: Record<string, unknown>): Order {
     token_number: Number(row.token_number),
     created_at: String(row.created_at),
     ready_at: row.ready_at ? String(row.ready_at) : null,
+    assigned_waiter_id: row.assigned_waiter_id
+      ? String(row.assigned_waiter_id)
+      : null,
+    assigned_waiter_name: row.assigned_waiter_name
+      ? String(row.assigned_waiter_name)
+      : null,
+    pickup_token_code: row.pickup_token_code
+      ? String(row.pickup_token_code)
+      : null,
+    assigned_counter_id: row.assigned_counter_id
+      ? String(row.assigned_counter_id)
+      : null,
+    assigned_counter_name: row.assigned_counter_name
+      ? String(row.assigned_counter_name)
+      : null,
   };
 }
 
@@ -40,6 +58,7 @@ export async function createOrderLive(input: {
   sessionId: string;
   clubId: string;
   items: OrderItem[];
+  primaryTableId?: string | null;
 }): Promise<Order | null> {
   const total = input.items.reduce(
     (sum, item) => sum + item.unit_price * item.quantity,
@@ -47,6 +66,16 @@ export async function createOrderLive(input: {
   );
 
   if (!isSupabaseConfigured()) {
+    const token_number = generateOrderTokenCode([]);
+    const route = resolveWaiterForTableId(
+      input.primaryTableId,
+      token_number,
+      input.clubId
+    );
+    const bar = resolveBarCounterForTableId(
+      input.primaryTableId,
+      input.clubId
+    );
     const order: Order = {
       id: `o-${crypto.randomUUID()}`,
       session_id: input.sessionId,
@@ -54,9 +83,14 @@ export async function createOrderLive(input: {
       items: input.items,
       total_amount: total,
       status: "PENDING",
-      token_number: 200 + Math.floor(Math.random() * 700),
+      token_number,
       created_at: new Date().toISOString(),
       ready_at: null,
+      assigned_waiter_id: route?.assigned_waiter_id ?? null,
+      assigned_waiter_name: route?.assigned_waiter_name ?? null,
+      pickup_token_code: route?.pickup_token_code ?? formatTokenDisplay(token_number),
+      assigned_counter_id: bar?.assigned_counter_id ?? null,
+      assigned_counter_name: bar?.assigned_counter_name ?? null,
     };
     publishBus("orders", "INSERT", order);
     return order;
@@ -64,6 +98,18 @@ export async function createOrderLive(input: {
 
   const supabase = getBrowserSupabase();
   if (!supabase) return null;
+
+  // DB trigger routes waiter + pickup_token_code; client may prefill for UX
+  const previewToken = generateOrderTokenCode([]);
+  const route = resolveWaiterForTableId(
+    input.primaryTableId,
+    previewToken,
+    input.clubId
+  );
+  const bar = resolveBarCounterForTableId(
+    input.primaryTableId,
+    input.clubId
+  );
 
   const { data, error } = await supabase
     .from("orders")
@@ -73,6 +119,11 @@ export async function createOrderLive(input: {
       items: input.items,
       total_amount: total,
       status: "PENDING",
+      assigned_waiter_id: route?.assigned_waiter_id ?? null,
+      assigned_waiter_name: route?.assigned_waiter_name ?? null,
+      pickup_token_code: route?.pickup_token_code ?? null,
+      assigned_counter_id: bar?.assigned_counter_id ?? null,
+      assigned_counter_name: bar?.assigned_counter_name ?? null,
     })
     .select("*")
     .single();

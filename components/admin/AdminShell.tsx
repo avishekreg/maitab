@@ -2,23 +2,42 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { VenueSwitcher } from "@/components/admin/VenueSwitcher";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { cn } from "@/lib/utils";
+import type { UserRole } from "@/lib/types";
+
+type AdminShellRole = Extract<
+  UserRole,
+  "CLUB_ADMIN" | "SUPER_ADMIN" | "FLOOR_MANAGER" | "CAPTAIN"
+>;
 
 interface AdminShellProps {
-  role: "CLUB_ADMIN" | "SUPER_ADMIN";
+  role: AdminShellRole;
   title: string;
   subtitle?: string;
   actions?: React.ReactNode;
   children: React.ReactNode;
+  showVenueSwitcher?: boolean;
 }
 
 const CLUB_NAV = [
   { href: "/admin/club", label: "Venue" },
+  { href: "/admin/club/promos", label: "Flash" },
+  { href: "/admin/manager", label: "Floor" },
   { href: "/kds", label: "KDS" },
+  { href: "/waiter", label: "Waiter" },
   { href: "/gate", label: "Gate" },
   { href: "/av-panel", label: "AV" },
+];
+
+const MANAGER_NAV = [
+  { href: "/admin/manager", label: "Shifts" },
+  { href: "/admin/club", label: "Venue" },
+  { href: "/admin/club/promos", label: "Flash" },
+  { href: "/kds", label: "KDS" },
+  { href: "/waiter", label: "Waiter" },
 ];
 
 const SUPER_NAV = [
@@ -27,15 +46,26 @@ const SUPER_NAV = [
   { href: "/admin/club", label: "Sample venue" },
 ];
 
+function navForRole(role: AdminShellRole) {
+  if (role === "SUPER_ADMIN") return SUPER_NAV;
+  if (role === "FLOOR_MANAGER" || role === "CAPTAIN") return MANAGER_NAV;
+  return CLUB_NAV;
+}
+
 export function AdminShell({
   role,
   title,
   subtitle,
   actions,
   children,
+  showVenueSwitcher = true,
 }: AdminShellProps) {
   const pathname = usePathname();
-  const nav = role === "SUPER_ADMIN" ? SUPER_NAV : CLUB_NAV;
+  const nav = navForRole(role);
+  const venueOps =
+    role === "CLUB_ADMIN" ||
+    role === "FLOOR_MANAGER" ||
+    role === "CAPTAIN";
 
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
@@ -55,7 +85,10 @@ export function AdminShell({
 
             <nav className="hidden items-center gap-1 md:flex">
               {nav.map((item) => {
-                const active = pathname === item.href;
+                const active =
+                  pathname === item.href ||
+                  (item.href !== "/admin/club" &&
+                    pathname.startsWith(`${item.href}/`));
                 return (
                   <Link
                     key={item.href}
@@ -74,6 +107,7 @@ export function AdminShell({
             </nav>
 
             <div className="flex shrink-0 items-center gap-2">
+              {showVenueSwitcher && venueOps ? <VenueSwitcher /> : null}
               <StatusPill
                 label={role}
                 tone={role === "SUPER_ADMIN" ? "violet" : "gold"}

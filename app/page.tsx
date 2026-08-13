@@ -62,12 +62,43 @@ const STAFF_STEPS = [
     copy: "KDS queue with token numbers and one-tap Mark Ready. No customer PII. No admin settings.",
   },
   {
+    role: "Floor Manager",
+    copy: "Zone allocation, multi-bar counter routing, and shift mapping before the doors open.",
+  },
+  {
     role: "AV",
     copy: "Standalone LED browser panel: silent alerts, tickers, chimes, and Titan hero takeovers from live gate events.",
   },
   {
     role: "Club Admin",
     copy: "Menu, merges, display toggles, lucky draw, and PostGIS-aware flash promos from one venue console.",
+  },
+];
+
+const ENTERPRISE_OPS = [
+  {
+    code: "01",
+    title: "Floor Manager & Multi-Bar Counter Routing",
+    body: "Smart 4-Digit Token Handshake (#4829) routes drinks directly from nearest bar counters to assigned waiters with zero verbal confusion or alcohol leakage.",
+    accent: "#E2B857",
+  },
+  {
+    code: "02",
+    title: "Swiggy / Zomato District Exclusivity Bridge",
+    body: "Automated Table Hold Lockouts — prevents double bookings by automatically syncing active live tabs with Swiggy SteppinOut and Zomato District.",
+    accent: "#F97316",
+  },
+  {
+    code: "03",
+    title: "Flash Promo & Geo-Push Engine",
+    body: "1-Tap Instant Happy Hours for checked-in guests, plus monetized Geo-Targeted Flash Campaigns to drive instant footfall.",
+    accent: "#A78BFA",
+  },
+  {
+    code: "04",
+    title: "Multi-Venue Owner Switcher",
+    body: "Manage multiple clubs, lounges, and rooftops under a single unified executive console with real-time GMV and KDS telemetry.",
+    accent: "#34D399",
   },
 ];
 
@@ -326,6 +357,67 @@ export default function MarketingLandingPage() {
             and payment provider hooks for Razorpay / Cashfree AutoPay. You sell
             the night — mAITab runs the machinery.
           </p>
+
+          <div className="mt-16">
+            <SectionEyebrow>Enterprise architecture</SectionEyebrow>
+            <SectionTitle>
+              Operations modules built for multi-bar floors and group owners.
+            </SectionTitle>
+            <p className="type-body mt-5 max-w-2xl text-lg text-slate-800">
+              Floor routing, aggregator exclusivity, flash monetization, and
+              multi-property control — the layer that turns a single venue stack
+              into an enterprise nightlife OS.
+            </p>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-2">
+              {ENTERPRISE_OPS.map((item, i) => (
+                <motion.button
+                  key={item.title}
+                  type="button"
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  whileHover={{ y: -4, scale: 1.01 }}
+                  whileTap={{ scale: 0.985 }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={{ delay: i * 0.07, duration: 0.35 }}
+                  className="group relative overflow-hidden rounded-2xl border border-slate-900/15 bg-gradient-to-br from-white via-[#F8FAFC] to-[#EEF2FF]/90 p-6 text-left shadow-[0_12px_40px_rgba(15,23,42,0.1)] backdrop-blur-xl transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A38B5E] sm:p-7"
+                >
+                  <div
+                    className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100"
+                    style={{
+                      background: `radial-gradient(600px circle at var(--mx, 50%) var(--my, 0%), ${item.accent}22, transparent 45%)`,
+                    }}
+                  />
+                  <div className="relative">
+                    <div className="flex items-center justify-between gap-3">
+                      <p
+                        className="font-mono text-xs font-semibold uppercase tracking-[0.2em]"
+                        style={{ color: item.accent }}
+                      >
+                        Module {item.code}
+                      </p>
+                      <span
+                        className="h-2 w-2 rounded-full transition group-hover:scale-125"
+                        style={{ background: item.accent }}
+                      />
+                    </div>
+                    <h3 className="type-title mt-4 text-xl text-slate-950 sm:text-2xl">
+                      {item.title}
+                    </h3>
+                    <p className="type-body mt-3 text-base leading-relaxed text-slate-800 sm:text-lg">
+                      {item.body}
+                    </p>
+                    <p
+                      className="mt-5 text-sm font-semibold tracking-wide transition group-hover:translate-x-1"
+                      style={{ color: item.accent }}
+                    >
+                      Explore in ops console →
+                    </p>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

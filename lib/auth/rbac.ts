@@ -2,9 +2,29 @@ import type { UserRole } from "@/lib/types";
 
 export const PROTECTED_ROUTES: Record<string, UserRole[]> = {
   "/admin/super": ["SUPER_ADMIN"],
-  "/admin/club": ["CLUB_ADMIN", "SUPER_ADMIN"],
-  "/gate": ["GATE_STAFF", "CLUB_ADMIN", "SUPER_ADMIN"],
-  "/kds": ["BARTENDER", "CLUB_ADMIN", "SUPER_ADMIN"],
+  "/admin/club": ["CLUB_ADMIN", "FLOOR_MANAGER", "CAPTAIN", "SUPER_ADMIN"],
+  "/admin/manager": [
+    "FLOOR_MANAGER",
+    "CAPTAIN",
+    "CLUB_ADMIN",
+    "SUPER_ADMIN",
+  ],
+  "/gate": ["GATE_STAFF", "CLUB_ADMIN", "FLOOR_MANAGER", "CAPTAIN", "SUPER_ADMIN"],
+  "/kds": [
+    "BARTENDER",
+    "CLUB_ADMIN",
+    "FLOOR_MANAGER",
+    "CAPTAIN",
+    "SUPER_ADMIN",
+  ],
+  "/waiter": [
+    "BARTENDER",
+    "GATE_STAFF",
+    "FLOOR_MANAGER",
+    "CAPTAIN",
+    "CLUB_ADMIN",
+    "SUPER_ADMIN",
+  ],
   "/av-panel": ["AV_CONTROLLER", "CLUB_ADMIN", "SUPER_ADMIN"],
   "/tab": ["CUSTOMER", "SUPER_ADMIN"],
   "/pass": ["CUSTOMER", "SUPER_ADMIN"],
@@ -16,9 +36,50 @@ export const PROTECTED_ROUTES: Record<string, UserRole[]> = {
 export const PROTECTED_API_ROUTES: { prefix: string; roles: UserRole[] }[] = [
   { prefix: "/api/admin", roles: ["SUPER_ADMIN"] },
   { prefix: "/api/tables/merge", roles: ["CLUB_ADMIN", "SUPER_ADMIN"] },
-  { prefix: "/api/promos/flash", roles: ["CLUB_ADMIN", "SUPER_ADMIN"] },
+  {
+    prefix: "/api/promos/flash",
+    roles: ["CLUB_ADMIN", "FLOOR_MANAGER", "CAPTAIN", "SUPER_ADMIN"],
+  },
+  {
+    prefix: "/api/promos/campaigns",
+    roles: ["CLUB_ADMIN", "FLOOR_MANAGER", "CAPTAIN", "SUPER_ADMIN"],
+  },
+  {
+    prefix: "/api/promos/credits",
+    roles: ["CLUB_ADMIN", "SUPER_ADMIN"],
+  },
+  {
+    prefix: "/api/staff/shifts",
+    roles: [
+      "FLOOR_MANAGER",
+      "CAPTAIN",
+      "CLUB_ADMIN",
+      "SUPER_ADMIN",
+      "GATE_STAFF",
+    ],
+  },
   { prefix: "/api/lucky-draw/run", roles: ["CLUB_ADMIN", "SUPER_ADMIN"] },
-  { prefix: "/api/orders/ready", roles: ["BARTENDER", "CLUB_ADMIN", "SUPER_ADMIN"] },
+  {
+    prefix: "/api/orders/ready",
+    roles: [
+      "BARTENDER",
+      "CLUB_ADMIN",
+      "FLOOR_MANAGER",
+      "CAPTAIN",
+      "SUPER_ADMIN",
+    ],
+  },
+  {
+    prefix: "/api/orders/handshake",
+    roles: [
+      "BARTENDER",
+      "CLUB_ADMIN",
+      "FLOOR_MANAGER",
+      "CAPTAIN",
+      "SUPER_ADMIN",
+      "GATE_STAFF",
+    ],
+  },
   {
     prefix: "/api/discounts/approve",
     roles: ["BARTENDER", "CLUB_ADMIN", "SUPER_ADMIN"],
@@ -114,7 +175,11 @@ export function canViewFinancials(role: UserRole): boolean {
 
 export function canScanPasses(role: UserRole): boolean {
   return (
-    role === "GATE_STAFF" || role === "CLUB_ADMIN" || role === "SUPER_ADMIN"
+    role === "GATE_STAFF" ||
+    role === "CLUB_ADMIN" ||
+    role === "FLOOR_MANAGER" ||
+    role === "CAPTAIN" ||
+    role === "SUPER_ADMIN"
   );
 }
 

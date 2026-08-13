@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { AdminSection, AdminShell, KpiStrip } from "@/components/admin/AdminShell";
 import { NeonButton } from "@/components/ui/NeonButton";
@@ -12,9 +13,9 @@ import {
   MENU_ITEMS,
 } from "@/lib/demo/data";
 import { publishBus } from "@/lib/realtime/bus";
+import { selectActiveVenue, useVenueStore } from "@/lib/store/venue-store";
 import {
   COMPETITOR_CLUB_ID,
-  NEON_CLUB_ID,
   TABLE_B4_ID,
 } from "@/lib/supabase/env";
 import { cn, formatINR } from "@/lib/utils";
@@ -25,6 +26,8 @@ const CHILD_IDS = [
 ];
 
 export default function ClubAdminPage() {
+  const venue = useVenueStore(selectActiveVenue);
+  const activeVenueId = useVenueStore((s) => s.activeVenueId);
   const [tables, setTables] = useState(DEMO_TABLES);
   const [displayOn, setDisplayOn] = useState(DEMO_CLUB.display_enabled);
   const [luckyDraw, setLuckyDraw] = useState(DEMO_CLUB.lucky_draw_enabled);
@@ -34,8 +37,11 @@ export default function ClubAdminPage() {
   const [busy, setBusy] = useState<string | null>(null);
 
   const sales = useMemo(
-    () => DEMO_ORDERS.reduce((sum, order) => sum + order.total_amount, 0),
-    []
+    () =>
+      activeVenueId === DEMO_CLUB.id
+        ? DEMO_ORDERS.reduce((sum, order) => sum + order.total_amount, 0)
+        : venue.live_gmv,
+    [activeVenueId, venue.live_gmv]
   );
 
   async function mergeB4Cluster() {
@@ -111,7 +117,7 @@ export default function ClubAdminPage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        clubId: NEON_CLUB_ID,
+        clubId: activeVenueId,
         category: "BEER",
       }),
     });
@@ -122,7 +128,7 @@ export default function ClubAdminPage() {
     };
     setPromoNote(
       data.ok
-        ? `BEER flash promo live.`
+        ? `BEER flash promo live on ${venue.short_name}.`
         : data.reason ??
             `Blocked by nearby competitor (${COMPETITOR_CLUB_ID.slice(0, 8)}…)`
     );
@@ -134,7 +140,7 @@ export default function ClubAdminPage() {
     const res = await fetch("/api/lucky-draw/run", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ clubId: NEON_CLUB_ID }),
+      body: JSON.stringify({ clubId: activeVenueId }),
     });
     const data = (await res.json()) as {
       ok: boolean;
@@ -166,10 +172,16 @@ export default function ClubAdminPage() {
   return (
     <AdminShell
       role="CLUB_ADMIN"
-      title={DEMO_CLUB.name}
-      subtitle="Floor control for menu, tables, promos, and lucky draw — without touching POS hardware."
+      title={venue.short_name}
+      subtitle="Multi-venue ops — switch property in the top bar to swap Live GMV, inventory, staff, and KDS context."
       actions={
         <>
+          <Link
+            href="/admin/club/promos"
+            className="rounded-lg border border-border px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-secondary hover:text-foreground"
+          >
+            Flash campaigns
+          </Link>
           <NeonButton
             size="sm"
             tone="ghost"
@@ -189,15 +201,18 @@ export default function ClubAdminPage() {
     >
       <KpiStrip
         items={[
-          { label: "Daily sales", value: formatINR(sales), tone: "gold" },
+          { label: "Live GMV", value: formatINR(sales), tone: "gold" },
           {
-            label: "Open session",
-            value: formatINR(DEMO_SESSION.total_session_spend),
+            label: "Promo credits",
+            value: formatINR(venue.credit_balance),
           },
           {
-            label: "Draw threshold",
-            value: formatINR(DEMO_CLUB.lucky_draw_threshold_amount),
-            tone: "gold",
+            label: "Open session",
+            value: formatINR(
+              activeVenueId === DEMO_CLUB.id
+                ? DEMO_SESSION.total_session_spend
+                : 0
+            ),
           },
           {
             label: "Floor status",

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Camera, ChevronRight, MapPin, Sparkles, Vibrate } from "lucide-react";
-import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 import { AppShell } from "@/components/layout/AppShell";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -14,12 +13,17 @@ import { useSessionStore } from "@/lib/store/session-store";
 import { formatINR } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
+function firstName(fullName: string): string {
+  return fullName.trim().split(/\s+/)[0] || "Guest";
+}
+
 function HomeBody() {
   const theme = useTierTheme();
   const user = useSessionStore((s) => s.user);
   const session = useSessionStore((s) => s.session);
   const orders = useSessionStore((s) => s.orders);
   const primary = DEMO_TABLES.find((t) => t.id === session.primary_table_id);
+  const guestFirst = firstName(user.full_name);
 
   return (
     <>
@@ -28,17 +32,28 @@ function HomeBody() {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45 }}
-          className="relative flex min-h-[42vh] flex-col justify-end"
+          className="relative flex min-h-[36vh] flex-col justify-end"
         >
-          <MaiTabLogo
-            variant="FullLogoWithText"
-            className="h-14 w-auto sm:h-16"
-          />
-          <h1 className="mt-5 max-w-md text-balance text-2xl font-semibold text-foreground sm:text-3xl">
-            Your night, one prepaid tab.
-          </h1>
-          <p className="mt-3 max-w-sm text-sm text-muted-foreground">
-            {theme.label} hospitality active · scan, order, settle on exit.
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="max-w-md text-balance font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+              Hello, {guestFirst} 👋
+            </h1>
+            <span
+              className="inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em]"
+              style={{
+                color: "#E2B857",
+                borderColor: "rgba(226,184,87,0.65)",
+                background:
+                  "linear-gradient(135deg, rgba(226,184,87,0.18), rgba(226,184,87,0.05))",
+                boxShadow: "0 0 20px rgba(226,184,87,0.22)",
+              }}
+            >
+              {user.global_spend_tier} Tier Member
+            </span>
+          </div>
+          <p className="mt-3 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">
+            Your night at {DEMO_CLUB.name} is active. Scan, order, settle on
+            exit.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
@@ -60,7 +75,7 @@ function HomeBody() {
       </section>
 
       <div className="grid gap-4 md:grid-cols-[1.2fr_0.8fr]">
-        <TierGlassCard className="p-5">
+        <TierGlassCard className="p-5" showAura>
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
@@ -96,8 +111,8 @@ function HomeBody() {
                 tone={session.is_lucky_draw_eligible ? "gold" : "emerald"}
               />
               <p className="mt-2 text-xs text-muted-foreground">
-                {orders.filter((o) => o.status !== "DELIVERED").length} open
-                tickets
+                {orders.filter((o) => o.status !== "DELIVERED" && o.status !== "RELEASED").length}{" "}
+                open tickets
               </p>
             </div>
           </div>
@@ -137,15 +152,21 @@ function HomeBody() {
       <section className="mt-8">
         <div className="mb-3 flex items-center gap-2">
           <Sparkles className="h-4 w-4" style={{ color: theme.accent }} />
-          <h3 className="type-title text-lg text-foreground">
-            Quick moves
-          </h3>
+          <h3 className="type-title text-lg text-foreground">Quick moves</h3>
         </div>
         <div className="grid gap-3 sm:grid-cols-3">
           {[
             { href: "/tab", title: "Add to Tab", copy: "Prepaid, no re-auth." },
-            { href: "/game", title: "Surprise Me", copy: "Animated table games." },
-            { href: "/pass", title: "Gate Pass", copy: "Tier hospitality ready." },
+            {
+              href: "/game",
+              title: "Surprise Me",
+              copy: "Animated table games.",
+            },
+            {
+              href: "/pass",
+              title: "Gate Pass",
+              copy: "Tier hospitality ready.",
+            },
           ].map((item, index) => (
             <motion.div
               key={item.href}
@@ -157,7 +178,9 @@ function HomeBody() {
               <Link href={item.href} className="block">
                 <TierGlassCard className="h-full p-4" glow={false}>
                   <p className="font-semibold text-foreground">{item.title}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{item.copy}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {item.copy}
+                  </p>
                 </TierGlassCard>
               </Link>
             </motion.div>

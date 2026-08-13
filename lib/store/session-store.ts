@@ -11,8 +11,11 @@ import {
   markOrderDeliveredLive,
   markOrderReadyLive,
 } from "@/lib/data/orders";
+import { formatTokenDisplay, generateOrderTokenCode } from "@/lib/kds/token";
 import { sessionCanUseNativePromos } from "@/lib/discounts/bridge";
 import type { Order, OrderItem, ActiveSession, UserProfile } from "@/lib/types";
+import { resolveBarCounterForTableId } from "@/lib/kds/routing";
+import { resolveWaiterForTableId } from "@/lib/waiter/allocation";
 
 interface SessionState {
   user: UserProfile;
@@ -28,19 +31,12 @@ interface SessionState {
   addOrderItems: (items: OrderItem[]) => Promise<void>;
   markOrderReady: (orderId: string) => Promise<void>;
   markOrderDelivered: (orderId: string) => Promise<void>;
+  releaseOrderHandshake: (orderId: string) => Promise<void>;
   markGamePlayed: (gameId: string) => void;
   applyLuckyDrawDiscount: (percent: number) => void;
   setLastReadyToken: (token: number | null) => void;
   setLiveMode: (live: boolean) => void;
   setSpendTier: (tier: UserProfile["global_spend_tier"]) => void;
-}
-
-function nextToken(orders: Order[]): number {
-  const max = orders.reduce(
-    (acc, order) => Math.max(acc, order.token_number),
-    200
-  );
-  return max + 1;
 }
 
 export const useSessionStore = create<SessionState>((set, get) => ({
@@ -100,6 +96,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       sessionId: get().session.id,
       clubId: get().session.club_id,
       items,
+      primaryTableId: get().session.primary_table_id,
     });
 
     if (live) {
@@ -121,6 +118,19 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       return;
     }
 
+    const token_number = generateOrderTokenCode(
+      get().orders.map((o) => o.token_number)
+    );
+    const route = resolveWaiterForTableId(
+      get().session.primary_table_id,
+      token_number,
+      get().session.club_id
+    );
+    const bar = resolveBarCounterForTableId(
+      get().session.primary_table_id,
+      get().session.club_id
+    );
+
     const order: Order = {
       id: `o-${crypto.randomUUID()}`,
       session_id: get().session.id,
@@ -128,9 +138,15 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       items,
       total_amount: total,
       status: "PENDING",
-      token_number: nextToken(get().orders),
+      token_number,
       created_at: new Date().toISOString(),
       ready_at: null,
+      assigned_waiter_id: route?.assigned_waiter_id ?? null,
+      assigned_waiter_name: route?.assigned_waiter_name ?? null,
+      pickup_token_code:
+        route?.pickup_token_code ?? formatTokenDisplay(token_number),
+      assigned_counter_id: bar?.assigned_counter_id ?? null,
+      assigned_counter_name: bar?.assigned_counter_name ?? null,
     };
 
     set((state) => {
@@ -192,6 +208,42 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       ),
     }));
     await markOrderDeliveredLive(orderId);
+  },
+
+  releaseOrderHandshake: async (orderId) => {
+    const current = get().orders.find((order) => order.id === orderId);
+    set((state) => ({
+      orders: state.orders.map((order) =>
+        order.id === orderId
+          ? { ...order, status: "RELEASED" as const }
+          : order
+      ),
+    }));
+
+    try {
+      await fetch("/api/orders/handshake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId,
+          tokenNumber: current?.token_number,
+          tableId: get().session.primary_table_id,
+          deviceFingerprint: "kds-floor",
+        }),
+      });
+    } catch {
+      // local status already updated
+    }
+
+    if (current) {
+      const { publishBus } = await import("@/lib/realtime/bus");
+      publishBus("orders", "UPDATE", {
+        id: orderId,
+        status: "RELEASED",
+        token_number: current.token_number,
+        session_id: current.session_id,
+      });
+    }
   },
 
   markGamePlayed: (gameId) => {

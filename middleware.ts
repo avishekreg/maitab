@@ -4,21 +4,47 @@ import { isValidRole } from "@/lib/auth/claims";
 import type { UserRole } from "@/lib/types";
 import { updateSession } from "@/lib/supabase/middleware";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
+import {
+  applyAuthCookies,
+  clearAuthCookies,
+  DEMO_ROLE_COOKIE,
+  DEVICE_BIND_COOKIE,
+  hasForbiddenPageQuery,
+  hashUserAgent,
+  verifyDeviceBind,
+} from "@/lib/security/session-cookies";
 
-const DEMO_ROLE_COOKIE = "maitab_demo_role";
+const GUEST_APP_PREFIXES = ["/home", "/tab", "/pass", "/game"] as const;
+
+function isGuestAppPath(pathname: string): boolean {
+  return GUEST_APP_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+  );
+}
 
 function readDemoRole(request: NextRequest): UserRole | null {
   const value = request.cookies.get(DEMO_ROLE_COOKIE)?.value;
   return isValidRole(value) ? value : null;
 }
 
-function resolveRole(jwtRole: UserRole | null, request: NextRequest): UserRole | null {
+function resolveRole(
+  jwtRole: UserRole | null,
+  request: NextRequest
+): UserRole | null {
   if (jwtRole) return jwtRole;
   const demo = readDemoRole(request);
   if (demo) return demo;
-  // Offline / unconfigured: allow demo cookie absence → CUSTOMER for page UX.
   if (!isSupabaseConfigured()) return "CUSTOMER";
   return null;
+}
+
+async function deviceBindOk(request: NextRequest): Promise<boolean> {
+  const bind = await verifyDeviceBind(
+    request.cookies.get(DEVICE_BIND_COOKIE)?.value
+  );
+  if (!bind) return false;
+  const uaHash = await hashUserAgent(request.headers.get("user-agent"));
+  return bind.uaHash === uaHash;
 }
 
 export async function middleware(request: NextRequest) {
@@ -35,10 +61,54 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
-  const role = resolveRole(jwtRole, request);
+  if (!pathname.startsWith("/api")) {
+    const bad = hasForbiddenPageQuery(request.nextUrl.searchParams);
+    if (bad) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "403 Forbidden — raw resource IDs are not allowed in URLs",
+          flag: "URL_PARAM_TAMPER",
+          param: bad,
+        },
+        { status: 403 }
+      );
+    }
+  }
 
-  // --- Secure /api/* with JWT / demo-role claims ---
+  let role = resolveRole(jwtRole, request);
+  let bootstrappedGuest = false;
+
+  if (
+    role &&
+    !jwtRole &&
+    request.cookies.get(DEVICE_BIND_COOKIE)?.value &&
+    !(await deviceBindOk(request))
+  ) {
+    const killed = NextResponse.redirect(new URL("/login", request.url));
+    clearAuthCookies(killed);
+    killed.headers.set("x-maitab-security", "DEVICE_BIND_MISMATCH");
+    return killed;
+  }
+
+  if (!role && isGuestAppPath(pathname)) {
+    role = "CUSTOMER";
+    bootstrappedGuest = true;
+  }
+
   if (pathname.startsWith("/api")) {
+    if (
+      !role &&
+      (pathname.startsWith("/api/pass/") ||
+        pathname.startsWith("/api/sessions/") ||
+        pathname.startsWith("/api/payments/settle") ||
+        pathname.startsWith("/api/discounts/request") ||
+        pathname.startsWith("/api/orders/handshake"))
+    ) {
+      role = "CUSTOMER";
+      bootstrappedGuest = true;
+    }
+
     const guard = apiRoleAllowed(pathname, role);
     if (!guard.ok) {
       return NextResponse.json(
@@ -50,10 +120,14 @@ export async function middleware(request: NextRequest) {
     const apiResponse = NextResponse.next({
       request: { headers: request.headers },
     });
-    // Preserve refreshed auth cookies from updateSession.
     response.cookies.getAll().forEach((cookie) => {
       apiResponse.cookies.set(cookie.name, cookie.value);
     });
+    if (bootstrappedGuest) {
+      await applyAuthCookies(apiResponse, "CUSTOMER", {
+        userAgent: request.headers.get("user-agent"),
+      });
+    }
     if (role) apiResponse.headers.set("x-maitab-role", role);
     if (jwtRole) apiResponse.headers.set("x-maitab-auth", "jwt");
     return apiResponse;
@@ -64,6 +138,20 @@ export async function middleware(request: NextRequest) {
     url.pathname = "/login";
     url.searchParams.set("denied", pathname);
     return NextResponse.redirect(url);
+  }
+
+  if (bootstrappedGuest) {
+    const next = NextResponse.next({
+      request: { headers: request.headers },
+    });
+    response.cookies.getAll().forEach((cookie) => {
+      next.cookies.set(cookie.name, cookie.value);
+    });
+    await applyAuthCookies(next, "CUSTOMER", {
+      userAgent: request.headers.get("user-agent"),
+    });
+    next.headers.set("x-maitab-role", "CUSTOMER");
+    return next;
   }
 
   if (role) response.headers.set("x-maitab-role", role);

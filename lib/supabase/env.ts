@@ -16,6 +16,8 @@ export function getSupabasePublicEnv() {
 
 export const NEON_CLUB_ID = "22222222-2222-2222-2222-222222222222";
 export const COMPETITOR_CLUB_ID = "22222222-2222-2222-2222-222222222223";
+/** Second property in Neon owner group (multi-venue switcher) */
+export const NEON_SKY_CLUB_ID = "22222222-2222-2222-2222-222222222224";
 export const DEMO_SESSION_ID = "33333333-3333-3333-3333-333333333333";
 export const DEMO_CUSTOMER_ID = "11111111-1111-1111-1111-111111111111";
 export const TABLE_B4_ID = "b0000000-0000-0000-0000-000000000004";

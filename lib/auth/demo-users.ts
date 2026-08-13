@@ -58,6 +58,22 @@ export const PUBLIC_DEMO_USERS: DemoUserAccount[] = [
     home: ROLE_HOME.CLUB_ADMIN,
     description: "Venue ops · menu · merges · promos",
   },
+  {
+    role: "FLOOR_MANAGER",
+    email: "manager@maitab.demo",
+    password: DEMO_PASSWORD,
+    name: "Floor Manager Maya",
+    home: ROLE_HOME.FLOOR_MANAGER,
+    description: "Zone allocation · bar counters · shifts",
+  },
+  {
+    role: "CAPTAIN",
+    email: "captain@maitab.demo",
+    password: DEMO_PASSWORD,
+    name: "Floor Captain Vikram",
+    home: ROLE_HOME.CAPTAIN,
+    description: "Senior floor lead · shift override",
+  },
 ];
 
 /** @deprecated Use PUBLIC_DEMO_USERS — kept as alias for public roster only */

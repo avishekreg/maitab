@@ -38,8 +38,8 @@ function LoginForm() {
       else setNote(`${data.email ?? role} · ${data.mode ?? "cookie"}`);
       router.push(home);
     } catch {
-      document.cookie = `maitab_demo_role=${role}; path=/; max-age=604800; samesite=lax`;
-      router.push(home);
+      // Never write auth cookies from JS (HttpOnly). Retry via API is required.
+      setNote("Sign-in failed — retry demo login.");
     } finally {
       setLoadingRole(null);
     }

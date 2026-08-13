@@ -30,12 +30,16 @@ export default function TableScanPage({ params }: PageProps) {
   if (!payload) {
     return (
       <Shell>
-        <GlassPanel className="p-6">
-          <h1 className="font-display text-2xl font-bold text-accent-ruby">
-            Invalid or tampered QR
+        <GlassPanel className="border-accent-ruby/40 p-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent-ruby">
+            403 Forbidden · cryptographic error
+          </p>
+          <h1 className="mt-2 font-display text-2xl font-bold text-accent-ruby">
+            URL tampering blocked
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Cryptographic verification failed. Ask staff for a fresh table code.
+            HMAC verification failed. Manual edits to table slugs are rejected
+            and flagged. Ask staff for a fresh signed QR.
           </p>
         </GlassPanel>
       </Shell>

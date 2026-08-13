@@ -9,6 +9,7 @@ import {
   isPublicDemoRole,
   portalKeyMatches,
 } from "@/lib/auth/demo-users";
+import { applyAuthCookies } from "@/lib/security/session-cookies";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 
 /** Public demo roster only — never Super Admin credentials. */
@@ -67,11 +68,8 @@ export async function POST(request: Request) {
       home: account.home,
       mode: "cookie",
     });
-    response.cookies.set("maitab_demo_role", body.role, {
-      path: "/",
-      maxAge: 60 * 60 * 8,
-      sameSite: "lax",
-      httpOnly: false,
+    await applyAuthCookies(response, body.role, {
+      userAgent: request.headers.get("user-agent"),
     });
     return response;
   }
@@ -83,10 +81,8 @@ export async function POST(request: Request) {
     home: account.home,
     mode: isSupabaseConfigured() ? "jwt+cookie" : "cookie",
   });
-  response.cookies.set("maitab_demo_role", body.role, {
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7,
-    sameSite: "lax",
+  await applyAuthCookies(response, body.role, {
+    userAgent: request.headers.get("user-agent"),
   });
 
   if (!isSupabaseConfigured() || !email || !password) {

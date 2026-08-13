@@ -1,6 +1,8 @@
 export type UserRole =
   | "SUPER_ADMIN"
   | "CLUB_ADMIN"
+  | "FLOOR_MANAGER"
+  | "CAPTAIN"
   | "GATE_STAFF"
   | "BARTENDER"
   | "AV_CONTROLLER"
@@ -19,7 +21,12 @@ export type TableStatus =
 
 export type SessionStatus = "ACTIVE" | "COMPLETED" | "AUTO_SETTLED_EXITED";
 
-export type OrderStatus = "PENDING" | "PREPARING" | "READY" | "DELIVERED";
+export type OrderStatus =
+  | "PENDING"
+  | "PREPARING"
+  | "READY"
+  | "RELEASED"
+  | "DELIVERED";
 
 export type GameType =
   | "ROULETTE"
@@ -80,6 +87,9 @@ export interface Club {
   prebook_buffer_minutes: number;
   subscription_tier: "STARTER" | "GROWTH" | "ENTERPRISE";
   created_at: string;
+  owner_group_id?: string | null;
+  credit_balance?: number;
+  short_name?: string | null;
 }
 
 export interface ClubTable {
@@ -122,6 +132,11 @@ export interface Order {
   token_number: number;
   created_at: string;
   ready_at: string | null;
+  assigned_waiter_id?: string | null;
+  assigned_waiter_name?: string | null;
+  pickup_token_code?: string | null;
+  assigned_counter_id?: string | null;
+  assigned_counter_name?: string | null;
 }
 
 export interface GamePoolItem {
@@ -151,6 +166,8 @@ export interface PlatformMetrics {
 export const ROLE_HOME: Record<UserRole, string> = {
   SUPER_ADMIN: "/admin/super",
   CLUB_ADMIN: "/admin/club",
+  FLOOR_MANAGER: "/admin/manager",
+  CAPTAIN: "/admin/manager",
   GATE_STAFF: "/gate",
   BARTENDER: "/kds",
   AV_CONTROLLER: "/av-panel",
