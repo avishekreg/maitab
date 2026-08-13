@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
+import { assertNativePromoAllowed } from "@/lib/data/discounts";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
+import type { ActiveSession } from "@/lib/types";
 
 /**
  * Real PostGIS anti-cannibalization via RPC `can_create_flash_promo`.
  * Falls back to simulated competitor lock when Supabase is not configured.
+ * Optional sessionId enforces Phase 6 mutual exclusivity on the guest tab.
  */
 export async function POST(request: Request) {
   const body = (await request.json()) as {
@@ -12,6 +15,8 @@ export async function POST(request: Request) {
     category?: string;
     radiusM?: number;
     lockoutMin?: number;
+    sessionId?: string;
+    session?: ActiveSession;
   };
 
   if (!body.clubId || !body.category) {
@@ -19,6 +24,19 @@ export async function POST(request: Request) {
       { ok: false, reason: "clubId and category are required" },
       { status: 400 }
     );
+  }
+
+  if (body.sessionId || body.session) {
+    const gate = await assertNativePromoAllowed(
+      body.sessionId ?? body.session!.id,
+      body.session
+    );
+    if (!gate.ok) {
+      return NextResponse.json(
+        { ok: false, reason: gate.reason, exclusivity: true },
+        { status: 409 }
+      );
+    }
   }
 
   const category = body.category.toUpperCase();

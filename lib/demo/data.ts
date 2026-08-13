@@ -97,6 +97,12 @@ export const DEMO_SESSION: ActiveSession = {
   status: "ACTIVE",
   started_at: new Date(Date.now() - 72 * 60_000).toISOString(),
   ended_at: null,
+  external_provider: "NONE",
+  external_voucher_code: null,
+  discount_percentage: 0,
+  discount_status: null,
+  discount_verified_by: null,
+  is_native_promos_eligible: true,
 };
 
 export const DEMO_ORDERS: Order[] = [

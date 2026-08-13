@@ -11,6 +11,7 @@ import {
   markOrderDeliveredLive,
   markOrderReadyLive,
 } from "@/lib/data/orders";
+import { sessionCanUseNativePromos } from "@/lib/discounts/bridge";
 import type { Order, OrderItem, ActiveSession, UserProfile } from "@/lib/types";
 
 interface SessionState {
@@ -23,6 +24,7 @@ interface SessionState {
   hydrateOrders: (orders: Order[]) => void;
   hydratePlayedGames: (gameIds: string[]) => void;
   patchOrder: (patch: Partial<Order> & { id: string }) => void;
+  patchSession: (patch: Partial<ActiveSession>) => void;
   addOrderItems: (items: OrderItem[]) => Promise<void>;
   markOrderReady: (orderId: string) => Promise<void>;
   markOrderDelivered: (orderId: string) => Promise<void>;
@@ -55,6 +57,11 @@ export const useSessionStore = create<SessionState>((set, get) => ({
 
   hydratePlayedGames: (gameIds) =>
     set({ playedGameIds: Array.from(new Set(gameIds)) }),
+
+  patchSession: (patch) =>
+    set((state) => ({
+      session: { ...state.session, ...patch },
+    })),
 
   patchOrder: (patch) => {
     set((state) => {
@@ -96,18 +103,21 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     });
 
     if (live) {
-      set((state) => ({
-        orders: state.orders.some((o) => o.id === live.id)
-          ? state.orders
-          : [live, ...state.orders],
-        session: {
-          ...state.session,
-          total_session_spend: state.session.total_session_spend + total,
-          is_lucky_draw_eligible:
-            state.session.total_session_spend + total >= 1500 &&
-            !state.session.is_vip,
-        },
-      }));
+      set((state) => {
+        const spend = state.session.total_session_spend + total;
+        const nativeOk = sessionCanUseNativePromos(state.session);
+        return {
+          orders: state.orders.some((o) => o.id === live.id)
+            ? state.orders
+            : [live, ...state.orders],
+          session: {
+            ...state.session,
+            total_session_spend: spend,
+            is_lucky_draw_eligible:
+              nativeOk && spend >= 1500 && !state.session.is_vip,
+          },
+        };
+      });
       return;
     }
 
@@ -123,16 +133,19 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       ready_at: null,
     };
 
-    set((state) => ({
-      orders: [order, ...state.orders],
-      session: {
-        ...state.session,
-        total_session_spend: state.session.total_session_spend + total,
-        is_lucky_draw_eligible:
-          state.session.total_session_spend + total >= 1500 &&
-          !state.session.is_vip,
-      },
-    }));
+    set((state) => {
+      const spend = state.session.total_session_spend + total;
+      const nativeOk = sessionCanUseNativePromos(state.session);
+      return {
+        orders: [order, ...state.orders],
+        session: {
+          ...state.session,
+          total_session_spend: spend,
+          is_lucky_draw_eligible:
+            nativeOk && spend >= 1500 && !state.session.is_vip,
+        },
+      };
+    });
   },
 
   markOrderReady: async (orderId) => {
@@ -190,15 +203,20 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   },
 
   applyLuckyDrawDiscount: (percent) => {
-    set((state) => ({
-      session: {
-        ...state.session,
-        total_session_spend: Math.round(
-          state.session.total_session_spend * (1 - percent / 100)
-        ),
-        is_lucky_draw_eligible: false,
-      },
-    }));
+    set((state) => {
+      if (!sessionCanUseNativePromos(state.session)) {
+        return state;
+      }
+      return {
+        session: {
+          ...state.session,
+          total_session_spend: Math.round(
+            state.session.total_session_spend * (1 - percent / 100)
+          ),
+          is_lucky_draw_eligible: false,
+        },
+      };
+    });
   },
 
   setLastReadyToken: (token) => set({ lastReadyToken: token }),

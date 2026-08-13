@@ -19,6 +19,18 @@ export const PROTECTED_API_ROUTES: { prefix: string; roles: UserRole[] }[] = [
   { prefix: "/api/promos/flash", roles: ["CLUB_ADMIN", "SUPER_ADMIN"] },
   { prefix: "/api/lucky-draw/run", roles: ["CLUB_ADMIN", "SUPER_ADMIN"] },
   { prefix: "/api/orders/ready", roles: ["BARTENDER", "CLUB_ADMIN", "SUPER_ADMIN"] },
+  {
+    prefix: "/api/discounts/approve",
+    roles: ["BARTENDER", "CLUB_ADMIN", "SUPER_ADMIN"],
+  },
+  {
+    prefix: "/api/discounts/pending",
+    roles: ["BARTENDER", "CLUB_ADMIN", "SUPER_ADMIN"],
+  },
+  {
+    prefix: "/api/discounts/request",
+    roles: ["CUSTOMER", "SUPER_ADMIN"],
+  },
   { prefix: "/api/qr/table", roles: ["CLUB_ADMIN", "SUPER_ADMIN", "GATE_STAFF"] },
   {
     prefix: "/api/sessions/attach",

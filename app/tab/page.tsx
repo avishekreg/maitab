@@ -3,6 +3,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { BellRing, Minus, Plus } from "lucide-react";
+import {
+  ExternalDealApprovedModal,
+  ExternalDealCard,
+} from "@/components/discounts/ExternalDealCard";
 import { AppShell } from "@/components/layout/AppShell";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -11,10 +15,16 @@ import { useTierTheme } from "@/components/theme/TierThemeProvider";
 import { DEMO_CLUB, MENU_ITEMS } from "@/lib/demo/data";
 import { fetchClubOrders } from "@/lib/data/orders";
 import {
+  discountedUnitPrice,
+  sessionCanUseNativePromos,
+  sessionHasApprovedExternalDeal,
+} from "@/lib/discounts/bridge";
+import {
   haversineMeters,
   shouldAutoSettle,
   type ExitTrackerSample,
 } from "@/lib/geo/geofence";
+import { useDiscountBridgeRealtime } from "@/lib/hooks/use-discount-bridge-realtime";
 import { useLuckyDrawRealtime } from "@/lib/hooks/use-lucky-draw-realtime";
 import { useOrdersRealtime } from "@/lib/hooks/use-orders-realtime";
 import { useSessionStore } from "@/lib/store/session-store";
@@ -34,23 +44,38 @@ function TabBody() {
   const setLastReadyToken = useSessionStore((s) => s.setLastReadyToken);
   const hydrateOrders = useSessionStore((s) => s.hydrateOrders);
   const patchOrder = useSessionStore((s) => s.patchOrder);
+  const patchSession = useSessionStore((s) => s.patchSession);
   const applyLuckyDrawDiscount = useSessionStore((s) => s.applyLuckyDrawDiscount);
 
   const [qty, setQty] = useState<Record<string, number>>({});
   const [buzz, setBuzz] = useState(false);
   const [geoNote, setGeoNote] = useState("Geo fence idle");
   const [luckyNote, setLuckyNote] = useState<string | null>(null);
+  const [dealModal, setDealModal] = useState(false);
   const samplesRef = useRef<ExitTrackerSample[]>([]);
   const alertedTokens = useRef<Set<number>>(new Set());
+
+  const externalActive = sessionHasApprovedExternalDeal(session);
+  const discountPct = externalActive ? session.discount_percentage : 0;
+
+  const priceFor = useCallback(
+    (mrp: number) => discountedUnitPrice(mrp, discountPct),
+    [discountPct]
+  );
 
   const cart = useMemo(() => {
     return MENU_ITEMS.map((item) => ({
       ...item,
       quantity: qty[item.name] ?? 0,
+      charge_price: priceFor(item.unit_price),
     })).filter((item) => item.quantity > 0);
-  }, [qty]);
+  }, [qty, priceFor]);
 
   const cartTotal = cart.reduce(
+    (sum, item) => sum + item.charge_price * item.quantity,
+    0
+  );
+  const cartMrp = cart.reduce(
     (sum, item) => sum + item.unit_price * item.quantity,
     0
   );
@@ -81,9 +106,34 @@ function TabBody() {
 
   useLuckyDrawRealtime(NEON_CLUB_ID, (award) => {
     if (award.session_id !== session.id) return;
+    if (!sessionCanUseNativePromos(session)) {
+      setLuckyNote(
+        "Lucky draw skipped — external deal exclusivity is active on this tab."
+      );
+      return;
+    }
     applyLuckyDrawDiscount(award.discount_percent);
     setLuckyNote(`Lucky draw! ${award.discount_percent}% off your running tab.`);
     void triggerHaptic([40, 40, 80, 40, 120]);
+  });
+
+  useDiscountBridgeRealtime(NEON_CLUB_ID, (payload) => {
+    if (payload.session_id !== session.id) return;
+    patchSession({
+      external_provider: payload.external_provider,
+      external_voucher_code: payload.external_voucher_code,
+      discount_percentage: payload.discount_percentage,
+      discount_status: payload.discount_status,
+      is_native_promos_eligible: payload.is_native_promos_eligible,
+      discount_verified_by: payload.discount_verified_by,
+      is_lucky_draw_eligible: payload.is_native_promos_eligible
+        ? session.is_lucky_draw_eligible
+        : false,
+    });
+    if (payload.discount_status === "APPROVED") {
+      setDealModal(true);
+      void triggerHaptic([40, 40, 80]);
+    }
   });
 
   useEffect(() => {
@@ -162,8 +212,11 @@ function TabBody() {
     const items: OrderItem[] = cart.map((item) => ({
       name: item.name,
       quantity: item.quantity,
-      unit_price: item.unit_price,
+      unit_price: item.charge_price,
       category: item.category,
+      notes: externalActive
+        ? `MRP ${item.unit_price} · ${discountPct}% external deal`
+        : undefined,
     }));
     await addOrderItems(items);
     setQty({});
@@ -196,6 +249,16 @@ function TabBody() {
           {luckyNote}
         </div>
       ) : null}
+
+      {!sessionCanUseNativePromos(session) ? (
+        <div className="mb-4 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-xs text-nightlife-muted">
+          Native exclusivity lock: Hourly Lucky Draw and Flash Promos are
+          disabled while the external deal is approved. Ordering, games, and
+          AutoPay remain on.
+        </div>
+      ) : null}
+
+      <ExternalDealCard />
 
       <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
         <div>
@@ -236,7 +299,19 @@ function TabBody() {
                 <div>
                   <p className="font-medium text-white">{item.name}</p>
                   <p className="text-xs text-nightlife-muted">
-                    {item.category} · {formatINR(item.unit_price)}
+                    {item.category} ·{" "}
+                    {externalActive ? (
+                      <>
+                        <span className="mr-1.5 text-nightlife-muted/70 line-through decoration-white/30">
+                          {formatINR(item.unit_price)}
+                        </span>
+                        <span className="font-semibold text-accent-emerald">
+                          {formatINR(priceFor(item.unit_price))}
+                        </span>
+                      </>
+                    ) : (
+                      formatINR(item.unit_price)
+                    )}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -267,9 +342,20 @@ function TabBody() {
           <div className="mt-4 flex items-center justify-between gap-3">
             <p className="text-sm text-nightlife-muted">
               Cart{" "}
-              <span className="font-semibold text-accent-gold">
-                {formatINR(cartTotal)}
-              </span>
+              {externalActive && cartMrp !== cartTotal ? (
+                <>
+                  <span className="mr-1.5 line-through decoration-white/30">
+                    {formatINR(cartMrp)}
+                  </span>
+                  <span className="font-semibold text-accent-emerald">
+                    {formatINR(cartTotal)}
+                  </span>
+                </>
+              ) : (
+                <span className="font-semibold text-accent-gold">
+                  {formatINR(cartTotal)}
+                </span>
+              )}
             </p>
             <button
               type="button"
@@ -313,11 +399,30 @@ function TabBody() {
                     />
                   </div>
                   <ul className="mt-2 space-y-1 text-sm text-nightlife-muted">
-                    {order.items.map((item) => (
-                      <li key={`${order.id}-${item.name}`}>
-                        {item.quantity}× {item.name}
-                      </li>
-                    ))}
+                    {order.items.map((item) => {
+                      const mrpMatch = item.notes?.match(/MRP\s+(\d+)/i);
+                      const mrp = mrpMatch ? Number(mrpMatch[1]) : null;
+                      return (
+                        <li
+                          key={`${order.id}-${item.name}`}
+                          className="flex items-center justify-between gap-2"
+                        >
+                          <span>
+                            {item.quantity}× {item.name}
+                          </span>
+                          {mrp && mrp > item.unit_price ? (
+                            <span className="tabular-nums">
+                              <span className="mr-1 line-through decoration-white/30">
+                                {formatINR(mrp * item.quantity)}
+                              </span>
+                              <span className="text-accent-emerald">
+                                {formatINR(item.unit_price * item.quantity)}
+                              </span>
+                            </span>
+                          ) : null}
+                        </li>
+                      );
+                    })}
                   </ul>
                   <div className="mt-3 flex items-center justify-between">
                     <p className="text-sm font-semibold text-accent-gold">
@@ -338,6 +443,12 @@ function TabBody() {
           </div>
         </TierGlassCard>
       </div>
+
+      <ExternalDealApprovedModal
+        open={dealModal}
+        onClose={() => setDealModal(false)}
+        session={session}
+      />
     </>
   );
 }

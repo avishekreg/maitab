@@ -10,7 +10,8 @@ export type RealtimeTopic =
   | "orders"
   | "lucky_draw_awards"
   | "game_session_votes"
-  | "game_session_rounds";
+  | "game_session_rounds"
+  | "discount_bridge";
 
 export interface BusEnvelope<T = unknown> {
   topic: RealtimeTopic;

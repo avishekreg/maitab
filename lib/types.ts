@@ -29,6 +29,18 @@ export type GameType =
   | "SPIN_THE_BOTTLE"
   | "MOST_LIKELY_TO";
 
+export type ExternalProvider =
+  | "ZOMATO_DISTRICT"
+  | "SWIGGY_DINEOUT"
+  | "EAZYDINER"
+  | "DIRECT"
+  | "NONE";
+
+export type DiscountStatus =
+  | "PENDING_VERIFICATION"
+  | "APPROVED"
+  | "REJECTED";
+
 export interface FavoriteDrink {
   name: string;
   category?: string;
@@ -91,6 +103,13 @@ export interface ActiveSession {
   status: SessionStatus;
   started_at: string;
   ended_at: string | null;
+  /** Phase 6 — external deal bridge */
+  external_provider: ExternalProvider;
+  external_voucher_code: string | null;
+  discount_percentage: number;
+  discount_status: DiscountStatus | null;
+  discount_verified_by: string | null;
+  is_native_promos_eligible: boolean;
 }
 
 export interface Order {
