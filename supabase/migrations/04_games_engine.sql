@@ -1,7 +1,14 @@
 -- Phase 5: expand game types + session played-games memory
 
 do $$ begin
-  alter type public.game_type add value if not exists 'MOST_LIKELY_TO';
+  if exists (
+    select 1
+    from pg_type t
+    join pg_namespace n on n.oid = t.typnamespace
+    where n.nspname = 'public' and t.typname = 'game_type'
+  ) then
+    alter type public.game_type add value if not exists 'MOST_LIKELY_TO';
+  end if;
 exception
   when duplicate_object then null;
 end $$;

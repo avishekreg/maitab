@@ -72,7 +72,47 @@ exception when duplicate_object then null;
 end $$;
 
 -- ---------------------------------------------------------------------------
--- Helpers
+-- Core tables (must exist before helper functions that reference them)
+-- ---------------------------------------------------------------------------
+create table if not exists public.users (
+  id uuid primary key references auth.users (id) on delete cascade,
+  full_name text not null,
+  phone_number text not null unique,
+  role public.user_role not null default 'CUSTOMER',
+  global_spend_tier public.spend_tier not null default 'BRONZE',
+  favorite_drinks jsonb not null default '[]'::jsonb,
+  autopay_mandate_id text,
+  autopay_status public.autopay_status not null default 'PENDING',
+  lifetime_visits integer not null default 0 check (lifetime_visits >= 0),
+  club_id uuid,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.clubs (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  location geography(point, 4326) not null,
+  lucky_draw_threshold_amount numeric(12,2) not null default 1500,
+  active_promo_category text,
+  display_enabled boolean not null default true,
+  lucky_draw_enabled boolean not null default true,
+  prebook_buffer_minutes integer not null default 30,
+  subscription_tier text not null default 'STARTER'
+    check (subscription_tier in ('STARTER', 'GROWTH', 'ENTERPRISE')),
+  radius_config_m integer not null default 1500,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.users
+  drop constraint if exists users_club_id_fkey;
+alter table public.users
+  add constraint users_club_id_fkey
+  foreign key (club_id) references public.clubs (id) on delete set null;
+
+-- ---------------------------------------------------------------------------
+-- Helpers (after public.users exists — SQL functions resolve tables at CREATE)
 -- ---------------------------------------------------------------------------
 create or replace function public.current_user_role()
 returns public.user_role
@@ -113,46 +153,6 @@ as $$
       )
   );
 $$;
-
--- ---------------------------------------------------------------------------
--- Core tables
--- ---------------------------------------------------------------------------
-create table if not exists public.users (
-  id uuid primary key references auth.users (id) on delete cascade,
-  full_name text not null,
-  phone_number text not null unique,
-  role public.user_role not null default 'CUSTOMER',
-  global_spend_tier public.spend_tier not null default 'BRONZE',
-  favorite_drinks jsonb not null default '[]'::jsonb,
-  autopay_mandate_id text,
-  autopay_status public.autopay_status not null default 'PENDING',
-  lifetime_visits integer not null default 0 check (lifetime_visits >= 0),
-  club_id uuid,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
-
-create table if not exists public.clubs (
-  id uuid primary key default gen_random_uuid(),
-  name text not null,
-  location geography(point, 4326) not null,
-  lucky_draw_threshold_amount numeric(12,2) not null default 1500,
-  active_promo_category text,
-  display_enabled boolean not null default true,
-  lucky_draw_enabled boolean not null default true,
-  prebook_buffer_minutes integer not null default 30,
-  subscription_tier text not null default 'STARTER'
-    check (subscription_tier in ('STARTER', 'GROWTH', 'ENTERPRISE')),
-  radius_config_m integer not null default 1500,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
-
-alter table public.users
-  drop constraint if exists users_club_id_fkey;
-alter table public.users
-  add constraint users_club_id_fkey
-  foreign key (club_id) references public.clubs (id) on delete set null;
 
 create table if not exists public.club_tables (
   id uuid primary key default gen_random_uuid(),
