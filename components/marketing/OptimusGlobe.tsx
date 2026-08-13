@@ -39,16 +39,20 @@ export function OptimusGlobe({
       ctx.clearRect(0, 0, rect.width, rect.height);
       const cx = rect.width / 2;
       const cy = rect.height / 2;
-      const radius = Math.min(rect.width, rect.height) * 0.525;
-      ctx.font = "12px ui-monospace, SFMono-Regular, Menlo, monospace";
+      const shortSide = Math.min(rect.width, rect.height);
+      // Cap radius on narrow / short canvases so the mesh stays in-frame on phones
+      const radius = shortSide * (shortSide < 360 ? 0.42 : 0.525);
+      const fontPx = shortSide < 360 ? 9 : shortSide < 520 ? 10 : 12;
+      const step = shortSide < 360 ? 0.22 : 0.15;
+      ctx.font = `${fontPx}px ui-monospace, SFMono-Regular, Menlo, monospace`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
       const points: Array<{ x: number; y: number; z: number; char: string }> =
         [];
 
-      for (let lon = 0; lon < Math.PI * 2; lon += 0.15) {
-        for (let lat = 0; lat < Math.PI; lat += 0.15) {
+      for (let lon = 0; lon < Math.PI * 2; lon += step) {
+        for (let lat = 0; lat < Math.PI; lat += step) {
           const x = Math.sin(lat) * Math.cos(lon + angle * 0.5);
           const y = Math.sin(lat) * Math.sin(lon + angle * 0.5);
           const z = Math.cos(lat);
