@@ -19,10 +19,11 @@ function GradientDefs({ idPrefix }: { idPrefix: string }) {
         y2="64"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#7C3AED" />
-        <stop offset="0.55" stopColor="#A78BFA" />
-        <stop offset="1" stopColor="#F59E0B" />
+        <stop stopColor="#8B5CF6" />
+        <stop offset="0.55" stopColor="#A855F7" />
+        <stop offset="1" stopColor="#E2B857" />
       </linearGradient>
+      {/* Electric Amethyst → Cyan — ONLY for letters A + I */}
       <linearGradient
         id={`${idPrefix}-ai`}
         x1="0"
@@ -31,9 +32,8 @@ function GradientDefs({ idPrefix }: { idPrefix: string }) {
         y2="0"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#A78BFA" />
-        <stop offset="0.5" stopColor="#C4B5FD" />
-        <stop offset="1" stopColor="#22D3EE" />
+        <stop stopColor="#A855F7" />
+        <stop offset="1" stopColor="#00F0FF" />
       </linearGradient>
       <filter
         id={`${idPrefix}-glow`}
@@ -55,7 +55,7 @@ function GradientDefs({ idPrefix }: { idPrefix: string }) {
         width="260%"
         height="260%"
       >
-        <feGaussianBlur stdDeviation="2.6" result="blur" />
+        <feGaussianBlur stdDeviation="2.8" result="blur" />
         <feMerge>
           <feMergeNode in="blur" />
           <feMergeNode in="SourceGraphic" />
@@ -74,7 +74,7 @@ function IconMark({
   idPrefix: string;
 }) {
   const stroke = monochrome ? "currentColor" : `url(#${idPrefix}-brand)`;
-  const fillCard = monochrome ? "currentColor" : "#08090C";
+  const fillCard = monochrome ? "currentColor" : "#12151A";
   const aiNode = monochrome ? "currentColor" : `url(#${idPrefix}-ai)`;
 
   return (
@@ -134,9 +134,10 @@ function Wordmark({
   x?: number;
   y?: number;
 }) {
-  const mFill = monochrome ? "currentColor" : "rgba(255,255,255,0.92)";
+  // Soft Slate · Electric Amethyst→Cyan (AI only) · Champagne Gold
+  const mFill = monochrome ? "currentColor" : "#94A3B8";
   const aiFill = monochrome ? "currentColor" : `url(#${idPrefix}-ai)`;
-  const tabFill = monochrome ? "currentColor" : "rgba(255,255,255,0.88)";
+  const tabFill = monochrome ? "currentColor" : "#E2B857";
 
   return (
     <text
@@ -210,17 +211,7 @@ export function MAITabLogo({
       <g transform="translate(0,0)">
         <IconMark idPrefix={idPrefix} />
       </g>
-      <Wordmark idPrefix={idPrefix} y={30} />
-      <text
-        x="80"
-        y="50"
-        fill="rgba(255,255,255,0.5)"
-        fontFamily="DM Sans, sans-serif"
-        fontSize="10"
-        letterSpacing="0.2em"
-      >
-        mAI ECOSYSTEM
-      </text>
+      <Wordmark idPrefix={idPrefix} y={42} />
     </svg>
   );
 }

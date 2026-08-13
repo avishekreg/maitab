@@ -36,15 +36,14 @@ export function ExternalDealApprovedModal({
             initial={{ scale: 0.94, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.96, opacity: 0 }}
-            className="w-full max-w-md rounded-2xl border border-white/15 bg-[#0c0e14] p-6 text-white shadow-2xl"
+            className="w-full max-w-md rounded-2xl border border-champagne/20 bg-[#12151A] p-6 text-white shadow-2xl backdrop-blur-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-[11px] uppercase tracking-[0.2em] text-accent-gold">
               Deal activated
             </p>
             <h3 className="mt-2 font-display text-2xl font-bold leading-tight">
-              {providerLabel(session.external_provider)}{" "}
-              {session.discount_percentage}% Deal Activated!
+              Zomato / Swiggy {session.discount_percentage}% Deal Activated!
             </h3>
             <p className="mt-3 text-sm leading-relaxed text-nightlife-muted">
               Note: External deals cannot be combined with mAITab Native 1:1
@@ -129,12 +128,12 @@ export function ExternalDealCard({
 
   return (
     <>
-      <div className="mb-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-        <p className="text-xs uppercase tracking-[0.18em] text-nightlife-muted">
-          External deal bridge
+      <div className="mb-4 rounded-2xl border border-champagne/20 bg-white/[0.04] p-4 backdrop-blur-2xl">
+        <p className="text-xs uppercase tracking-[0.18em] text-accent-gold">
+          Partner reservation
         </p>
         <h2 className="mt-1 font-display text-lg font-semibold text-white">
-          Link Zomato / Swiggy / EazyDiner
+          Have a Zomato / Swiggy / District Reservation?
         </h2>
 
         {approved ? (
@@ -170,9 +169,9 @@ export function ExternalDealCard({
         ) : (
           <div className="mt-3 space-y-3">
             <p className="text-sm text-nightlife-muted">
-              Enter your partner voucher. Staff verifies at the bar — once
-              approved, mAITab native 1:1 flash promos and hourly lucky draws
-              lock out (anti double-dip).
+              Enter your deal code. Staff verifies on KDS — once approved,
+              native 1:1 Flash Promos and Hourly Lucky Draws lock out for this
+              tab (anti double-dip). Ordering, games, and AutoPay stay on.
             </p>
             <div className="grid gap-2 sm:grid-cols-2">
               {EXTERNAL_PROVIDERS.map((p) => (
@@ -184,7 +183,7 @@ export function ExternalDealCard({
                     "rounded-xl border px-3 py-2 text-left text-sm transition",
                     provider === p.id
                       ? "border-accent-violet bg-accent-violet/15 text-white"
-                      : "border-white/10 text-nightlife-muted hover:border-white/25"
+                      : "border-champagne/20 text-nightlife-muted hover:border-champagne/40"
                   )}
                 >
                   <span className="font-medium text-white">{p.label}</span>
@@ -198,7 +197,7 @@ export function ExternalDealCard({
               value={code}
               onChange={(e) => setCode(e.target.value.toUpperCase())}
               placeholder="Voucher code"
-              className="h-11 w-full rounded-xl border border-white/10 bg-black/30 px-3 text-sm text-white placeholder:text-nightlife-muted focus:border-accent-violet focus:outline-none"
+              className="h-11 w-full rounded-xl border border-champagne/20 bg-black/30 px-3 text-sm text-white placeholder:text-nightlife-muted focus:border-accent-violet focus:outline-none"
             />
             {error ? (
               <p className="text-xs text-accent-ruby">{error}</p>

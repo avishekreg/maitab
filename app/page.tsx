@@ -69,10 +69,6 @@ const STAFF_STEPS = [
     role: "Club Admin",
     copy: "Menu, merges, display toggles, lucky draw, and PostGIS-aware flash promos from one venue console.",
   },
-  {
-    role: "Super Admin",
-    copy: "Platform GMV, fraud signals, geofence radius, feature flags, and an encrypted no-code integration hub.",
-  },
 ];
 
 const FEATURES = [
@@ -193,11 +189,11 @@ const FAQ = [
   },
   {
     q: "Is this only for guests, or for staff too?",
-    a: "Both. Six RBAC roles ship with dedicated surfaces: Customer, Gate, Bartender, AV, Club Admin, and Super Admin — each deliberately limited to what that job needs.",
+    a: "Both. Five public venue roles ship with dedicated surfaces: Customer, Gate, Bartender, AV, and Club Admin — each deliberately limited to what that job needs.",
   },
   {
     q: "How fast can a venue try it?",
-    a: "Immediately via demo roles on this deployment. For production, we map your clubs, tables, and staff into Supabase, wire payment keys, and walk the floor team through a live night.",
+    a: "Immediately via the public demo roles on this deployment. For production, we map your clubs, tables, and staff into Supabase, wire payment keys, and walk the floor team through a live night.",
   },
 ];
 
@@ -624,7 +620,7 @@ export default function MarketingLandingPage() {
               href="/login"
               className="inline-flex h-12 items-center rounded-xl border border-white/15 px-5 text-sm font-semibold text-white transition hover:border-white/30"
             >
-              Try all 6 demo roles
+              Try venue demo roles
             </Link>
             <Link
               href="/home"

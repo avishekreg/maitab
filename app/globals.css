@@ -3,13 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --nightlife-bg: #08090c;
-  --nightlife-elevated: #0f1116;
-  --accent-violet: #7c3aed;
-  --accent-gold: #f59e0b;
+  --nightlife-bg: #12151a;
+  --nightlife-elevated: #1a1e26;
+  --accent-violet: #8b5cf6;
+  --accent-gold: #e2b857;
   --accent-emerald: #10b981;
   --accent-ruby: #f43f5e;
-  --text-muted: #94a3b8;
+  --text-muted: #cbd5e1;
+  --champagne: #e2b857;
   color-scheme: dark;
 }
 
@@ -44,7 +45,7 @@ h3,
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(226, 184, 87, 0.22);
   border-radius: 999px;
 }
 
@@ -58,13 +59,13 @@ h3,
   }
 
   .surface-frost {
-    @apply border border-white/10 bg-white/[0.03] backdrop-blur-xl;
+    @apply border border-champagne/20 bg-white/[0.04] backdrop-blur-2xl;
   }
 
   .glow-border {
     box-shadow:
-      inset 0 0 0 1px rgba(124, 58, 237, 0.28),
-      0 0 24px rgba(124, 58, 237, 0.12);
+      inset 0 0 0 1px rgba(226, 184, 87, 0.22),
+      0 0 24px rgba(139, 92, 246, 0.12);
   }
 
   .amount-gold {

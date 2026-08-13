@@ -1,7 +1,7 @@
 import type { UserRole } from "@/lib/types";
 import { ROLE_HOME } from "@/lib/types";
 
-/** Shared password for every seeded demo account. */
+/** Shared password for public demo venue roles only (never Super Admin). */
 export const DEMO_PASSWORD = "MaiTabDemo!234";
 
 export interface DemoUserAccount {
@@ -14,25 +14,25 @@ export interface DemoUserAccount {
 }
 
 /**
- * Canonical demo roster — keep in sync with `supabase/seed.sql`.
- * Works in cookie-only mode without Supabase; JWT mode after seed.
+ * Public demo roster — never includes SUPER_ADMIN.
+ * Keep emails in sync with `supabase/seed.sql` for JWT mode.
  */
-export const DEMO_USERS: DemoUserAccount[] = [
+export const PUBLIC_DEMO_USERS: DemoUserAccount[] = [
   {
-    role: "SUPER_ADMIN",
-    email: "super@maitab.demo",
+    role: "CUSTOMER",
+    email: "rahul@maitab.demo",
     password: DEMO_PASSWORD,
-    name: "Platform Owner",
-    home: ROLE_HOME.SUPER_ADMIN,
-    description: "Command Center · GMV · fraud · integrations",
+    name: "Rahul Deshmukh",
+    home: ROLE_HOME.CUSTOMER,
+    description: "Tab · Pass · Games · Gold tier",
   },
   {
-    role: "CLUB_ADMIN",
-    email: "club@maitab.demo",
+    role: "BARTENDER",
+    email: "bar@maitab.demo",
     password: DEMO_PASSWORD,
-    name: "Neon Club Admin",
-    home: ROLE_HOME.CLUB_ADMIN,
-    description: "Venue ops · menu · merges · promos",
+    name: "Lead Bartender",
+    home: ROLE_HOME.BARTENDER,
+    description: "KDS queue · Mark Ready · deal verify",
   },
   {
     role: "GATE_STAFF",
@@ -43,14 +43,6 @@ export const DEMO_USERS: DemoUserAccount[] = [
     description: "Member Pass scanner · micro-hold",
   },
   {
-    role: "BARTENDER",
-    email: "bar@maitab.demo",
-    password: DEMO_PASSWORD,
-    name: "Lead Bartender",
-    home: ROLE_HOME.BARTENDER,
-    description: "KDS queue · Mark Ready",
-  },
-  {
     role: "AV_CONTROLLER",
     email: "av@maitab.demo",
     password: DEMO_PASSWORD,
@@ -59,19 +51,52 @@ export const DEMO_USERS: DemoUserAccount[] = [
     description: "LED wall · ticker · hero takeovers",
   },
   {
-    role: "CUSTOMER",
-    email: "rahul@maitab.demo",
+    role: "CLUB_ADMIN",
+    email: "club@maitab.demo",
     password: DEMO_PASSWORD,
-    name: "Rahul Deshmukh",
-    home: ROLE_HOME.CUSTOMER,
-    description: "Tab · Pass · Games · Gold tier",
+    name: "Neon Club Admin",
+    home: ROLE_HOME.CLUB_ADMIN,
+    description: "Venue ops · menu · merges · promos",
   },
 ];
 
-export const DEMO_EMAILS: Record<UserRole, string> = Object.fromEntries(
-  DEMO_USERS.map((u) => [u.role, u.email])
-) as Record<UserRole, string>;
+/** @deprecated Use PUBLIC_DEMO_USERS — kept as alias for public roster only */
+export const DEMO_USERS = PUBLIC_DEMO_USERS;
+
+/**
+ * Super Admin is never listed in public UI.
+ * Access only via `/admin/super-portal` + SUPER_ADMIN_PORTAL_KEY.
+ */
+export const SUPER_ADMIN_INTERNAL: DemoUserAccount = {
+  role: "SUPER_ADMIN",
+  email: process.env.SUPER_ADMIN_DEMO_EMAIL || "",
+  password: process.env.SUPER_ADMIN_DEMO_PASSWORD || "",
+  name: "Platform Owner",
+  home: ROLE_HOME.SUPER_ADMIN,
+  description: "Internal only",
+};
+
+export const DEMO_EMAILS: Partial<Record<UserRole, string>> = Object.fromEntries(
+  PUBLIC_DEMO_USERS.map((u) => [u.role, u.email])
+);
 
 export function demoUserForRole(role: UserRole): DemoUserAccount {
-  return DEMO_USERS.find((u) => u.role === role) ?? DEMO_USERS[5]!;
+  if (role === "SUPER_ADMIN") return SUPER_ADMIN_INTERNAL;
+  return (
+    PUBLIC_DEMO_USERS.find((u) => u.role === role) ?? PUBLIC_DEMO_USERS[0]!
+  );
+}
+
+export function isPublicDemoRole(role: UserRole): boolean {
+  return PUBLIC_DEMO_USERS.some((u) => u.role === role);
+}
+
+export function portalKeyConfigured(): boolean {
+  const key = process.env.SUPER_ADMIN_PORTAL_KEY;
+  return Boolean(key && key.length >= 16 && !key.includes("replace"));
+}
+
+export function portalKeyMatches(provided: string | null | undefined): boolean {
+  if (!portalKeyConfigured() || !provided) return false;
+  return provided === process.env.SUPER_ADMIN_PORTAL_KEY;
 }

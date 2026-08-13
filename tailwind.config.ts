@@ -26,6 +26,7 @@ const config: Config = {
     "border-amber-400/35",
     "border-violet-400/35",
     "border-rose-400/35",
+    "border-champagne/20",
     "bg-amber-500/[0.06]",
     "bg-amber-500/10",
     "bg-violet-500/[0.08]",
@@ -52,28 +53,28 @@ const config: Config = {
     extend: {
       colors: {
         nightlife: {
-          bg: "#08090C",
-          elevated: "#0F1116",
-          panel: "#12141A",
-          line: "rgba(255,255,255,0.10)",
-          muted: "#94A3B8",
+          bg: "#12151A",
+          elevated: "#1A1E26",
+          panel: "#1C2129",
+          line: "rgba(226,184,87,0.20)",
+          muted: "#CBD5E1",
         },
+        champagne: "#E2B857",
         accent: {
-          violet: "#7C3AED",
-          gold: "#F59E0B",
+          violet: "#8B5CF6",
+          gold: "#E2B857",
           emerald: "#10B981",
           ruby: "#F43F5E",
         },
-        // Legacy aliases mapped to luxury palette (safe during migration)
         neon: {
-          cyan: "#7C3AED",
-          purple: "#7C3AED",
+          cyan: "#00F0FF",
+          purple: "#8B5CF6",
         },
         status: {
-          gold: "#F59E0B",
+          gold: "#E2B857",
           bronze: "#B45309",
           silver: "#94A3B8",
-          titan: "#A78BFA",
+          titan: "#A855F7",
           ready: "#10B981",
           danger: "#F43F5E",
         },
@@ -83,16 +84,18 @@ const config: Config = {
         body: ["var(--font-body)", "DM Sans", "sans-serif"],
       },
       boxShadow: {
-        glow: "0 0 28px rgba(124, 58, 237, 0.35)",
-        "glow-violet": "0 0 28px rgba(124, 58, 237, 0.35)",
-        "glow-gold": "0 0 24px rgba(245, 158, 11, 0.28)",
+        glow: "0 0 28px rgba(139, 92, 246, 0.32)",
+        "glow-violet": "0 0 28px rgba(139, 92, 246, 0.32)",
+        "glow-gold": "0 0 24px rgba(226, 184, 87, 0.28)",
         "glow-emerald": "0 0 20px rgba(16, 185, 129, 0.25)",
       },
       backgroundImage: {
         "nightlife-radial":
-          "radial-gradient(1000px 520px at 12% -8%, rgba(124,58,237,0.16), transparent 55%), radial-gradient(800px 420px at 88% 0%, rgba(245,158,11,0.08), transparent 50%), linear-gradient(180deg, #08090C 0%, #050608 100%)",
+          "radial-gradient(1000px 520px at 12% -8%, rgba(139,92,246,0.14), transparent 55%), radial-gradient(800px 420px at 88% 0%, rgba(226,184,87,0.10), transparent 50%), linear-gradient(180deg, #12151A 0%, #0C0E12 100%)",
         "luxury-gradient":
-          "linear-gradient(135deg, #7C3AED 0%, #A78BFA 45%, #F59E0B 100%)",
+          "linear-gradient(135deg, #8B5CF6 0%, #A855F7 45%, #E2B857 100%)",
+        "ai-neon":
+          "linear-gradient(90deg, #A855F7 0%, #00F0FF 100%)",
         "glass-shine":
           "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015))",
       },
@@ -105,17 +108,17 @@ const config: Config = {
       },
       keyframes: {
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 12px rgba(124,58,237,0.22)" },
-          "50%": { boxShadow: "0 0 28px rgba(124,58,237,0.45)" },
+          "0%, 100%": { boxShadow: "0 0 12px rgba(139,92,246,0.22)" },
+          "50%": { boxShadow: "0 0 28px rgba(139,92,246,0.45)" },
         },
         "tier-pulse": {
           "0%, 100%": {
             boxShadow:
-              "0 0 24px rgba(139,92,246,0.25), 0 0 8px rgba(244,63,94,0.15)",
+              "0 0 24px rgba(139,92,246,0.25), 0 0 8px rgba(226,184,87,0.15)",
           },
           "50%": {
             boxShadow:
-              "0 0 42px rgba(139,92,246,0.45), 0 0 28px rgba(244,63,94,0.28)",
+              "0 0 42px rgba(139,92,246,0.45), 0 0 28px rgba(226,184,87,0.28)",
           },
         },
         shimmer: {

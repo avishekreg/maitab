@@ -30,20 +30,13 @@ export function MarketingHeader() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition",
         scrolled
-          ? "border-b border-white/10 bg-nightlife-bg/90 backdrop-blur-xl"
+          ? "border-b border-champagne/20 bg-nightlife-bg/90 backdrop-blur-2xl"
           : "bg-transparent"
       )}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link
-          href="/"
-          className="flex items-center gap-2.5"
-          onClick={() => setOpen(false)}
-        >
-          <MaiTabLogo variant="IconOnly" className="h-8 w-8" />
-          <span className="font-display text-lg font-bold tracking-wide text-white">
-            mAITab
-          </span>
+        <Link href="/" className="flex items-center" onClick={() => setOpen(false)}>
+          <MaiTabLogo variant="FullLogoWithText" className="h-8 w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-0.5 lg:flex">
@@ -120,15 +113,10 @@ export function MarketingHeader() {
 
 export function MarketingFooter() {
   return (
-    <footer className="border-t border-white/10 bg-[#050608]">
+    <footer className="border-t border-champagne/20 bg-[#0C0E12]">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
         <div>
-          <div className="flex items-center gap-2.5">
-            <MaiTabLogo variant="IconOnly" className="h-8 w-8" />
-            <span className="font-display text-lg font-bold text-white">
-              mAITab
-            </span>
-          </div>
+          <MaiTabLogo variant="FullLogoWithText" className="h-8 w-auto" />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-nightlife-muted">
             Zero-hardware nightlife operating system for prepaid tabs, gate
             hospitality, bartender KDS, AV takeovers, social gaming, and
@@ -182,11 +170,6 @@ export function MarketingFooter() {
             <li>
               <Link href="/admin/club" className="hover:text-white">
                 Club admin console
-              </Link>
-            </li>
-            <li>
-              <Link href="/admin/super" className="hover:text-white">
-                Super admin command
               </Link>
             </li>
           </ul>

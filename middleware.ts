@@ -29,6 +29,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/t/") ||
     pathname === "/login" ||
+    pathname === "/admin/super-portal" ||
     pathname === "/favicon.ico"
   ) {
     return response;

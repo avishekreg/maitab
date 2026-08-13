@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 import { NeonButton } from "@/components/ui/NeonButton";
-import { DEMO_PASSWORD, DEMO_USERS } from "@/lib/auth/demo-users";
+import { DEMO_PASSWORD, PUBLIC_DEMO_USERS } from "@/lib/auth/demo-users";
 import type { UserRole } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +30,10 @@ function LoginForm() {
         warning?: string;
         email?: string;
       };
+      if (!data.ok) {
+        setNote("Sign-in blocked for this role.");
+        return;
+      }
       if (data.warning) setNote(data.warning);
       else setNote(`${data.email ?? role} · ${data.mode ?? "cookie"}`);
       router.push(home);
@@ -48,14 +52,14 @@ function LoginForm() {
         <div className="mb-8">
           <MaiTabLogo variant="FullLogoWithText" className="h-11 w-auto" />
           <h1 className="mt-6 font-display text-3xl font-bold tracking-tight">
-            Demo logins
+            Venue demo logins
           </h1>
           <p className="mt-2 max-w-xl text-sm text-nightlife-muted">
-            One-click entry for every RBAC role. Shared password{" "}
-            <code className="rounded bg-white/10 px-1.5 py-0.5 text-accent-gold">
+            One-click entry for floor roles. Shared demo password{" "}
+            <code className="rounded border border-champagne/20 bg-white/[0.04] px-1.5 py-0.5 text-accent-gold">
               {DEMO_PASSWORD}
             </code>
-            . Works offline via cookie; uses JWT when Supabase is seeded.
+            .
           </p>
           {denied ? (
             <p className="mt-3 text-sm text-accent-ruby">
@@ -65,7 +69,7 @@ function LoginForm() {
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">
-          {DEMO_USERS.map((user) => {
+          {PUBLIC_DEMO_USERS.map((user) => {
             const busy = loadingRole === user.role;
             return (
               <button
@@ -74,8 +78,8 @@ function LoginForm() {
                 disabled={loadingRole !== null}
                 onClick={() => void enterDemo(user.role, user.home)}
                 className={cn(
-                  "rounded-2xl border border-white/10 bg-nightlife-elevated/70 p-4 text-left transition",
-                  "hover:border-accent-violet/40 hover:bg-white/[0.04]",
+                  "rounded-2xl border border-champagne/20 bg-white/[0.04] p-4 text-left backdrop-blur-2xl transition",
+                  "hover:border-accent-violet/40 hover:bg-white/[0.06]",
                   "disabled:cursor-wait disabled:opacity-60",
                   busy && "ring-1 ring-accent-violet/50"
                 )}
@@ -84,7 +88,7 @@ function LoginForm() {
                   <p className="font-display text-lg font-semibold text-white">
                     {user.name}
                   </p>
-                  <span className="rounded-full border border-white/10 px-2 py-0.5 text-[10px] uppercase tracking-wide text-nightlife-muted">
+                  <span className="rounded-lg border border-champagne/20 px-2 py-0.5 text-[10px] uppercase tracking-wide text-nightlife-muted">
                     {user.role.replaceAll("_", " ")}
                   </span>
                 </div>
@@ -107,38 +111,6 @@ function LoginForm() {
               </button>
             );
           })}
-        </div>
-
-        <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.02] p-4">
-          <p className="text-xs uppercase tracking-[0.16em] text-nightlife-muted">
-            Quick reference
-          </p>
-          <div className="mt-3 overflow-x-auto">
-            <table className="w-full min-w-[520px] text-left text-sm">
-              <thead className="text-[11px] uppercase tracking-[0.12em] text-nightlife-muted">
-                <tr>
-                  <th className="pb-2 pr-3 font-medium">Role</th>
-                  <th className="pb-2 pr-3 font-medium">Email</th>
-                  <th className="pb-2 font-medium">Home</th>
-                </tr>
-              </thead>
-              <tbody>
-                {DEMO_USERS.map((user) => (
-                  <tr key={user.email} className="border-t border-white/10">
-                    <td className="py-2.5 pr-3 text-white">{user.role}</td>
-                    <td className="py-2.5 pr-3 text-nightlife-muted">
-                      {user.email}
-                    </td>
-                    <td className="py-2.5 text-accent-gold">{user.home}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-3 text-xs text-nightlife-muted">
-            Password for all accounts:{" "}
-            <span className="text-accent-gold">{DEMO_PASSWORD}</span>
-          </p>
         </div>
 
         {note ? (

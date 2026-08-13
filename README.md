@@ -33,18 +33,17 @@ Use `/login` to switch roles. With Supabase seeded, login issues JWT claims (`ap
 # 4) supabase/seed.sql
 ```
 
-Seed users (password for **all**: `MaiTabDemo!234`):
+Public demo users (password: `MaiTabDemo!234`):
 
 | Role | Email | Opens |
 | --- | --- | --- |
-| SUPER_ADMIN | `super@maitab.demo` | `/admin/super` |
 | CLUB_ADMIN | `club@maitab.demo` | `/admin/club` |
 | GATE_STAFF | `gate@maitab.demo` | `/gate` |
 | BARTENDER | `bar@maitab.demo` | `/kds` |
 | AV_CONTROLLER | `av@maitab.demo` | `/av-panel` |
 | CUSTOMER | `rahul@maitab.demo` | `/home` |
 
-Use [http://127.0.0.1:3100/login](http://127.0.0.1:3100/login) for one-click demo entry (cookie mode without Supabase; JWT when seeded).
+Use [http://127.0.0.1:3100/login](http://127.0.0.1:3100/login) for one-click venue demo entry. Super Admin is not listed publicly — unlock via `/admin/super-portal` with `SUPER_ADMIN_PORTAL_KEY`.
 
 Without Supabase credentials the app stays in **fallback mode**: BroadcastChannel realtime for Gate→AV and KDS→Tab, plus RPC API stubs that mirror PostGIS lockout behaviour.
 
@@ -58,7 +57,8 @@ Without Supabase credentials the app stays in **fallback mode**: BroadcastChanne
 | `/kds` | Bartender |
 | `/av-panel` | AV controller |
 | `/admin/club` | Club admin |
-| `/admin/super` | Super admin |
+| `/admin/super-portal` | Super admin unlock (env portal key) |
+| `/admin/super` | Super admin console (after unlock) |
 | `/t/[token]` | HMAC table QR join |
 
 ## Supabase
