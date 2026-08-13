@@ -1,6 +1,6 @@
 -- Phase 5: 105 nightlife games for games_pool (run after 04_games_engine.sql)
 
-insert into public.games_pool (title, game_type, rules_json, is_active)
+insert → public.games_pool (title, game_type, rules_json, is_active)
 select v.title, v.game_type, v.rules_json, v.is_active
 from (values
   ('Classic Shot Roulette', 'ROULETTE'::public.game_type, '{"chambers":6,"outcomes":["Safe","Safe","Safe","Safe","Shot","Double Shot"],"upsell_label":"Pay Penalty / Order Round","catalog_id":"g-roulette-01","weight":1.4,"min_group_size":2,"min_spend":0,"category":"SHOT_ROULETTE","penalty_item":{"name":"Tequila Shot","quantity":1,"unit_price":280,"category":"SHOT"}}'::jsonb, true),
@@ -106,7 +106,7 @@ from (values
   ('Most Likely To… #6', 'MOST_LIKELY_TO'::public.game_type, '{"prompts":["Most likely to ghost the group chat tomorrow"],"voting":true,"loser_penalty":true,"upsell_label":"Loser Pays — Add Shot to Tab","catalog_id":"g-mlt-06","weight":1.25,"min_group_size":3,"min_spend":800,"category":"MOST_LIKELY_TO","penalty_item":{"name":"Tequila Shot","quantity":2,"unit_price":280,"category":"SHOT"}}'::jsonb, true),
   ('Most Likely To… #7', 'MOST_LIKELY_TO'::public.game_type, '{"prompts":["Most likely to claim ''I''m a chill drinker''"],"voting":true,"loser_penalty":true,"upsell_label":"Loser Pays — Add Shot to Tab","catalog_id":"g-mlt-07","weight":1.25,"min_group_size":3,"min_spend":800,"category":"MOST_LIKELY_TO","penalty_item":{"name":"Vodka Shot","quantity":1,"unit_price":260,"category":"SHOT"}}'::jsonb, true),
   ('Most Likely To… #8', 'MOST_LIKELY_TO'::public.game_type, '{"prompts":["Most likely to know the gate staff by name"],"voting":true,"loser_penalty":true,"upsell_label":"Loser Pays — Add Shot to Tab","catalog_id":"g-mlt-08","weight":1.25,"min_group_size":3,"min_spend":800,"category":"MOST_LIKELY_TO","penalty_item":{"name":"Jägerbomb","quantity":1,"unit_price":450,"category":"SHOT"}}'::jsonb, true),
-  ('Most Likely To… #9', 'MOST_LIKELY_TO'::public.game_type, '{"prompts":["Most likely to turn a dare into viral clip gold"],"voting":true,"loser_penalty":true,"upsell_label":"Loser Pays — Add Shot to Tab","catalog_id":"g-mlt-09","weight":1.25,"min_group_size":3,"min_spend":800,"category":"MOST_LIKELY_TO","penalty_item":{"name":"Heineken","quantity":1,"unit_price":350,"category":"BEER"}}'::jsonb, true),
+  ('Most Likely To… #9', 'MOST_LIKELY_TO'::public.game_type, '{"prompts":["Most likely to turn a dare go viral on a dare clip"],"voting":true,"loser_penalty":true,"upsell_label":"Loser Pays — Add Shot to Tab","catalog_id":"g-mlt-09","weight":1.25,"min_group_size":3,"min_spend":800,"category":"MOST_LIKELY_TO","penalty_item":{"name":"Heineken","quantity":1,"unit_price":350,"category":"BEER"}}'::jsonb, true),
   ('Most Likely To… #10', 'MOST_LIKELY_TO'::public.game_type, '{"prompts":["Most likely to merge three tables by accident"],"voting":true,"loser_penalty":true,"upsell_label":"Loser Pays — Add Shot to Tab","catalog_id":"g-mlt-10","weight":1.25,"min_group_size":3,"min_spend":800,"category":"MOST_LIKELY_TO","penalty_item":{"name":"Corona","quantity":1,"unit_price":380,"category":"BEER"}}'::jsonb, true)
 ) as v(title, game_type, rules_json, is_active)
 where not exists (
