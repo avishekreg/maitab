@@ -263,7 +263,7 @@ insert into public.orders (
   id, session_id, club_id, items, total_amount, status, token_number, service_date, created_at, ready_at
 ) values
 (
-  'o0000000-0000-0000-0000-000000000001',
+  'd0000000-0000-0000-0000-000000000001',
   '33333333-3333-3333-3333-333333333333',
   '22222222-2222-2222-2222-222222222222',
   '[{"name":"Heineken","quantity":2,"unit_price":350,"category":"BEER"}]'::jsonb,
@@ -271,7 +271,7 @@ insert into public.orders (
   now() - interval '4 minutes', null
 ),
 (
-  'o0000000-0000-0000-0000-000000000002',
+  'd0000000-0000-0000-0000-000000000002',
   '33333333-3333-3333-3333-333333333333',
   '22222222-2222-2222-2222-222222222222',
   '[{"name":"Espresso Martini","quantity":1,"unit_price":650,"category":"COCKTAIL"},{"name":"Tequila Shot","quantity":4,"unit_price":280,"category":"SHOT"}]'::jsonb,
