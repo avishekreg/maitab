@@ -14,8 +14,7 @@ const PHRASES = [
 ] as const;
 
 /**
- * Mobile: globe is a soft upper backdrop under a heavy scrim — copy never fights it.
- * Desktop: globe lives in the right half; copy anchored left.
+ * Left: crisp copy · Right: revolving globe (all breakpoints) · Base: club ambient
  */
 export function HeroSection() {
   const [ready, setReady] = useState(false);
@@ -48,33 +47,14 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-[#0a0a0c]/45" />
       </div>
 
-      {/* Globe plane — constrained on small screens so it cannot crush the type */}
-      <div
-        className="pointer-events-none absolute -z-20 overflow-hidden opacity-45 sm:opacity-55 lg:opacity-80"
-        aria-hidden
-      >
-        <div
-          className={[
-            "absolute",
-            /* mobile / tablet: upper band only */
-            "inset-x-[-12%] top-[3.5rem] h-[min(46vh,340px)]",
-            "sm:inset-x-[-8%] sm:top-16 sm:h-[min(50vh,420px)]",
-            /* desktop: right half, full hero height */
-            "lg:inset-x-auto lg:inset-y-0 lg:right-0 lg:top-0 lg:h-full lg:w-[58%]",
-          ].join(" ")}
-        >
-          <div className="absolute inset-[-10%] rounded-full bg-[radial-gradient(circle_at_55%_45%,rgba(139,92,246,0.38)_0%,rgba(6,182,212,0.14)_42%,transparent_70%)] blur-2xl" />
-          <OptimusGlobe
-            tone="light"
-            className="relative h-full w-full scale-[0.92] sm:scale-100 lg:scale-105"
-          />
-        </div>
+      {/* Revolving globe — always anchored to the right of the hero */}
+      <div className="pointer-events-none absolute inset-y-0 right-0 -z-20 w-[58%] overflow-hidden opacity-80 sm:w-1/2 lg:w-7/12">
+        <div className="absolute inset-[-8%] rounded-full bg-[radial-gradient(circle_at_60%_50%,rgba(139,92,246,0.42)_0%,rgba(6,182,212,0.16)_40%,transparent_68%)] blur-2xl" />
+        <OptimusGlobe tone="light" className="relative h-full w-full" />
       </div>
 
-      {/* Scrims — mobile leans bottom-heavy so CTAs stay readable */}
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-black/55 via-black/50 to-black/90 lg:hidden" />
-      <div className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-black/88 via-black/55 to-transparent lg:block" />
-      <div className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-t from-black/55 via-transparent to-black/25 lg:block" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/50 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-black/65 via-transparent to-black/30" />
 
       <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-6xl flex-col justify-end px-4 pb-10 pt-[4.75rem] sm:px-6 sm:pb-14 sm:pt-24 lg:justify-center lg:pb-20 lg:pt-28">
         <motion.div
