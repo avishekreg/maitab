@@ -199,17 +199,17 @@ on conflict (club_id, table_code) do update set
 insert into public.club_tables (id, club_id, table_code, status, parent_table_id, prebooked_at, prebook_slot_start)
 values
 (
-  'v0000000-0000-0000-0000-000000000001',
+  'c0000000-0000-0000-0000-000000000001',
   '22222222-2222-2222-2222-222222222222',
   'V1', 'PRE_BOOKED', null, now(), now() + interval '25 minutes'
 ),
 (
-  'v0000000-0000-0000-0000-000000000002',
+  'c0000000-0000-0000-0000-000000000002',
   '22222222-2222-2222-2222-222222222222',
   'V2', 'AVAILABLE', null, null, null
 ),
 (
-  'v0000000-0000-0000-0000-000000000003',
+  'c0000000-0000-0000-0000-000000000003',
   '22222222-2222-2222-2222-222222222222',
   'V3', 'AVAILABLE', null, null, null
 )

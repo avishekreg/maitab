@@ -67,7 +67,7 @@ export const DEMO_TABLES: ClubTable[] = [
     prebook_slot_start: null,
   },
   {
-    id: "v0000000-0000-0000-0000-000000000001",
+    id: "c0000000-0000-0000-0000-000000000001",
     club_id: DEMO_CLUB.id,
     table_code: "V1",
     status: "PRE_BOOKED",
