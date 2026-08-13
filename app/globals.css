@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --nightlife-bg: #08090c;
+  --nightlife-elevated: #0f1116;
+  --accent-violet: #7c3aed;
+  --accent-gold: #f59e0b;
+  --accent-emerald: #10b981;
+  --accent-ruby: #f43f5e;
+  --text-muted: #94a3b8;
+  color-scheme: dark;
+}
+
+html,
+body {
+  min-height: 100%;
+  background: var(--nightlife-bg);
+  color: #ffffff;
+}
+
+body {
+  font-family: var(--font-body), "DM Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display), Syne, sans-serif;
+  color: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-muted {
+    color: var(--text-muted);
+  }
+
+  .surface-frost {
+    @apply border border-white/10 bg-white/[0.03] backdrop-blur-xl;
+  }
+
+  .glow-border {
+    box-shadow:
+      inset 0 0 0 1px rgba(124, 58, 237, 0.28),
+      0 0 24px rgba(124, 58, 237, 0.12);
+  }
+
+  .amount-gold {
+    color: var(--accent-gold);
+  }
+
+  .perspective-game {
+    perspective: 1200px;
+  }
+}

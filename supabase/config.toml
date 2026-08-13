@@ -1,0 +1,7 @@
+# Minimal Supabase local config pointers for mAITab MVP.
+
+[functions.hourly-lucky-draw]
+verify_jwt = false
+
+[functions.geo-auto-settle]
+verify_jwt = true

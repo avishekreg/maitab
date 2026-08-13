@@ -1,0 +1,2167 @@
+[
+  {
+    "id": "g-roulette-01",
+    "title": "Classic Shot Roulette",
+    "game_type": "ROULETTE",
+    "weight": 1.4,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "Safe",
+        "Safe",
+        "Safe",
+        "Shot",
+        "Double Shot"
+      ],
+      "penalty_key": "tequila",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-roulette-02",
+    "title": "Left Neighbour Roulette",
+    "game_type": "ROULETTE",
+    "weight": 1.4,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "Left Neighbour Takes a Shot",
+        "Safe",
+        "Safe",
+        "Shot",
+        "Host Chooses"
+      ],
+      "penalty_key": "tequila2",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-roulette-03",
+    "title": "Youngest Drinks Wheel",
+    "game_type": "ROULETTE",
+    "weight": 1.4,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "Youngest at the Table Drinks",
+        "Safe",
+        "Shot",
+        "Safe",
+        "Double for Youngest"
+      ],
+      "penalty_key": "vodka",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-roulette-04",
+    "title": "Host Chooses Victim",
+    "game_type": "ROULETTE",
+    "weight": 1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "Host Chooses the Victim",
+        "Safe",
+        "Safe",
+        "Shot",
+        "Table Vote Victim"
+      ],
+      "penalty_key": "jager",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-roulette-05",
+    "title": "Double Shot Challenge",
+    "game_type": "ROULETTE",
+    "weight": 1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "Safe",
+        "Double Shot Challenge",
+        "Safe",
+        "Shot",
+        "Safe"
+      ],
+      "penalty_key": "heineken",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-roulette-06",
+    "title": "Opposite Seat Roulette",
+    "game_type": "ROULETTE",
+    "weight": 1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "Opposite Seat Drinks",
+        "Safe",
+        "Shot",
+        "Safe",
+        "Both Ends Drink"
+      ],
+      "penalty_key": "corona",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-roulette-07",
+    "title": "Birthday Bomb Wheel",
+    "game_type": "ROULETTE",
+    "weight": 1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "Birthday (or Closest) Drinks",
+        "Safe",
+        "Shot",
+        "Safe",
+        "Table Cheers"
+      ],
+      "penalty_key": "gnt",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-roulette-08",
+    "title": "Spend King Roulette",
+    "game_type": "ROULETTE",
+    "weight": 1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "Highest Spender Sips",
+        "Safe",
+        "Shot",
+        "Safe",
+        "Tab Owner Chooses"
+      ],
+      "penalty_key": "espresso",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-roulette-09",
+    "title": "Quiet One Roulette",
+    "game_type": "ROULETTE",
+    "weight": 1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "Quietest Person Drinks",
+        "Safe",
+        "Shot",
+        "Safe",
+        "Make Them Speak"
+      ],
+      "penalty_key": "round",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-roulette-10",
+    "title": "Phone Stack Roulette",
+    "game_type": "ROULETTE",
+    "weight": 1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "First to Touch Phone Drinks",
+        "Safe",
+        "Shot",
+        "Safe",
+        "All Phones Down"
+      ],
+      "penalty_key": "tequila",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-roulette-11",
+    "title": "Neon Chamber",
+    "game_type": "ROULETTE",
+    "weight": 1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "Safe",
+        "Neon Shot",
+        "Safe",
+        "Ruby Shot",
+        "Double Neon"
+      ],
+      "penalty_key": "tequila2",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-roulette-12",
+    "title": "VIP Pressure Wheel",
+    "game_type": "ROULETTE",
+    "weight": 1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "VIP Impression or Shot",
+        "Safe",
+        "Shot",
+        "Safe",
+        "Buy-In Round"
+      ],
+      "penalty_key": "vodka",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-roulette-13",
+    "title": "Mirror Challenge Roulette",
+    "game_type": "ROULETTE",
+    "weight": 1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "Mirror Selfie or Shot",
+        "Safe",
+        "Shot",
+        "Safe",
+        "Group Pose"
+      ],
+      "penalty_key": "jager",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-roulette-14",
+    "title": "Last Call Roulette",
+    "game_type": "ROULETTE",
+    "weight": 1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "Last Call Sip",
+        "Safe",
+        "Shot",
+        "Safe",
+        "Closing Time Double"
+      ],
+      "penalty_key": "heineken",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-roulette-15",
+    "title": "Chaos Chamber",
+    "game_type": "ROULETTE",
+    "weight": 1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "SHOT_ROULETTE",
+    "is_active": true,
+    "rules_json": {
+      "chambers": 6,
+      "outcomes": [
+        "Safe",
+        "Everyone Sips",
+        "Safe",
+        "Shot",
+        "Host Safe Others Drink",
+        "Double Chaos"
+      ],
+      "penalty_key": "corona",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-truth-01",
+    "title": "Truth or Shot #1",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Show your last searched photo or take a shot",
+        "Reveal the last person you double-texted",
+        "Who here would you trust with your phone for 60 seconds?"
+      ],
+      "penalty_key": "tequila2",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "couples"
+    }
+  },
+  {
+    "id": "g-truth-02",
+    "title": "Truth or Shot #2",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Read your last unread DM out loud",
+        "Confess who at this table you'd secretly take on a date",
+        "Admit the last club you got kicked out of — or shot"
+      ],
+      "penalty_key": "vodka",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "friends"
+    }
+  },
+  {
+    "id": "g-truth-03",
+    "title": "Truth or Shot #3",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Point to the person who spent the most tonight",
+        "Show your lock-screen without unlocking — or drink",
+        "Rate everyone's outfit from 1–10, then drink if you're last"
+      ],
+      "penalty_key": "jager",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "groups"
+    }
+  },
+  {
+    "id": "g-truth-04",
+    "title": "Truth or Shot #4",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Reveal the last person you double-texted",
+        "Name the most expensive mistake on a tab you've made",
+        "Share your most chaotic Uber story from a night out"
+      ],
+      "penalty_key": "heineken",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "couples"
+    }
+  },
+  {
+    "id": "g-truth-05",
+    "title": "Truth or Shot #5",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Confess who at this table you'd secretly take on a date",
+        "Who here would you trust with your phone for 60 seconds?",
+        "Who at the table has the most dangerous smile?"
+      ],
+      "penalty_key": "corona",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "friends"
+    }
+  },
+  {
+    "id": "g-truth-06",
+    "title": "Truth or Shot #6",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Show your lock-screen without unlocking — or drink",
+        "Admit the last club you got kicked out of — or shot",
+        "Open your gallery on a random scroll — or take a shot"
+      ],
+      "penalty_key": "gnt",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "groups"
+    }
+  },
+  {
+    "id": "g-truth-07",
+    "title": "Truth or Shot #7",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Name the most expensive mistake on a tab you've made",
+        "Rate everyone's outfit from 1–10, then drink if you're last",
+        "What's your toxic nightlife trait?"
+      ],
+      "penalty_key": "espresso",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "couples"
+    }
+  },
+  {
+    "id": "g-truth-08",
+    "title": "Truth or Shot #8",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Who here would you trust with your phone for 60 seconds?",
+        "Share your most chaotic Uber story from a night out",
+        "Name someone you've ghosted after matching at a bar"
+      ],
+      "penalty_key": "round",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "friends"
+    }
+  },
+  {
+    "id": "g-truth-09",
+    "title": "Truth or Shot #9",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Admit the last club you got kicked out of — or shot",
+        "Who at the table has the most dangerous smile?",
+        "Who would survive a night without their phone?"
+      ],
+      "penalty_key": "tequila",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "groups"
+    }
+  },
+  {
+    "id": "g-truth-10",
+    "title": "Truth or Shot #10",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Rate everyone's outfit from 1–10, then drink if you're last",
+        "Open your gallery on a random scroll — or take a shot",
+        "Confess your go-to flirting opener — no filter"
+      ],
+      "penalty_key": "tequila2",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "couples"
+    }
+  },
+  {
+    "id": "g-truth-11",
+    "title": "Truth or Shot #11",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Share your most chaotic Uber story from a night out",
+        "What's your toxic nightlife trait?",
+        "Point to who is most likely to start a group chat drama"
+      ],
+      "penalty_key": "vodka",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "friends"
+    }
+  },
+  {
+    "id": "g-truth-12",
+    "title": "Truth or Shot #12",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Who at the table has the most dangerous smile?",
+        "Name someone you've ghosted after matching at a bar",
+        "What's the wildest thing on your current tab?"
+      ],
+      "penalty_key": "jager",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "groups"
+    }
+  },
+  {
+    "id": "g-truth-13",
+    "title": "Truth or Shot #13",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Open your gallery on a random scroll — or take a shot",
+        "Who would survive a night without their phone?",
+        "Have you ever pretended to know the DJ?"
+      ],
+      "penalty_key": "heineken",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "couples"
+    }
+  },
+  {
+    "id": "g-truth-14",
+    "title": "Truth or Shot #14",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "What's your toxic nightlife trait?",
+        "Confess your go-to flirting opener — no filter",
+        "Who here spends like a Titan but claims Bronze?"
+      ],
+      "penalty_key": "corona",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "friends"
+    }
+  },
+  {
+    "id": "g-truth-15",
+    "title": "Truth or Shot #15",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Name someone you've ghosted after matching at a bar",
+        "Point to who is most likely to start a group chat drama",
+        "Reveal your last sent voice note topic — or drink"
+      ],
+      "penalty_key": "gnt",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "groups"
+    }
+  },
+  {
+    "id": "g-truth-16",
+    "title": "Truth or Shot #16",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Who would survive a night without their phone?",
+        "What's the wildest thing on your current tab?",
+        "Which ex would you buy one drink for tonight?"
+      ],
+      "penalty_key": "espresso",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "couples"
+    }
+  },
+  {
+    "id": "g-truth-17",
+    "title": "Truth or Shot #17",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Confess your go-to flirting opener — no filter",
+        "Have you ever pretended to know the DJ?",
+        "Who is most likely to lose their card before midnight?"
+      ],
+      "penalty_key": "round",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "friends"
+    }
+  },
+  {
+    "id": "g-truth-18",
+    "title": "Truth or Shot #18",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Point to who is most likely to start a group chat drama",
+        "Who here spends like a Titan but claims Bronze?",
+        "Admit the last time you said 'one more' and meant five"
+      ],
+      "penalty_key": "tequila",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "groups"
+    }
+  },
+  {
+    "id": "g-truth-19",
+    "title": "Truth or Shot #19",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "What's the wildest thing on your current tab?",
+        "Reveal your last sent voice note topic — or drink",
+        "Show your last searched photo or take a shot"
+      ],
+      "penalty_key": "tequila2",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "couples"
+    }
+  },
+  {
+    "id": "g-truth-20",
+    "title": "Truth or Shot #20",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Have you ever pretended to know the DJ?",
+        "Which ex would you buy one drink for tonight?",
+        "Read your last unread DM out loud"
+      ],
+      "penalty_key": "vodka",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "friends"
+    }
+  },
+  {
+    "id": "g-truth-21",
+    "title": "Truth or Shot #21",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Who here spends like a Titan but claims Bronze?",
+        "Who is most likely to lose their card before midnight?",
+        "Point to the person who spent the most tonight"
+      ],
+      "penalty_key": "jager",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "groups"
+    }
+  },
+  {
+    "id": "g-truth-22",
+    "title": "Truth or Shot #22",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Reveal your last sent voice note topic — or drink",
+        "Admit the last time you said 'one more' and meant five",
+        "Reveal the last person you double-texted"
+      ],
+      "penalty_key": "heineken",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "couples"
+    }
+  },
+  {
+    "id": "g-truth-23",
+    "title": "Truth or Shot #23",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Which ex would you buy one drink for tonight?",
+        "Show your last searched photo or take a shot",
+        "Confess who at this table you'd secretly take on a date"
+      ],
+      "penalty_key": "corona",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "friends"
+    }
+  },
+  {
+    "id": "g-truth-24",
+    "title": "Truth or Shot #24",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Who is most likely to lose their card before midnight?",
+        "Read your last unread DM out loud",
+        "Show your lock-screen without unlocking — or drink"
+      ],
+      "penalty_key": "gnt",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "groups"
+    }
+  },
+  {
+    "id": "g-truth-25",
+    "title": "Truth or Shot #25",
+    "game_type": "TRUTH_OR_SHOT",
+    "weight": 1.1,
+    "min_group_size": 2,
+    "min_spend": 0,
+    "category": "TRUTH_OR_SHOT",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Admit the last time you said 'one more' and meant five",
+        "Point to the person who spent the most tonight",
+        "Name the most expensive mistake on a tab you've made"
+      ],
+      "penalty_key": "espresso",
+      "upsell_label": "Pay Penalty / Order Round",
+      "vibe": "couples"
+    }
+  },
+  {
+    "id": "g-dare-01",
+    "title": "Dare Wheel: Get the bartender to give yo…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Get the bartender to give you a high five",
+        "Ask the neighboring table for a lighter — dramatically",
+        "Trade one accessory with someone at the table",
+        "Walk to the bar and back without looking at your phone"
+      ],
+      "penalty_key": "vodka",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-02",
+    "title": "Dare Wheel: Do a 10-second runway walk t…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Do a 10-second runway walk to the bar",
+        "Start a 15-second clap chant for the DJ",
+        "Send a voice note saying 'We're legends tonight'",
+        "Invent a VIP handshake with the person on your left"
+      ],
+      "penalty_key": "jager",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-03",
+    "title": "Dare Wheel: Swap seats with the person a…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Swap seats with the person across from you for 2 rounds",
+        "Take a mirror selfie with the whole table",
+        "Balance a coaster on your head for 20 seconds",
+        "Sing the chorus of the current track — standing"
+      ],
+      "penalty_key": "heineken",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-04",
+    "title": "Dare Wheel: Order a drink using only son…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Order a drink using only song lyrics",
+        "Compliment three strangers before returning",
+        "Mime your favorite cocktail for the table to guess",
+        "Ask staff for ice like you're in a spy movie"
+      ],
+      "penalty_key": "corona",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-05",
+    "title": "Dare Wheel: Ask the neighboring table fo…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Ask the neighboring table for a lighter — dramatically",
+        "Do your best VIP hostess welcome for 10 seconds",
+        "Get someone to say 'mAITab' on camera",
+        "Propose a toast using only three words"
+      ],
+      "penalty_key": "gnt",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-06",
+    "title": "Dare Wheel: Start a 15-second clap chant…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Start a 15-second clap chant for the DJ",
+        "Trade one accessory with someone at the table",
+        "Walk to the bar and back without looking at your phone",
+        "Wear your jacket inside-out for one full song"
+      ],
+      "penalty_key": "espresso",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-07",
+    "title": "Dare Wheel: Take a mirror selfie with th…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Take a mirror selfie with the whole table",
+        "Send a voice note saying 'We're legends tonight'",
+        "Invent a VIP handshake with the person on your left",
+        "Do a silent disco dance until the beat drops"
+      ],
+      "penalty_key": "round",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-08",
+    "title": "Dare Wheel: Compliment three strangers b…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Compliment three strangers before returning",
+        "Balance a coaster on your head for 20 seconds",
+        "Sing the chorus of the current track — standing",
+        "Collect five high-fives from the dancefloor"
+      ],
+      "penalty_key": "tequila",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-09",
+    "title": "Dare Wheel: Do your best VIP hostess wel…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Do your best VIP hostess welcome for 10 seconds",
+        "Mime your favorite cocktail for the table to guess",
+        "Ask staff for ice like you're in a spy movie",
+        "Order water with the confidence of champagne"
+      ],
+      "penalty_key": "tequila2",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-10",
+    "title": "Dare Wheel: Trade one accessory with som…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Trade one accessory with someone at the table",
+        "Get someone to say 'mAITab' on camera",
+        "Propose a toast using only three words",
+        "Recreate a red-carpet pose at the table edge"
+      ],
+      "penalty_key": "vodka",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-11",
+    "title": "Dare Wheel: Send a voice note saying 'We…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Send a voice note saying 'We're legends tonight'",
+        "Walk to the bar and back without looking at your phone",
+        "Wear your jacket inside-out for one full song",
+        "Switch drinks with someone for the next sip (consensual)"
+      ],
+      "penalty_key": "jager",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-12",
+    "title": "Dare Wheel: Balance a coaster on your he…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Balance a coaster on your head for 20 seconds",
+        "Invent a VIP handshake with the person on your left",
+        "Do a silent disco dance until the beat drops",
+        "Get the bartender to give you a high five"
+      ],
+      "penalty_key": "heineken",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-13",
+    "title": "Dare Wheel: Mime your favorite cocktail …",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Mime your favorite cocktail for the table to guess",
+        "Sing the chorus of the current track — standing",
+        "Collect five high-fives from the dancefloor",
+        "Do a 10-second runway walk to the bar"
+      ],
+      "penalty_key": "corona",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-14",
+    "title": "Dare Wheel: Get someone to say 'mAITab' …",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Get someone to say 'mAITab' on camera",
+        "Ask staff for ice like you're in a spy movie",
+        "Order water with the confidence of champagne",
+        "Swap seats with the person across from you for 2 rounds"
+      ],
+      "penalty_key": "gnt",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-15",
+    "title": "Dare Wheel: Walk to the bar and back wit…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Walk to the bar and back without looking at your phone",
+        "Propose a toast using only three words",
+        "Recreate a red-carpet pose at the table edge",
+        "Order a drink using only song lyrics"
+      ],
+      "penalty_key": "espresso",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-16",
+    "title": "Dare Wheel: Invent a VIP handshake with …",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Invent a VIP handshake with the person on your left",
+        "Wear your jacket inside-out for one full song",
+        "Switch drinks with someone for the next sip (consensual)",
+        "Ask the neighboring table for a lighter — dramatically"
+      ],
+      "penalty_key": "round",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-17",
+    "title": "Dare Wheel: Sing the chorus of the curre…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Sing the chorus of the current track — standing",
+        "Do a silent disco dance until the beat drops",
+        "Get the bartender to give you a high five",
+        "Start a 15-second clap chant for the DJ"
+      ],
+      "penalty_key": "tequila",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-18",
+    "title": "Dare Wheel: Ask staff for ice like you'r…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Ask staff for ice like you're in a spy movie",
+        "Collect five high-fives from the dancefloor",
+        "Do a 10-second runway walk to the bar",
+        "Take a mirror selfie with the whole table"
+      ],
+      "penalty_key": "tequila2",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-19",
+    "title": "Dare Wheel: Propose a toast using only t…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Propose a toast using only three words",
+        "Order water with the confidence of champagne",
+        "Swap seats with the person across from you for 2 rounds",
+        "Compliment three strangers before returning"
+      ],
+      "penalty_key": "vodka",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-20",
+    "title": "Dare Wheel: Wear your jacket inside-out …",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Wear your jacket inside-out for one full song",
+        "Recreate a red-carpet pose at the table edge",
+        "Order a drink using only song lyrics",
+        "Do your best VIP hostess welcome for 10 seconds"
+      ],
+      "penalty_key": "jager",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-21",
+    "title": "Dare Wheel: Do a silent disco dance unti…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Do a silent disco dance until the beat drops",
+        "Switch drinks with someone for the next sip (consensual)",
+        "Ask the neighboring table for a lighter — dramatically",
+        "Trade one accessory with someone at the table"
+      ],
+      "penalty_key": "heineken",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-22",
+    "title": "Dare Wheel: Collect five high-fives from…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Collect five high-fives from the dancefloor",
+        "Get the bartender to give you a high five",
+        "Start a 15-second clap chant for the DJ",
+        "Send a voice note saying 'We're legends tonight'"
+      ],
+      "penalty_key": "corona",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-23",
+    "title": "Dare Wheel: Order water with the confide…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Order water with the confidence of champagne",
+        "Do a 10-second runway walk to the bar",
+        "Take a mirror selfie with the whole table",
+        "Balance a coaster on your head for 20 seconds"
+      ],
+      "penalty_key": "gnt",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-24",
+    "title": "Dare Wheel: Recreate a red-carpet pose a…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Recreate a red-carpet pose at the table edge",
+        "Swap seats with the person across from you for 2 rounds",
+        "Compliment three strangers before returning",
+        "Mime your favorite cocktail for the table to guess"
+      ],
+      "penalty_key": "espresso",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-dare-25",
+    "title": "Dare Wheel: Switch drinks with someone f…",
+    "game_type": "DARE_WHEEL",
+    "weight": 1.15,
+    "min_group_size": 2,
+    "min_spend": 500,
+    "category": "DARE_WHEEL",
+    "is_active": true,
+    "rules_json": {
+      "dares": [
+        "Switch drinks with someone for the next sip (consensual)",
+        "Order a drink using only song lyrics",
+        "Do your best VIP hostess welcome for 10 seconds",
+        "Get someone to say 'mAITab' on camera"
+      ],
+      "penalty_key": "round",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-01",
+    "title": "NHIE Party #1",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever ghosted someone at a club",
+        "Never have I ever name-dropped to skip a queue",
+        "Never have I ever said 'I'm leaving' three times"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "jager",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-02",
+    "title": "NHIE Party #2",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever ordered the most expensive drink on someone else's tab",
+        "Never have I ever danced on a platform",
+        "Never have I ever Instagram-storied a stranger's fit"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "heineken",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-03",
+    "title": "NHIE Party #3",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever snuck into a VIP section",
+        "Never have I ever lost a jacket at coat check",
+        "Never have I ever asked the DJ for a song"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "corona",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-04",
+    "title": "NHIE Party #4",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever pretended to know a song's lyrics",
+        "Never have I ever taken a shot I regretted mid-swallow",
+        "Never have I ever spilled a drink on the dancefloor"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "gnt",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-05",
+    "title": "NHIE Party #5",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever left my card open at a bar",
+        "Never have I ever flirted for a free drink",
+        "Never have I ever claimed a table I didn't book"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "espresso",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-06",
+    "title": "NHIE Party #6",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever name-dropped to skip a queue",
+        "Never have I ever used someone else's Autopay story",
+        "Never have I ever switched seats to avoid someone"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "round",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-07",
+    "title": "NHIE Party #7",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever danced on a platform",
+        "Never have I ever said 'I'm leaving' three times",
+        "Never have I ever paid for a round I didn't drink"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "tequila",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-08",
+    "title": "NHIE Party #8",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever lost a jacket at coat check",
+        "Never have I ever Instagram-storied a stranger's fit",
+        "Never have I ever used a fake name at entry"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "tequila2",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-09",
+    "title": "NHIE Party #9",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever taken a shot I regretted mid-swallow",
+        "Never have I ever asked the DJ for a song",
+        "Never have I ever celebrated a lucky-draw win"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "vodka",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-10",
+    "title": "NHIE Party #10",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever flirted for a free drink",
+        "Never have I ever spilled a drink on the dancefloor",
+        "Never have I ever ghosted someone at a club"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "jager",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-11",
+    "title": "NHIE Party #11",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever used someone else's Autopay story",
+        "Never have I ever claimed a table I didn't book",
+        "Never have I ever ordered the most expensive drink on someone else's tab"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "heineken",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-12",
+    "title": "NHIE Party #12",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever said 'I'm leaving' three times",
+        "Never have I ever switched seats to avoid someone",
+        "Never have I ever snuck into a VIP section"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "corona",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-13",
+    "title": "NHIE Party #13",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever Instagram-storied a stranger's fit",
+        "Never have I ever paid for a round I didn't drink",
+        "Never have I ever pretended to know a song's lyrics"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "gnt",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-14",
+    "title": "NHIE Party #14",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever asked the DJ for a song",
+        "Never have I ever used a fake name at entry",
+        "Never have I ever left my card open at a bar"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "espresso",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-15",
+    "title": "NHIE Party #15",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever spilled a drink on the dancefloor",
+        "Never have I ever celebrated a lucky-draw win",
+        "Never have I ever name-dropped to skip a queue"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "round",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-16",
+    "title": "NHIE Party #16",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever claimed a table I didn't book",
+        "Never have I ever ghosted someone at a club",
+        "Never have I ever danced on a platform"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "tequila",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-17",
+    "title": "NHIE Party #17",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever switched seats to avoid someone",
+        "Never have I ever ordered the most expensive drink on someone else's tab",
+        "Never have I ever lost a jacket at coat check"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "tequila2",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-18",
+    "title": "NHIE Party #18",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever paid for a round I didn't drink",
+        "Never have I ever snuck into a VIP section",
+        "Never have I ever taken a shot I regretted mid-swallow"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "vodka",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-19",
+    "title": "NHIE Party #19",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever used a fake name at entry",
+        "Never have I ever pretended to know a song's lyrics",
+        "Never have I ever flirted for a free drink"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "jager",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-nhie-20",
+    "title": "NHIE Party #20",
+    "game_type": "NEVER_HAVE_I_EVER",
+    "weight": 1.2,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "NHIE",
+    "is_active": true,
+    "rules_json": {
+      "statements": [
+        "Never have I ever celebrated a lucky-draw win",
+        "Never have I ever left my card open at a bar",
+        "Never have I ever used someone else's Autopay story"
+      ],
+      "voting": true,
+      "realtime": true,
+      "penalty_key": "heineken",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-bottle-01",
+    "title": "Spin the Bottle & Secret Pass #1",
+    "game_type": "SPIN_THE_BOTTLE",
+    "weight": 1,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "SPIN_BOTTLE",
+    "is_active": true,
+    "rules_json": {
+      "actions": [
+        "Secret Pass: whisper a dare",
+        "Table roast (kind)",
+        "Share a first-date fail",
+        "Order a shared starter"
+      ],
+      "haptic": true,
+      "penalty_key": "heineken",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-bottle-02",
+    "title": "Spin the Bottle & Secret Pass #2",
+    "game_type": "SPIN_THE_BOTTLE",
+    "weight": 1,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "SPIN_BOTTLE",
+    "is_active": true,
+    "rules_json": {
+      "actions": [
+        "Haptic spin: left seat challenge",
+        "Right seat truth",
+        "Host picks challenge",
+        "Group toast"
+      ],
+      "haptic": true,
+      "penalty_key": "corona",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-bottle-03",
+    "title": "Spin the Bottle & Secret Pass #3",
+    "game_type": "SPIN_THE_BOTTLE",
+    "weight": 1,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "SPIN_BOTTLE",
+    "is_active": true,
+    "rules_json": {
+      "actions": [
+        "Bottle points: compliment chain",
+        "Eye contact 10s",
+        "Swap one fun fact",
+        "Shot or story"
+      ],
+      "haptic": true,
+      "penalty_key": "gnt",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-bottle-04",
+    "title": "Spin the Bottle & Secret Pass #4",
+    "game_type": "SPIN_THE_BOTTLE",
+    "weight": 1,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "SPIN_BOTTLE",
+    "is_active": true,
+    "rules_json": {
+      "actions": [
+        "Secret crush prompt",
+        "Playlist confession",
+        "Dance-off opener",
+        "Pass the phone selfie"
+      ],
+      "haptic": true,
+      "penalty_key": "espresso",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-bottle-05",
+    "title": "Spin the Bottle & Secret Pass #5",
+    "game_type": "SPIN_THE_BOTTLE",
+    "weight": 1,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "SPIN_BOTTLE",
+    "is_active": true,
+    "rules_json": {
+      "actions": [
+        "Midnight pact challenge",
+        "Two truths one lie",
+        "Seat roulette",
+        "Buy-in toast"
+      ],
+      "haptic": true,
+      "penalty_key": "round",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-bottle-06",
+    "title": "Spin the Bottle & Secret Pass #6",
+    "game_type": "SPIN_THE_BOTTLE",
+    "weight": 1,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "SPIN_BOTTLE",
+    "is_active": true,
+    "rules_json": {
+      "actions": [
+        "Silent stare-off",
+        "Rizz rating",
+        "VIP impression",
+        "Bar quiz"
+      ],
+      "haptic": true,
+      "penalty_key": "tequila",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-bottle-07",
+    "title": "Spin the Bottle & Secret Pass #7",
+    "game_type": "SPIN_THE_BOTTLE",
+    "weight": 1,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "SPIN_BOTTLE",
+    "is_active": true,
+    "rules_json": {
+      "actions": [
+        "Coin flip honesty",
+        "Nickname generator",
+        "Emoji only chat",
+        "Round robin dare"
+      ],
+      "haptic": true,
+      "penalty_key": "tequila2",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-bottle-08",
+    "title": "Spin the Bottle & Secret Pass #8",
+    "game_type": "SPIN_THE_BOTTLE",
+    "weight": 1,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "SPIN_BOTTLE",
+    "is_active": true,
+    "rules_json": {
+      "actions": [
+        "Spotlight spin",
+        "Wingman duty",
+        "Table anthem",
+        "Mystery toast"
+      ],
+      "haptic": true,
+      "penalty_key": "vodka",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-bottle-09",
+    "title": "Spin the Bottle & Secret Pass #9",
+    "game_type": "SPIN_THE_BOTTLE",
+    "weight": 1,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "SPIN_BOTTLE",
+    "is_active": true,
+    "rules_json": {
+      "actions": [
+        "Left-hand sip challenge",
+        "Phone stack game",
+        "Accent dare",
+        "Glow-up tip"
+      ],
+      "haptic": true,
+      "penalty_key": "jager",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-bottle-10",
+    "title": "Spin the Bottle & Secret Pass #10",
+    "game_type": "SPIN_THE_BOTTLE",
+    "weight": 1,
+    "min_group_size": 3,
+    "min_spend": 0,
+    "category": "SPIN_BOTTLE",
+    "is_active": true,
+    "rules_json": {
+      "actions": [
+        "Secret handshake invent",
+        "Fortune teller spin",
+        "Group whisper",
+        "Last-call prophecy"
+      ],
+      "haptic": true,
+      "penalty_key": "heineken",
+      "upsell_label": "Pay Penalty / Order Round"
+    }
+  },
+  {
+    "id": "g-mlt-01",
+    "title": "Most Likely To… #1",
+    "game_type": "MOST_LIKELY_TO",
+    "weight": 1.25,
+    "min_group_size": 3,
+    "min_spend": 800,
+    "category": "MOST_LIKELY_TO",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Most likely to start a tab they can't close"
+      ],
+      "voting": true,
+      "loser_penalty": true,
+      "penalty_key": "corona",
+      "upsell_label": "Loser Pays — Add Shot to Tab"
+    }
+  },
+  {
+    "id": "g-mlt-02",
+    "title": "Most Likely To… #2",
+    "game_type": "MOST_LIKELY_TO",
+    "weight": 1.25,
+    "min_group_size": 3,
+    "min_spend": 800,
+    "category": "MOST_LIKELY_TO",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Most likely to end up in the DJ booth"
+      ],
+      "voting": true,
+      "loser_penalty": true,
+      "penalty_key": "gnt",
+      "upsell_label": "Loser Pays — Add Shot to Tab"
+    }
+  },
+  {
+    "id": "g-mlt-03",
+    "title": "Most Likely To… #3",
+    "game_type": "MOST_LIKELY_TO",
+    "weight": 1.25,
+    "min_group_size": 3,
+    "min_spend": 800,
+    "category": "MOST_LIKELY_TO",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Most likely to lose their phone tonight"
+      ],
+      "voting": true,
+      "loser_penalty": true,
+      "penalty_key": "espresso",
+      "upsell_label": "Loser Pays — Add Shot to Tab"
+    }
+  },
+  {
+    "id": "g-mlt-04",
+    "title": "Most Likely To… #4",
+    "game_type": "MOST_LIKELY_TO",
+    "weight": 1.25,
+    "min_group_size": 3,
+    "min_spend": 800,
+    "category": "MOST_LIKELY_TO",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Most likely to order bottle service 'for the aesthetic'"
+      ],
+      "voting": true,
+      "loser_penalty": true,
+      "penalty_key": "round",
+      "upsell_label": "Loser Pays — Add Shot to Tab"
+    }
+  },
+  {
+    "id": "g-mlt-05",
+    "title": "Most Likely To… #5",
+    "game_type": "MOST_LIKELY_TO",
+    "weight": 1.25,
+    "min_group_size": 3,
+    "min_spend": 800,
+    "category": "MOST_LIKELY_TO",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Most likely to get a Titan welcome on the AV wall"
+      ],
+      "voting": true,
+      "loser_penalty": true,
+      "penalty_key": "tequila",
+      "upsell_label": "Loser Pays — Add Shot to Tab"
+    }
+  },
+  {
+    "id": "g-mlt-06",
+    "title": "Most Likely To… #6",
+    "game_type": "MOST_LIKELY_TO",
+    "weight": 1.25,
+    "min_group_size": 3,
+    "min_spend": 800,
+    "category": "MOST_LIKELY_TO",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Most likely to ghost the group chat tomorrow"
+      ],
+      "voting": true,
+      "loser_penalty": true,
+      "penalty_key": "tequila2",
+      "upsell_label": "Loser Pays — Add Shot to Tab"
+    }
+  },
+  {
+    "id": "g-mlt-07",
+    "title": "Most Likely To… #7",
+    "game_type": "MOST_LIKELY_TO",
+    "weight": 1.25,
+    "min_group_size": 3,
+    "min_spend": 800,
+    "category": "MOST_LIKELY_TO",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Most likely to claim 'I'm a chill drinker'"
+      ],
+      "voting": true,
+      "loser_penalty": true,
+      "penalty_key": "vodka",
+      "upsell_label": "Loser Pays — Add Shot to Tab"
+    }
+  },
+  {
+    "id": "g-mlt-08",
+    "title": "Most Likely To… #8",
+    "game_type": "MOST_LIKELY_TO",
+    "weight": 1.25,
+    "min_group_size": 3,
+    "min_spend": 800,
+    "category": "MOST_LIKELY_TO",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Most likely to know the gate staff by name"
+      ],
+      "voting": true,
+      "loser_penalty": true,
+      "penalty_key": "jager",
+      "upsell_label": "Loser Pays — Add Shot to Tab"
+    }
+  },
+  {
+    "id": "g-mlt-09",
+    "title": "Most Likely To… #9",
+    "game_type": "MOST_LIKELY_TO",
+    "weight": 1.25,
+    "min_group_size": 3,
+    "min_spend": 800,
+    "category": "MOST_LIKELY_TO",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Most likely to turn a dare into a viral clip"
+      ],
+      "voting": true,
+      "loser_penalty": true,
+      "penalty_key": "heineken",
+      "upsell_label": "Loser Pays — Add Shot to Tab"
+    }
+  },
+  {
+    "id": "g-mlt-10",
+    "title": "Most Likely To… #10",
+    "game_type": "MOST_LIKELY_TO",
+    "weight": 1.25,
+    "min_group_size": 3,
+    "min_spend": 800,
+    "category": "MOST_LIKELY_TO",
+    "is_active": true,
+    "rules_json": {
+      "prompts": [
+        "Most likely to merge three tables by accident"
+      ],
+      "voting": true,
+      "loser_penalty": true,
+      "penalty_key": "corona",
+      "upsell_label": "Loser Pays — Add Shot to Tab"
+    }
+  }
+]

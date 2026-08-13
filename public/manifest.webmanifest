@@ -1,0 +1,10 @@
+{
+  "name": "mAITab",
+  "short_name": "mAITab",
+  "description": "mAITab — smart bar tab & nightlife OS (mAI ecosystem)",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08090C",
+  "theme_color": "#08090C",
+  "icons": []
+}
