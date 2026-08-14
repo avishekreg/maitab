@@ -6,12 +6,9 @@ import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "#problem", label: "The problem" },
-  { href: "#system", label: "The system" },
-  { href: "#journey", label: "How it works" },
+  { href: "#pricing", label: "Pricing" },
   { href: "#features", label: "Features" },
-  { href: "#growth", label: "Growth" },
-  { href: "/onboard", label: "Onboard" },
+  { href: "#experience", label: "Experience" },
 ];
 
 /**
@@ -37,39 +34,29 @@ export function MarketingHeader() {
         </Link>
 
         <nav className="hidden items-center gap-0.5 lg:flex">
-          {NAV.map((item) =>
-            item.href.startsWith("/") ? (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="rounded-lg px-2.5 py-2 font-sans text-sm font-medium tracking-normal text-[#FFFFFF]/85 transition hover:bg-white/10 hover:text-[#FFFFFF]"
-              >
-                {item.label}
-              </Link>
-            ) : (
-              <a
-                key={item.href}
-                href={item.href}
-                className="rounded-lg px-2.5 py-2 font-sans text-sm font-medium tracking-normal text-[#FFFFFF]/85 transition hover:bg-white/10 hover:text-[#FFFFFF]"
-              >
-                {item.label}
-              </a>
-            )
-          )}
+          {NAV.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="rounded-lg px-2.5 py-2 font-sans text-sm font-medium tracking-normal text-[#FFFFFF]/85 transition hover:bg-white/10 hover:text-[#FFFFFF]"
+            >
+              {item.label}
+            </a>
+          ))}
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
           <Link
             href="/login"
-            className="rounded-lg px-3 py-2 font-sans text-sm font-medium tracking-normal text-[#FFFFFF]/85 transition hover:text-[#FFFFFF]"
+            className="rounded-lg border border-white/20 px-3.5 py-2 font-sans text-sm font-semibold tracking-normal text-[#FFFFFF] transition hover:bg-white/10"
           >
-            Demo login
+            Login
           </Link>
           <Link
             href="/onboard"
             className="inline-flex h-10 items-center rounded-lg bg-gradient-to-r from-[#8B5CF6] via-[#A855F7] to-[#06B6D4] px-4 font-sans text-sm font-semibold tracking-normal text-white shadow-lg shadow-purple-500/20 transition hover:opacity-90"
           >
-            Start onboarding
+            Get Started
           </Link>
         </div>
 
@@ -100,16 +87,16 @@ export function MarketingHeader() {
             <Link
               href="/login"
               onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-3 text-sm text-[#FFFFFF]/80"
+              className="rounded-lg px-3 py-3 text-sm font-semibold text-[#FFFFFF]"
             >
-              Demo login
+              Login
             </Link>
             <Link
               href="/onboard"
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#8B5CF6] via-[#A855F7] to-[#06B6D4] text-sm font-semibold text-white shadow-lg shadow-purple-500/20 transition hover:opacity-90"
             >
-              Start onboarding
+              Get Started
             </Link>
           </div>
         </div>
@@ -119,10 +106,10 @@ export function MarketingHeader() {
 }
 
 const PLATFORM_LINKS = [
-  { href: "#system", label: "System Architecture" },
-  { href: "#features", label: "105 Games Engine" },
-  { href: "#features", label: "Discount Bridge" },
-  { href: "/login", label: "Demo Access" },
+  { href: "#experience", label: "Experience" },
+  { href: "#features", label: "Features" },
+  { href: "#pricing", label: "Pricing" },
+  { href: "/login", label: "Login" },
 ] as const;
 
 const LEGAL_LINKS = [

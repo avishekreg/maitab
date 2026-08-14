@@ -1,48 +1,61 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { GoogleContinueButton } from "@/components/auth/GoogleContinueButton";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 import { NeonButton } from "@/components/ui/NeonButton";
-import { DEMO_PASSWORD, PUBLIC_DEMO_USERS } from "@/lib/auth/demo-users";
+import {
+  DEMO_PASSWORD,
+  PUBLIC_DEMO_USERS,
+} from "@/lib/auth/demo-users";
 import type { UserRole } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-function LoginForm() {
+const STAFF_ROLES: UserRole[] = [
+  "CLUB_ADMIN",
+  "FLOOR_MANAGER",
+  "CAPTAIN",
+  "BARTENDER",
+  "GATE_STAFF",
+];
+
+function LoginHub() {
   const router = useRouter();
   const params = useSearchParams();
   const denied = params.get("denied");
   const oauthError = params.get("error");
-  const [loadingRole, setLoadingRole] = useState<UserRole | null>(null);
+  const [email, setEmail] = useState("");
+  const [pin, setPin] = useState("");
+  const [busy, setBusy] = useState(false);
   const [note, setNote] = useState<string | null>(null);
 
-  async function enterDemo(role: UserRole, home: string) {
-    setLoadingRole(role);
+  async function staffSignIn() {
+    setBusy(true);
     setNote(null);
     try {
-      const res = await fetch("/api/auth/demo-login", {
+      const res = await fetch("/api/auth/staff-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ role }),
+        body: JSON.stringify({ email, pin }),
       });
       const data = (await res.json()) as {
         ok: boolean;
-        mode?: string;
-        warning?: string;
-        email?: string;
+        home?: string;
+        reason?: string;
+        name?: string;
       };
       if (!data.ok) {
-        setNote("Sign-in blocked for this role.");
+        setNote(data.reason ?? "Sign-in failed.");
         return;
       }
-      if (data.warning) setNote(data.warning);
-      else setNote(`${data.email ?? role} · ${data.mode ?? "cookie"}`);
-      router.push(home);
+      setNote(data.name ? `Welcome, ${data.name}` : "Signed in");
+      router.push(data.home ?? "/admin/club");
     } catch {
-      setNote("Sign-in failed — retry demo login.");
+      setNote("Unable to reach sign-in service.");
     } finally {
-      setLoadingRole(null);
+      setBusy(false);
     }
   }
 
@@ -52,109 +65,122 @@ function LoginForm() {
         aria-hidden
         className="pointer-events-none fixed inset-0 bg-[radial-gradient(900px_480px_at_12%_-8%,rgba(139,92,246,0.18),transparent_55%),radial-gradient(780px_420px_at_92%_0%,rgba(6,182,212,0.12),transparent_50%)]"
       />
-      <div className="relative mx-auto max-w-3xl">
-        <div className="mb-8">
-          <MaiTabLogo
-            variant="FullLogoWithText"
-            onDark
-            className="h-11 w-auto min-w-[11rem]"
-          />
-          <h1 className="mt-6 font-display text-3xl font-bold tracking-tight text-[#F8FAFC]">
-            Sign in
-          </h1>
-          <p className="mt-2 max-w-xl text-base leading-relaxed text-[#E2E8F0]">
-            Continue with Google for production access, or use a venue demo
-            role below.
+      <div className="relative mx-auto w-full max-w-md">
+        <MaiTabLogo
+          variant="FullLogoWithText"
+          onDark
+          className="h-10 w-auto min-w-[11rem]"
+        />
+        <h1 className="mt-8 font-display text-3xl font-bold tracking-tight">
+          Universal login
+        </h1>
+        <p className="mt-2 text-sm leading-relaxed text-[#E2E8F0]">
+          One portal for Super Admin, venue owners, and floor staff.
+        </p>
+
+        {denied === "403" || oauthError === "super_admin_forbidden" ? (
+          <p className="mt-3 text-sm text-rose-400">
+            403 Forbidden — this identity cannot open the Super Admin console.
           </p>
-          {denied === "403" || oauthError === "super_admin_forbidden" ? (
-            <p className="mt-3 text-sm text-rose-400">
-              403 Forbidden — Super Admin access requires an authorized Google
-              identity.
-            </p>
-          ) : denied ? (
-            <p className="mt-3 text-sm text-rose-400">
-              Access denied for {denied}
-              {oauthError ? ` (${oauthError})` : ""}. Pick a role that can open
-              that route.
-            </p>
-          ) : null}
-        </div>
-
-        <GoogleContinueButton className="mb-8" />
-
-        <div className="mb-4 flex items-center gap-3">
-          <div className="h-px flex-1 bg-white/10" />
-          <p className="text-xs uppercase tracking-[0.18em] text-[#94A3B8]">
-            Or demo roles · {DEMO_PASSWORD}
+        ) : denied ? (
+          <p className="mt-3 text-sm text-rose-400">
+            Access denied{oauthError ? ` (${oauthError})` : ""}.
           </p>
-          <div className="h-px flex-1 bg-white/10" />
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          {PUBLIC_DEMO_USERS.map((user) => {
-            const busy = loadingRole === user.role;
-            return (
-              <button
-                key={user.role}
-                type="button"
-                disabled={loadingRole !== null}
-                onClick={() => void enterDemo(user.role, user.home)}
-                className={cn(
-                  "flex flex-col rounded-2xl border border-white/10 bg-[#12151A]/90 p-5 text-left shadow-[0_12px_40px_-16px_rgba(0,0,0,0.65)] backdrop-blur-xl transition",
-                  "hover:border-[#A855F7]/50 hover:bg-[#161B22]",
-                  "disabled:cursor-wait disabled:opacity-60",
-                  busy && "ring-1 ring-[#A855F7]/60"
-                )}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <p className="text-lg font-semibold tracking-normal text-[#F8FAFC]">
-                    {user.name}
-                  </p>
-                  <span className="shrink-0 rounded-lg border border-white/15 bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[#E2E8F0]">
-                    {user.role.replaceAll("_", " ")}
-                  </span>
-                </div>
-
-                <p className="mt-2 text-sm leading-relaxed text-[#E2E8F0]">
-                  {user.description}
-                </p>
-
-                <div className="mt-4 space-y-1.5 text-sm">
-                  <p className="break-all">
-                    <span className="text-[#94A3B8]">Email · </span>
-                    <span className="font-medium text-cyan-400">
-                      {user.email}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="text-[#94A3B8]">Opens · </span>
-                    <span className="font-medium text-amber-400">{user.home}</span>
-                  </p>
-                </div>
-
-                <p className="mt-4 block text-sm font-semibold text-[#A855F7]">
-                  {busy ? "Signing in…" : "Enter as this role →"}
-                </p>
-              </button>
-            );
-          })}
-        </div>
-
-        {note ? (
-          <p className="mt-4 text-sm text-[#E2E8F0]/80">{note}</p>
         ) : null}
 
-        <div className="mt-6">
-          <NeonButton
-            tone="ghost"
-            size="sm"
-            className="border-white/20 bg-white/5 text-[#F8FAFC] hover:bg-white/10"
-            disabled={loadingRole !== null}
-            onClick={() => void enterDemo("CUSTOMER", "/home")}
-          >
-            {loadingRole === "CUSTOMER" ? "Opening…" : "Open customer demo"}
-          </NeonButton>
+        <div className="mt-8 rounded-2xl border border-white/10 bg-[#12151A]/90 p-6 shadow-[0_20px_60px_-24px_rgba(0,0,0,0.8)] backdrop-blur-xl">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#94A3B8]">
+            Fast Google Auth
+          </p>
+          <div className="mt-4">
+            <GoogleContinueButton />
+          </div>
+          <p className="mt-3 text-xs text-[#94A3B8]">
+            Routes automatically to your console based on your verified email.
+          </p>
         </div>
+
+        <div className="mt-4 rounded-2xl border border-white/10 bg-[#12151A]/90 p-6 shadow-[0_20px_60px_-24px_rgba(0,0,0,0.8)] backdrop-blur-xl">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#94A3B8]">
+            Staff & venue quick access
+          </p>
+          <p className="mt-2 text-sm text-[#E2E8F0]">
+            Club Admins, Floor Managers, Bartenders, and Gate Staff — work email
+            + PIN.
+          </p>
+
+          <label className="mt-4 block text-sm">
+            Work email
+            <input
+              type="email"
+              autoComplete="username"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="club@maitab.demo"
+              className="mt-1.5 h-11 w-full rounded-xl border border-white/15 bg-[#0B0E14] px-3 text-sm text-[#F8FAFC] placeholder:text-[#64748B]"
+            />
+          </label>
+          <label className="mt-3 block text-sm">
+            PIN
+            <input
+              type="password"
+              autoComplete="current-password"
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
+              placeholder="Staff PIN"
+              className="mt-1.5 h-11 w-full rounded-xl border border-white/15 bg-[#0B0E14] px-3 text-sm text-[#F8FAFC] placeholder:text-[#64748B]"
+            />
+          </label>
+
+          <NeonButton
+            className="mt-4 w-full"
+            tone="violet"
+            disabled={busy || !email.includes("@") || pin.length < 4}
+            onClick={() => void staffSignIn()}
+          >
+            {busy ? "Signing in…" : "Sign in to floor ops"}
+          </NeonButton>
+
+          {note ? (
+            <p className="mt-3 text-sm text-[#E2E8F0]/80">{note}</p>
+          ) : null}
+
+          <details className="mt-4 text-xs text-[#64748B]">
+            <summary className="cursor-pointer text-[#94A3B8]">
+              Demo staff emails
+            </summary>
+            <ul className="mt-2 space-y-1">
+              {PUBLIC_DEMO_USERS.filter((u) =>
+                STAFF_ROLES.includes(u.role)
+              ).map((u) => (
+                <li key={u.email}>
+                  <button
+                    type="button"
+                    className="text-left text-cyan-400/90 hover:underline"
+                    onClick={() => {
+                      setEmail(u.email);
+                      setPin(DEMO_PASSWORD);
+                    }}
+                  >
+                    {u.role.replaceAll("_", " ")} · {u.email}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2">Demo PIN · {DEMO_PASSWORD}</p>
+          </details>
+        </div>
+
+        <p className="mt-8 text-center text-sm text-[#94A3B8]">
+          <Link
+            href="/onboard"
+            className={cn(
+              "font-semibold text-[#A855F7] transition hover:text-[#C084FC]"
+            )}
+          >
+            New Venue? Start B2B Onboarding ➔
+          </Link>
+        </p>
       </div>
     </div>
   );
@@ -165,11 +191,11 @@ export default function LoginPage() {
     <Suspense
       fallback={
         <div className="grid min-h-[100dvh] place-items-center bg-[#0B0E14] text-[#E2E8F0]">
-          Loading sign-in…
+          Loading login…
         </div>
       }
     >
-      <LoginForm />
+      <LoginHub />
     </Suspense>
   );
 }

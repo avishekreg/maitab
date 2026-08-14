@@ -19,7 +19,8 @@ export function secureCookieOptions(maxAgeSeconds: number) {
     path: "/",
     maxAge: maxAgeSeconds,
     httpOnly: true,
-    sameSite: "strict" as const,
+    // Lax so Google OAuth redirect round-trips keep role cookies.
+    sameSite: "lax" as const,
     secure,
   };
 }

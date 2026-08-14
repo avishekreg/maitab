@@ -43,6 +43,10 @@ function resolveRole(
   pathname: string
 ): UserRole | null {
   const demo = readDemoRole(request);
+  // Real OAuth / JWT sessions always win over leftover demo guest cookies.
+  // (Previously CUSTOMER demo cookie forced /home → demo Rahul after Google login.)
+  if (jwtRole) return jwtRole;
+
   if (
     demo === "CUSTOMER" &&
     GUEST_APP_PREFIXES.some(
@@ -51,7 +55,6 @@ function resolveRole(
   ) {
     return "CUSTOMER";
   }
-  if (jwtRole) return jwtRole;
   if (demo) return demo;
   if (!isSupabaseConfigured()) return "CUSTOMER";
   return null;

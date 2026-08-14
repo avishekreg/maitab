@@ -73,7 +73,7 @@ export function homeForGoogleRole(role: UserRole, isNewUser: boolean): string {
   if (role === "GATE_STAFF") return ROLE_HOME.GATE_STAFF;
   if (role === "BARTENDER") return ROLE_HOME.BARTENDER;
   if (role === "AV_CONTROLLER") return ROLE_HOME.AV_CONTROLLER;
-  // New customers without a club workspace go to onboard; returning guests → home.
+  // Never default OAuth strangers to demo guest /home (Rahul).
   if (isNewUser) return "/onboard";
   return ROLE_HOME.CUSTOMER;
 }

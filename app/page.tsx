@@ -425,7 +425,7 @@ export default function MarketingLandingPage() {
 
       {/* JOURNEY — typography reference surface (dark) */}
       <section
-        id="journey"
+        id="experience"
         className="scroll-mt-20 border-t border-white/10 bg-black"
       >
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
@@ -531,9 +531,9 @@ export default function MarketingLandingPage() {
         </div>
       </section>
 
-      {/* GROWTH — forced light stone canvas (fixes blackout contrast bug) */}
+      {/* PRICING / GROWTH — forced light stone canvas */}
       <section
-        id="growth"
+        id="pricing"
         className="scroll-mt-20 border-t border-[#DAD7D0] bg-[#FAF9F5]"
       >
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">

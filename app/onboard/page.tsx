@@ -120,11 +120,6 @@ export default function OnboardPage() {
 
         <div className="mt-8 max-w-md">
           <GoogleContinueButton label="Continue with Google to start" />
-          <p className="mt-2 text-xs text-[#94A3B8]">
-            Super Admin identities listed in{" "}
-            <code className="text-amber-300">SUPER_ADMIN_EMAILS</code> route
-            straight to the command console.
-          </p>
         </div>
 
         <div className="mt-10 grid gap-4 md:grid-cols-3">
