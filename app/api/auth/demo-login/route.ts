@@ -108,22 +108,32 @@ export async function POST(request: Request) {
     }
   );
 
+  // Drop any prior staff/customer JWT so demo role cookies are not overridden.
+  await supabase.auth.signOut();
+
   const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error) {
-    return NextResponse.json(
-      {
-        ok: true,
-        role: body.role,
-        home: account.home,
-        mode: "cookie",
-        warning: "Auth sign-in skipped — using demo role cookie.",
-      },
-      { headers: response.headers }
-    );
+    // Keep HttpOnly demo cookies from `response` — do not rebuild JSON (drops Set-Cookie).
+    response.headers.set("x-maitab-auth-mode", "cookie");
+    const bodyJson = {
+      ok: true,
+      role: body.role,
+      home: account.home,
+      mode: "cookie" as const,
+      warning: "Auth sign-in skipped — using demo role cookie.",
+    };
+    return new NextResponse(JSON.stringify(bodyJson), {
+      status: 200,
+      headers: (() => {
+        const headers = new Headers(response.headers);
+        headers.set("content-type", "application/json");
+        return headers;
+      })(),
+    });
   }
 
   return response;

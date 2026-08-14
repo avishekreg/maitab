@@ -132,9 +132,10 @@ function LoginForm() {
             tone="ghost"
             size="sm"
             className="border-white/20 bg-white/5 text-[#F8FAFC] hover:bg-white/10"
-            onClick={() => router.push("/home")}
+            disabled={loadingRole !== null}
+            onClick={() => void enterDemo("CUSTOMER", "/home")}
           >
-            Open customer demo
+            {loadingRole === "CUSTOMER" ? "Opening…" : "Open customer demo"}
           </NeonButton>
         </div>
       </div>

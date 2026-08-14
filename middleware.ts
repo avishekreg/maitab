@@ -29,10 +29,21 @@ function readDemoRole(request: NextRequest): UserRole | null {
 
 function resolveRole(
   jwtRole: UserRole | null,
-  request: NextRequest
+  request: NextRequest,
+  pathname: string
 ): UserRole | null {
-  if (jwtRole) return jwtRole;
   const demo = readDemoRole(request);
+  // Guest surfaces: honor CUSTOMER demo cookie over a leftover staff JWT
+  // (common on production after switching demo roles).
+  if (
+    demo === "CUSTOMER" &&
+    GUEST_APP_PREFIXES.some(
+      (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+    )
+  ) {
+    return "CUSTOMER";
+  }
+  if (jwtRole) return jwtRole;
   if (demo) return demo;
   if (!isSupabaseConfigured()) return "CUSTOMER";
   return null;
@@ -76,7 +87,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  let role = resolveRole(jwtRole, request);
+  let role = resolveRole(jwtRole, request, pathname);
   let bootstrappedGuest = false;
 
   if (
@@ -92,6 +103,13 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!role && isGuestAppPath(pathname)) {
+    role = "CUSTOMER";
+    bootstrappedGuest = true;
+  }
+
+  // Production: leftover staff JWT used to block /home. Guest app always
+  // opens as CUSTOMER for the nightlife demo (matches local no-Supabase behavior).
+  if (isGuestAppPath(pathname) && !roleAllowed(pathname, role)) {
     role = "CUSTOMER";
     bootstrappedGuest = true;
   }
