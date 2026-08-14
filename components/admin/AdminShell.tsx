@@ -47,7 +47,7 @@ const SUPER_NAV = [
   { href: "/admin/super", label: "Command" },
   { href: "/admin/super/telemetry", label: "Telemetry" },
   { href: "/admin/super/config", label: "Integrations" },
-  { href: "/super-admin-vault", label: "Vault" },
+  { href: "/admin/super/vault", label: "Vault" },
   { href: "/admin/club", label: "Sample venue" },
 ];
 
@@ -76,23 +76,24 @@ export function AdminShell({
     <div className="min-h-[100dvh] bg-background text-foreground">
       <div className="pointer-events-none fixed inset-0 bg-nightlife-radial opacity-90" />
 
-      <div className="relative mx-auto flex min-h-[100dvh] max-w-6xl flex-col px-4 pb-10 pt-4 sm:px-6">
-        <header className="optimus-glass sticky top-0 z-30 -mx-4 rounded-none border-x-0 border-t-0 px-4 sm:-mx-6 sm:px-6">
-          <div className="flex h-14 items-center justify-between gap-3">
-            <div className="flex min-w-0 items-center gap-3">
+      <div className="relative mx-auto flex min-h-[100dvh] max-w-7xl flex-col px-4 pb-10 pt-0 sm:px-6">
+        <header className="sticky top-0 z-30 -mx-4 border-b border-zinc-800 bg-zinc-950 sm:-mx-6">
+          <div className="flex items-center justify-between gap-4 px-6 py-4">
+            <div className="flex min-w-0 shrink-0 items-center gap-3">
               <Link href="/" className="shrink-0">
                 <MaiTabLogo variant="FullLogoWithText" className="h-8 w-auto" />
               </Link>
-              <p className="hidden truncate text-[11px] uppercase tracking-[0.16em] text-muted-foreground sm:block">
+              <p className="hidden truncate text-[11px] uppercase tracking-[0.16em] text-zinc-400 lg:block">
                 {role === "SUPER_ADMIN" ? "Platform ops" : "Venue ops"}
               </p>
             </div>
 
-            <nav className="hidden items-center gap-1 md:flex">
+            <nav className="hidden min-w-0 flex-1 items-center justify-center gap-1 overflow-x-auto md:flex">
               {nav.map((item) => {
                 const active =
                   pathname === item.href ||
                   (item.href !== "/admin/club" &&
+                    item.href !== "/admin/super" &&
                     pathname.startsWith(`${item.href}/`));
                 return (
                   <Link
@@ -111,7 +112,7 @@ export function AdminShell({
               })}
             </nav>
 
-            <div className="flex shrink-0 items-center gap-2">
+            <div className="flex shrink-0 items-center justify-end gap-2">
               {showVenueSwitcher && venueOps ? <VenueSwitcher /> : null}
               <StatusPill
                 label={role}
@@ -126,7 +127,7 @@ export function AdminShell({
               </Link>
             </div>
           </div>
-          <nav className="flex gap-1 overflow-x-auto pb-3 md:hidden">
+          <nav className="flex gap-1 overflow-x-auto px-6 pb-3 md:hidden">
             {nav.map((item) => {
               const active = pathname === item.href;
               return (
@@ -149,11 +150,11 @@ export function AdminShell({
 
         <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="font-display text-4xl tracking-tight text-foreground">
+            <h1 className="font-display text-2xl tracking-tight text-zinc-100 sm:text-3xl">
               {title}
             </h1>
             {subtitle ? (
-              <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+              <p className="mt-1 max-w-2xl text-sm text-zinc-400">
                 {subtitle}
               </p>
             ) : null}

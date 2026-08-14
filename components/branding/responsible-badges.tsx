@@ -1,131 +1,62 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useSaarthiBooking } from "@/components/saarthi/SaarthiProvider";
+import { cn } from "@/lib/utils";
 
-type BadgeDensity = "strip" | "stack" | "micro";
-
-interface ResponsibleBadgesProps {
-  density?: BadgeDensity;
-  className?: string;
-  onDark?: boolean;
-}
-
-/**
- * Ultra-luxury metallic compliance capsules — Drink Responsibly + mAI Saarthi.
- */
 export function ResponsibleBadges({
-  density = "strip",
+  onOpenSaarthi,
   className,
-}: ResponsibleBadgesProps) {
-  const wrap =
-    density === "stack"
-      ? "flex flex-col gap-2"
-      : density === "micro"
-        ? "flex flex-wrap items-center justify-center gap-2"
-        : "flex flex-col items-stretch justify-center gap-2 sm:flex-row sm:flex-wrap sm:items-center";
+}: {
+  onOpenSaarthi?: () => void;
+  density?: "strip" | "stack" | "micro";
+  className?: string;
+}) {
+  const saarthi = useSaarthiBooking();
+  const open = onOpenSaarthi ?? (() => saarthi?.openBooking());
 
   return (
     <div
-      role="group"
-      aria-label="Responsible hospitality"
-      className={cn(wrap, className)}
+      className={cn(
+        "inline-flex items-center gap-2 overflow-hidden rounded-full border border-zinc-800/80 bg-zinc-950/90 p-1.5 shadow-2xl backdrop-blur-xl [contain:paint] select-none",
+        className,
+      )}
     >
-      <DrinkResponsiblyBadge />
-      <DontDrinkAndDriveBadge />
-    </div>
-  );
-}
-
-function DrinkResponsiblyBadge() {
-  return (
-    <div className="inline-flex items-center gap-3 rounded-full border border-amber-500/30 bg-zinc-950/80 px-4 py-2 shadow-[0_0_20px_rgba(245,158,11,0.12)] backdrop-blur-md transition-all hover:border-amber-500/60">
-      <GoldShieldIcon />
-      <div className="flex flex-col leading-tight">
-        <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-400">
-          Drink Responsibly
-        </span>
-        <span className="text-[10px] text-zinc-400">
-          Know Your Limits • Zero Underage Service
-        </span>
+      <div className="flex items-center gap-2.5 overflow-hidden rounded-full border border-amber-500/20 bg-zinc-900/60 px-3.5 py-1.5">
+        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10 text-[10px] font-bold text-amber-400">
+          21+
+        </div>
+        <div className="text-left leading-tight">
+          <div className="font-mono text-[10px] font-bold uppercase tracking-wider text-amber-400">
+            Drink Responsibly
+          </div>
+          <div className="text-[9px] text-zinc-400">
+            Know Your Limits • Zero Underage Service
+          </div>
+        </div>
       </div>
-    </div>
-  );
-}
 
-function DontDrinkAndDriveBadge() {
-  const saarthi = useSaarthiBooking();
-
-  return (
-    <button
-      type="button"
-      onClick={() => saarthi?.openBooking()}
-      className="group inline-flex cursor-pointer items-center gap-3 rounded-full border border-cyan-500/30 bg-zinc-950/80 px-4 py-2 shadow-[0_0_20px_rgba(6,182,212,0.15)] backdrop-blur-md transition-all hover:border-cyan-400/70"
-    >
-      <SteeringPulseIcon />
-      <div className="flex flex-col text-left leading-tight">
-        <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-cyan-400">
-          Don&apos;t Drink &amp; Drive
-        </span>
-        <span className="text-[10px] text-zinc-300 transition-colors group-hover:text-cyan-300">
-          Book a Verified mAI Saarthi Chauffeur ➔
-        </span>
-      </div>
-    </button>
-  );
-}
-
-function GoldShieldIcon() {
-  return (
-    <svg viewBox="0 0 40 40" className="h-9 w-9 shrink-0" aria-hidden>
-      <defs>
-        <linearGradient id="gold-shield" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#FDE68A" />
-          <stop offset="45%" stopColor="#F59E0B" />
-          <stop offset="100%" stopColor="#B45309" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M20 4l12 5v9.2c0 7.4-4.8 14-12 16.6C12.8 32.2 8 25.6 8 18.2V9L20 4z"
-        fill="url(#gold-shield)"
-      />
-      <text
-        x="20"
-        y="23"
-        textAnchor="middle"
-        fill="#1C1917"
-        fontSize="11"
-        fontWeight="800"
-        fontFamily="ui-sans-serif, system-ui"
+      <button
+        type="button"
+        onClick={open}
+        className="group flex cursor-pointer items-center gap-2.5 overflow-hidden rounded-full border border-cyan-500/20 bg-zinc-900/60 px-3.5 py-1.5 text-left transition-colors hover:border-cyan-500/50 hover:bg-cyan-950/20"
       >
-        21+
-      </text>
-    </svg>
-  );
-}
-
-function SteeringPulseIcon() {
-  return (
-    <span className="relative grid h-9 w-9 place-items-center">
-      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400/20" />
-      <svg viewBox="0 0 40 40" className="relative h-9 w-9" aria-hidden>
-        <defs>
-          <linearGradient id="cyan-wheel" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#A5F3FC" />
-            <stop offset="55%" stopColor="#22D3EE" />
-            <stop offset="100%" stopColor="#0891B2" />
-          </linearGradient>
-        </defs>
-        <circle cx="20" cy="20" r="13" fill="none" stroke="url(#cyan-wheel)" strokeWidth="2.4" />
-        <circle cx="20" cy="20" r="4" fill="url(#cyan-wheel)" />
-        <path
-          d="M20 7.5v8.2M11.2 24.8l6.2-3.4M28.8 24.8l-6.2-3.4"
-          stroke="url(#cyan-wheel)"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-        />
-      </svg>
-    </span>
+        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400">
+          <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" strokeWidth="2" />
+            <circle cx="12" cy="12" r="2" fill="currentColor" />
+            <path strokeWidth="2" d="M12 2v8M12 14v8M2 12h8M14 12h8" />
+          </svg>
+        </div>
+        <div className="leading-tight">
+          <div className="font-mono text-[10px] font-bold uppercase tracking-wider text-cyan-400">
+            Don&apos;t Drink &amp; Drive
+          </div>
+          <div className="text-[9px] text-zinc-300 transition-colors group-hover:text-cyan-300">
+            Book a Verified mAI Saarthi Chauffeur ➔
+          </div>
+        </div>
+      </button>
+    </div>
   );
 }
 

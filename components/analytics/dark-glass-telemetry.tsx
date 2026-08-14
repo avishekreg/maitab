@@ -17,11 +17,27 @@ import {
   YAxis,
 } from "recharts";
 import { Activity, Droplets, Gauge, Shield } from "lucide-react";
-import { DEMO_TELEMETRY, type SpiritCategory } from "@/lib/analytics/liquor-telemetry";
+import {
+  BRAND_PARTNER_SCOPES,
+  DEMO_TELEMETRY,
+  HOURLY_VELOCITY,
+  INVENTORY_ROWS,
+  NETWORK_VENUES,
+  SHARE_TABS,
+  TIMEFRAMES,
+  TOP_SKU_BY_COMPANY,
+  filterTelemetry,
+  matchesShareTab,
+  timeframeMultiplier,
+  type BrandPartnerKey,
+  type NetworkVenueKey,
+  type ShareTab,
+  type TimeframeKey,
+} from "@/lib/analytics/liquor-telemetry";
 import { formatINR } from "@/lib/utils";
 
 const CARD =
-  "bg-zinc-950/80 border border-zinc-800/60 backdrop-blur-xl p-6 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,0.5)]";
+  "overflow-hidden bg-zinc-950/80 border border-zinc-800/60 backdrop-blur-xl p-6 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,0.5)]";
 
 const CYAN = "#06b6d4";
 const AMBER = "#f59e0b";
@@ -36,24 +52,6 @@ const COMPANY_COLORS: Record<string, string> = {
   "AB InBev": EMERALD,
   "Beam Suntory": ROSE,
 };
-
-const HOUR_ORDER = [20, 21, 22, 23, 0, 1, 2, 3, 4];
-
-function hourLabel(h: number) {
-  if (h === 0) return "12 AM";
-  if (h < 12) return `${h} AM`;
-  if (h === 12) return "12 PM";
-  return `${h - 12} PM`;
-}
-
-const FILTERS: Array<"All" | SpiritCategory> = [
-  "All",
-  "Whisky",
-  "Vodka",
-  "Tequila",
-  "Gin",
-  "Beer",
-];
 
 function DarkTooltip({
   active,
@@ -77,49 +75,68 @@ function DarkTooltip({
   );
 }
 
+const selectClass =
+  "h-10 min-w-[180px] rounded-xl border border-zinc-800 bg-zinc-950 px-3 text-xs text-zinc-100 outline-none focus:border-cyan-500/50";
+
 export function DarkGlassTelemetry({
   scope = "network",
   title,
+  hideHeading = false,
 }: {
   scope?: "network" | "venue" | "partner";
   title?: string;
+  hideHeading?: boolean;
 }) {
-  const [category, setCategory] = useState<(typeof FILTERS)[number]>("All");
+  const [venue, setVenue] = useState<NetworkVenueKey>(
+    scope === "venue" ? "neon" : "all"
+  );
+  const [partner, setPartner] = useState<BrandPartnerKey>(
+    scope === "partner" ? "Diageo" : "macro"
+  );
+  const [timeframe, setTimeframe] = useState<TimeframeKey>("tonight");
+  const [category, setCategory] = useState<ShareTab>("All Spirits");
   const [draftNote, setDraftNote] = useState<string | null>(null);
-  const rows = DEMO_TELEMETRY;
+
+  const rows = useMemo(
+    () => filterTelemetry(DEMO_TELEMETRY, venue, partner),
+    [venue, partner]
+  );
+  const scale = timeframeMultiplier(timeframe);
 
   const kpis = useMemo(() => {
-    const gmv = rows.reduce((s, r) => s + r.billed_amount, 0);
-    const pours = rows.length;
-    const ml = rows.reduce((s, r) => s + r.volume_ml, 0);
+    const gmv = rows.reduce((s, r) => s + r.billed_amount, 0) * scale;
+    const pours = Math.round(rows.length * scale);
+    const ml = rows.reduce((s, r) => s + r.volume_ml, 0) * scale;
     const bottles = ml / 750;
     const avgCost =
-      rows.reduce((s, r) => s + r.pour_cost_pct, 0) / Math.max(pours, 1);
+      rows.reduce((s, r) => s + r.pour_cost_pct, 0) / Math.max(rows.length, 1);
     return { gmv, pours, bottles, avgCost };
-  }, [rows]);
+  }, [rows, scale]);
 
   const hourly = useMemo(() => {
-    return HOUR_ORDER.map((hour) => {
-      const slice = rows.filter((r) => r.pour_hour === hour);
-      const spirits = slice.filter((r) =>
-        ["Whisky", "Vodka", "Gin", "Wine"].includes(r.spirit_category)
-      ).length;
-      const tequila = slice.filter((r) => r.spirit_category === "Tequila").length;
-      const beers = slice.filter((r) => r.spirit_category === "Beer").length;
-      return { hour: hourLabel(hour), spirits, tequila, beers };
-    });
-  }, [rows]);
+    const venueScale = venue === "all" ? 1 : 0.38;
+    const partnerScale = partner === "macro" ? 1 : 0.55;
+    const tf = timeframe === "tonight" ? 1 : timeframe === "7d" ? 1.15 : 1.3;
+    return HOURLY_VELOCITY.map((h) => ({
+      hour: h.hour,
+      beer: Math.round(h.beer * venueScale * partnerScale * tf * scale * 0.12),
+      cocktails: Math.round(h.cocktails * venueScale * partnerScale * tf * scale * 0.12),
+      tequila: Math.round(h.tequila * venueScale * partnerScale * tf * scale * 0.12),
+      malts: Math.round(h.malts * venueScale * partnerScale * tf * scale * 0.12),
+      hydration: Math.round(h.hydration * venueScale * partnerScale * tf * scale * 0.12),
+    }));
+  }, [venue, partner, timeframe, scale]);
 
   const share = useMemo(() => {
-    const filtered =
-      category === "All"
-        ? rows
-        : rows.filter((r) => r.spirit_category === category);
-    const byCompany = new Map<string, { revenue: number; volume: number }>();
+    const filtered = rows.filter((r) => matchesShareTab(r, category));
+    const byCompany = new Map<
+      string,
+      { revenue: number; volume: number }
+    >();
     for (const r of filtered) {
       const cur = byCompany.get(r.parent_company) ?? { revenue: 0, volume: 0 };
-      cur.revenue += r.billed_amount;
-      cur.volume += r.volume_ml;
+      cur.revenue += r.billed_amount * scale;
+      cur.volume += r.volume_ml * scale;
       byCompany.set(r.parent_company, cur);
     }
     const totalVol = Array.from(byCompany.values()).reduce((s, v) => s + v.volume, 0);
@@ -127,22 +144,9 @@ export function DarkGlassTelemetry({
       name,
       value: Number(((v.volume / Math.max(totalVol, 1)) * 100).toFixed(1)),
       revenue: v.revenue,
+      sku: TOP_SKU_BY_COMPANY[name] ?? "—",
     }));
-  }, [rows, category]);
-
-  const inventory = useMemo(() => {
-    const byBrand = new Map<string, number>();
-    for (const r of rows) {
-      byBrand.set(r.brand_name, (byBrand.get(r.brand_name) ?? 0) + 1);
-    }
-    return [
-      { name: "Johnnie Walker", fast: 42, dead: 4, variance: 6 },
-      { name: "Grey Goose", fast: 31, dead: 8, variance: 4 },
-      { name: "Don Julio", fast: 38, dead: 3, variance: 11 },
-      { name: "Bombay Sapphire", fast: 22, dead: 14, variance: 5 },
-      { name: "Kingfisher Ultra", fast: 48, dead: 2, variance: 3 },
-    ];
-  }, [rows]);
+  }, [rows, category, scale]);
 
   const heading =
     title ||
@@ -153,103 +157,155 @@ export function DarkGlassTelemetry({
         : "Network liquor telemetry");
 
   return (
-    <div className="space-y-5">
-      <div>
-        <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-400">
-          Alcohol consumption engine
+    <div className="relative isolate space-y-5 overflow-hidden text-zinc-100">
+      {!hideHeading ? (
+        <div>
+          <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-400">
+            Alcohol consumption engine
+          </p>
+          <h2 className="mt-1 font-display text-2xl text-zinc-100">{heading}</h2>
+        </div>
+      ) : null}
+
+      <div className={`${CARD} p-4`}>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
+          Contextual scope
         </p>
-        <h1 className="mt-1 font-display text-3xl text-white">{heading}</h1>
+        <div className="mt-3 flex flex-wrap gap-3">
+          <label className="flex flex-col gap-1">
+            <span className="text-[10px] uppercase tracking-wider text-zinc-400">
+              Network scope
+            </span>
+            <select
+              className={selectClass}
+              value={venue}
+              onChange={(e) => setVenue(e.target.value as NetworkVenueKey)}
+            >
+              {NETWORK_VENUES.map((v) => (
+                <option key={v.key} value={v.key}>
+                  {v.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="flex flex-col gap-1">
+            <span className="text-[10px] uppercase tracking-wider text-zinc-400">
+              Brand partner scope
+            </span>
+            <select
+              className={selectClass}
+              value={partner}
+              onChange={(e) => setPartner(e.target.value as BrandPartnerKey)}
+            >
+              {BRAND_PARTNER_SCOPES.map((v) => (
+                <option key={v.key} value={v.key}>
+                  {v.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="flex flex-col gap-1">
+            <span className="text-[10px] uppercase tracking-wider text-zinc-400">
+              Timeframe
+            </span>
+            <select
+              className={selectClass}
+              value={timeframe}
+              onChange={(e) => setTimeframe(e.target.value as TimeframeKey)}
+            >
+              {TIMEFRAMES.map((v) => (
+                <option key={v.key} value={v.key}>
+                  {v.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <div className={CARD}>
-          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-500">
+          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
             <Activity className="h-3.5 w-3.5 text-cyan-400" /> Total alcohol GMV
           </p>
-          <p className="mt-3 font-display text-3xl text-white">{formatINR(kpis.gmv)}</p>
+          <p className="mt-3 font-display text-3xl text-cyan-400">{formatINR(kpis.gmv)}</p>
           <span className="mt-2 inline-flex rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-300">
             +18.4% MTD
           </span>
         </div>
         <div className={CARD}>
-          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-500">
-            <Droplets className="h-3.5 w-3.5 text-violet-400" /> Live pours tonight
+          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
+            <Droplets className="h-3.5 w-3.5 text-violet-400" /> Live pours &amp; bottles
           </p>
-          <p className="mt-3 font-display text-3xl text-white">{kpis.pours}</p>
+          <p className="mt-3 font-display text-3xl text-amber-400">{kpis.pours}</p>
           <p className="mt-2 text-sm text-zinc-400">
             {kpis.bottles.toFixed(1)} bottles depleted
           </p>
         </div>
         <div className={CARD}>
-          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-500">
+          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
             <Gauge className="h-3.5 w-3.5 text-amber-400" /> Avg pour-cost
           </p>
-          <p className="mt-3 font-display text-3xl text-white">
+          <p className="mt-3 font-display text-3xl text-amber-400">
             {kpis.avgCost.toFixed(1)}%
           </p>
-          <span className="mt-2 inline-flex rounded-full border border-amber-400/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-300">
+          <span className="mt-2 inline-flex rounded-full border border-amber-400/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-200">
             Target &lt; 22%
           </span>
         </div>
         <div className={CARD}>
-          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-500">
+          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
             <Shield className="h-3.5 w-3.5 text-cyan-400" /> mAI Saarthi conversion
           </p>
-          <p className="mt-3 font-display text-3xl text-white">14.6%</p>
+          <p className="mt-3 font-display text-3xl text-cyan-400">14.6%</p>
           <p className="mt-2 text-sm text-zinc-400">Nudge → booked chauffeur</p>
         </div>
       </div>
 
-      <div className={`${CARD} min-h-[320px]`}>
-        <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-zinc-400">
-          Hourly consumption velocity · 8:00 PM – 4:00 AM
+      <div className={`${CARD} min-h-[340px]`}>
+        <h2 className="text-sm font-semibold text-zinc-100">
+          Hourly consumption velocity
         </h2>
-        <div className="mt-4 h-64">
+        <p className="mt-1 text-xs text-zinc-400">
+          Volume throughput in Standard Pours (30ml units) across operational hours.
+          Pre-midnight beer &amp; cocktails; 11:30 PM–2:00 AM tequila &amp; single malts
+          spike 4.5×; post 2:00 AM premium hydration &amp; digestifs.
+        </p>
+        <div className="mt-4 h-72">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={hourly}>
               <defs>
-                <linearGradient id="gSpirits" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={VIOLET} stopOpacity={0.7} />
-                  <stop offset="95%" stopColor={VIOLET} stopOpacity={0.05} />
-                </linearGradient>
-                <linearGradient id="gTequila" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={AMBER} stopOpacity={0.7} />
-                  <stop offset="95%" stopColor={AMBER} stopOpacity={0.05} />
-                </linearGradient>
                 <linearGradient id="gBeer" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor={CYAN} stopOpacity={0.7} />
                   <stop offset="95%" stopColor={CYAN} stopOpacity={0.05} />
                 </linearGradient>
+                <linearGradient id="gCocktails" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={VIOLET} stopOpacity={0.7} />
+                  <stop offset="95%" stopColor={VIOLET} stopOpacity={0.05} />
+                </linearGradient>
+                <linearGradient id="gTequila" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={AMBER} stopOpacity={0.75} />
+                  <stop offset="95%" stopColor={AMBER} stopOpacity={0.05} />
+                </linearGradient>
+                <linearGradient id="gMalts" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#e879f9" stopOpacity={0.65} />
+                  <stop offset="95%" stopColor="#e879f9" stopOpacity={0.05} />
+                </linearGradient>
+                <linearGradient id="gHydration" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={EMERALD} stopOpacity={0.6} />
+                  <stop offset="95%" stopColor={EMERALD} stopOpacity={0.05} />
+                </linearGradient>
               </defs>
               <CartesianGrid stroke="#27272a" strokeDasharray="3 3" />
-              <XAxis dataKey="hour" stroke="#a1a1aa" tick={{ fontSize: 11 }} />
-              <YAxis stroke="#a1a1aa" tick={{ fontSize: 11 }} />
+              <XAxis dataKey="hour" stroke="#a1a1aa" tick={{ fontSize: 11, fill: "#a1a1aa" }} />
+              <YAxis stroke="#a1a1aa" tick={{ fontSize: 11, fill: "#a1a1aa" }} />
               <Tooltip content={<DarkTooltip />} />
-              <Legend />
-              <Area
-                type="monotone"
-                dataKey="spirits"
-                name="Spirits"
-                stackId="1"
-                stroke={VIOLET}
-                fill="url(#gSpirits)"
-              />
-              <Area
-                type="monotone"
-                dataKey="tequila"
-                name="Tequila"
-                stackId="1"
-                stroke={AMBER}
-                fill="url(#gTequila)"
-              />
-              <Area
-                type="monotone"
-                dataKey="beers"
-                name="Beers / Hydration"
-                stackId="1"
-                stroke={CYAN}
-                fill="url(#gBeer)"
-              />
+              <Legend wrapperStyle={{ color: "#e4e4e7" }} />
+              <Area type="monotone" dataKey="beer" name="Beer & cocktails" stackId="1" stroke={CYAN} fill="url(#gBeer)" />
+              <Area type="monotone" dataKey="cocktails" name="Mixed cocktails" stackId="1" stroke={VIOLET} fill="url(#gCocktails)" />
+              <Area type="monotone" dataKey="tequila" name="Tequila shots" stackId="1" stroke={AMBER} fill="url(#gTequila)" />
+              <Area type="monotone" dataKey="malts" name="Single malts" stackId="1" stroke="#e879f9" fill="url(#gMalts)" />
+              <Area type="monotone" dataKey="hydration" name="Hydration / digestifs" stackId="1" stroke={EMERALD} fill="url(#gHydration)" />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -257,11 +313,14 @@ export function DarkGlassTelemetry({
 
       <div className="grid gap-5 lg:grid-cols-2">
         <div className={CARD}>
-          <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-zinc-400">
+          <h2 className="text-sm font-semibold text-zinc-100">
             Strategic brand share of throat
           </h2>
+          <p className="mt-1 text-xs text-zinc-400">
+            Volume % vs gross billed revenue (₹) by parent conglomerate.
+          </p>
           <div className="mt-3 flex flex-wrap gap-1.5">
-            {FILTERS.map((f) => (
+            {SHARE_TABS.map((f) => (
               <button
                 key={f}
                 type="button"
@@ -293,9 +352,13 @@ export function DarkGlassTelemetry({
                 </Pie>
                 <Tooltip
                   formatter={(value, name, item) => {
-                    const rev = (item?.payload as { revenue?: number })?.revenue;
+                    const payload = item?.payload as {
+                      revenue?: number;
+                      sku?: string;
+                      value?: number;
+                    };
                     return [
-                      `${value}% · ${rev != null ? formatINR(rev) : ""}`,
+                      `${value}% · ${payload?.revenue != null ? formatINR(payload.revenue) : ""} · SKU ${payload?.sku ?? ""}`,
                       String(name),
                     ];
                   }}
@@ -310,18 +373,44 @@ export function DarkGlassTelemetry({
               </PieChart>
             </ResponsiveContainer>
           </div>
+          <ul className="mt-2 space-y-1 text-[11px] text-zinc-400">
+            {share.map((s) => (
+              <li key={s.name} className="flex justify-between gap-3">
+                <span>
+                  {s.name} · {s.sku}
+                </span>
+                <span className="text-zinc-100">
+                  {s.value}% · {formatINR(s.revenue)}
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className={CARD}>
-          <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-zinc-400">
-            Inventory velocity & bar leakage
+          <h2 className="text-sm font-semibold text-zinc-100">
+            Inventory velocity &amp; leakage radar
           </h2>
-          <div className="mt-4 h-72">
+          <ul className="mt-2 space-y-1 text-[11px] text-zinc-400">
+            <li>
+              <span className="font-semibold text-emerald-400">Fast-Moving Velocity (Green):</span>{" "}
+              Bottles poured in last 24 hours.
+            </li>
+            <li>
+              <span className="font-semibold text-violet-400">Dead Stock Warning (Purple):</span>{" "}
+              Bottles unpoured for &gt; 21 days (capital locked).
+            </li>
+            <li>
+              <span className="font-semibold text-rose-400">Pour Variance / Spill Leakage (Red):</span>{" "}
+              Volume discrepancy (ml lost) between KDS billed orders vs bottle decanting weights.
+            </li>
+          </ul>
+          <div className="mt-4 h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={inventory}>
+              <BarChart data={INVENTORY_ROWS}>
                 <CartesianGrid stroke="#27272a" strokeDasharray="3 3" />
-                <XAxis dataKey="name" stroke="#a1a1aa" tick={{ fontSize: 10 }} />
-                <YAxis stroke="#a1a1aa" tick={{ fontSize: 11 }} />
+                <XAxis dataKey="name" stroke="#a1a1aa" tick={{ fontSize: 9, fill: "#a1a1aa" }} />
+                <YAxis stroke="#a1a1aa" tick={{ fontSize: 11, fill: "#a1a1aa" }} />
                 <Tooltip content={<DarkTooltip />} />
                 <Legend />
                 <Bar dataKey="fast" name="Fast-moving" fill={EMERALD} radius={4} />
@@ -330,28 +419,34 @@ export function DarkGlassTelemetry({
               </BarChart>
             </ResponsiveContainer>
           </div>
+          <p className="mt-3 text-xs text-zinc-400">
+            Estimated pour leakage rate:{" "}
+            <span className="font-semibold text-emerald-400">1.4%</span>{" "}
+            (Industry benchmark: 4–6%).
+          </p>
         </div>
       </div>
 
-      <div className="rounded-2xl border border-amber-400/35 bg-amber-500/10 p-5 shadow-[0_0_30px_rgba(245,158,11,0.12)] backdrop-blur-xl">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-          AI predictive inventory
+      <div className="rounded-2xl border border-amber-500/40 bg-amber-950/40 p-5">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-200">
+          AI Sommelier · predictive stockout
         </p>
-        <p className="mt-2 text-sm leading-relaxed text-amber-50 sm:text-base">
-          High-Velocity Stockout Forecast: Don Julio 1942 &amp; Jagermeister
-          running at 3.2x normal rate. Projected stockout at 11:45 PM
+        <p className="mt-2 text-sm leading-relaxed text-amber-200 sm:text-base">
+          Don Julio 1942 &amp; Talisker 10YO are consuming at 3.8× normal pace.
+          Projected stock depletion at 11:45 PM. 1-Tap Purchase Requisition ready
+          for Distributor Dispatch.
         </p>
         <button
           type="button"
           onClick={() =>
-            setDraftNote("Emergency draft PO queued to bonded warehouse · ETA 42 min")
+            setDraftNote("Purchase requisition queued · bonded warehouse dispatch ETA 42 min")
           }
-          className="mt-4 inline-flex h-11 items-center rounded-xl bg-amber-400 px-4 text-sm font-semibold text-zinc-950"
+          className="mt-4 inline-flex h-11 items-center rounded-xl bg-amber-400 px-4 text-sm font-semibold text-zinc-950 hover:bg-amber-300"
         >
           1-tap emergency draft purchase
         </button>
         {draftNote ? (
-          <p className="mt-3 text-xs text-emerald-300">{draftNote}</p>
+          <p className="mt-3 text-xs font-medium text-emerald-300">{draftNote}</p>
         ) : null}
       </div>
     </div>

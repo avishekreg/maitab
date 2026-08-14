@@ -10,7 +10,7 @@ export default function SuperTelemetryPage() {
       title="Liquor telemetry"
       subtitle="Network-wide pour velocity, share of throat, and leakage radar."
     >
-      <DarkGlassTelemetry scope="network" />
+      <DarkGlassTelemetry scope="network" hideHeading />
     </AdminShell>
   );
 }

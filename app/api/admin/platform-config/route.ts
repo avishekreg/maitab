@@ -3,30 +3,13 @@ import {
   listPlatformConfigDemo,
   publicPlatformConfig,
   upsertPlatformConfigDemo,
-  vaultPinMatches,
   type ConfigGroup,
 } from "@/lib/admin/platform-config";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { encryptSecret, revealOrMaskSecret } from "@/lib/crypto/secrets";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 
-function pinFrom(request: NextRequest, body?: { vaultPin?: string }) {
-  return (
-    body?.vaultPin ||
-    request.headers.get("x-maitab-vault-pin") ||
-    request.nextUrl.searchParams.get("pin")
-  );
-}
-
 export async function GET(request: NextRequest) {
-  const pin = pinFrom(request);
-  if (!vaultPinMatches(pin)) {
-    return NextResponse.json(
-      { ok: false, reason: "Invalid vault PIN" },
-      { status: 401 }
-    );
-  }
-
   const reveal = request.nextUrl.searchParams.get("reveal") === "1";
 
   if (!isSupabaseConfigured()) {
@@ -68,20 +51,12 @@ export async function GET(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   const body = (await request.json()) as {
-    vaultPin?: string;
     config_key?: string;
     value?: string;
     label?: string;
     config_group?: ConfigGroup;
     is_secret?: boolean;
   };
-
-  if (!vaultPinMatches(pinFrom(request, body))) {
-    return NextResponse.json(
-      { ok: false, reason: "Invalid vault PIN" },
-      { status: 401 }
-    );
-  }
 
   if (!body.config_key || body.value === undefined) {
     return NextResponse.json(

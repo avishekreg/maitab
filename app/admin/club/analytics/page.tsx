@@ -10,7 +10,7 @@ export default function ClubAnalyticsPage() {
       title="Venue analytics"
       subtitle="Pour-cost, leakage, and brand mix for the active club."
     >
-      <DarkGlassTelemetry scope="venue" />
+      <DarkGlassTelemetry scope="venue" hideHeading />
     </AdminShell>
   );
 }
