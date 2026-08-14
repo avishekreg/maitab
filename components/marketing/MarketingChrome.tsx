@@ -7,9 +7,13 @@ import { FooterAndroidQr } from "@/components/marketing/FooterAndroidQr";
 import { FooterAppStoreBadges } from "@/components/marketing/FooterAppStoreBadges";
 
 const NAV = [
-  { href: "#pricing", label: "Pricing" },
-  { href: "#features", label: "Features" },
+  { href: "#problem", label: "Problem" },
+  { href: "#system", label: "System" },
   { href: "#experience", label: "Experience" },
+  { href: "#features", label: "Features" },
+  { href: "#pricing", label: "Pricing" },
+  { href: "#compare", label: "Compare" },
+  { href: "#faq", label: "FAQ" },
 ];
 
 /**
@@ -34,12 +38,12 @@ export function MarketingHeader() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-0.5 lg:flex">
+        <nav className="hidden items-center gap-0 xl:flex">
           {NAV.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="rounded-lg px-2.5 py-2 font-sans text-sm font-medium tracking-normal text-[#FFFFFF]/85 transition hover:bg-white/10 hover:text-[#FFFFFF]"
+              className="rounded-lg px-2 py-2 font-sans text-[13px] font-medium tracking-normal text-[#FFFFFF]/85 transition hover:bg-white/10 hover:text-[#FFFFFF]"
             >
               {item.label}
             </a>
@@ -63,7 +67,7 @@ export function MarketingHeader() {
 
         <button
           type="button"
-          className="inline-flex h-10 items-center justify-center rounded-xl border border-white/25 px-3 text-sm text-[#FFFFFF] lg:hidden"
+          className="inline-flex h-10 items-center justify-center rounded-xl border border-white/25 px-3 text-sm text-[#FFFFFF] xl:hidden"
           aria-label="Menu"
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
@@ -73,7 +77,7 @@ export function MarketingHeader() {
       </div>
 
       {open ? (
-        <div className="border-t border-white/10 bg-[#12151A]/95 px-4 py-4 backdrop-blur-md lg:hidden">
+        <div className="border-t border-white/10 bg-[#12151A]/95 px-4 py-4 backdrop-blur-md xl:hidden">
           <div className="flex flex-col gap-1">
             {NAV.map((item) => (
               <a
@@ -107,9 +111,13 @@ export function MarketingHeader() {
 }
 
 const PLATFORM_LINKS = [
+  { href: "#problem", label: "Problem" },
+  { href: "#system", label: "System" },
   { href: "#experience", label: "Experience" },
   { href: "#features", label: "Features" },
   { href: "#pricing", label: "Pricing" },
+  { href: "#compare", label: "Compare" },
+  { href: "#faq", label: "FAQ" },
   { href: "/login", label: "Login" },
 ] as const;
 

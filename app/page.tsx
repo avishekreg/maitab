@@ -585,7 +585,7 @@ export default function MarketingLandingPage() {
       </section>
 
       {/* COMPARE */}
-      <section className="border-t border-border">
+      <section id="compare" className="scroll-mt-20 border-t border-border">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>Why mAITab vs the old way</SectionEyebrow>
           <SectionTitle>
@@ -615,7 +615,7 @@ export default function MarketingLandingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="border-t border-border bg-pastel-mint/30">
+      <section id="faq" className="scroll-mt-20 border-t border-border bg-pastel-mint/30">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>FAQ</SectionEyebrow>
           <SectionTitle>Straight answers for operators evaluating us.</SectionTitle>
