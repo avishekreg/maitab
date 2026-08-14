@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import {
   MAITAB_ANDROID_APK_FILENAME,
   resolveAndroidDownloadHref,
-  resolveAndroidQrHref,
 } from "@/lib/android-app";
 
 type FooterAndroidQrProps = {
@@ -13,28 +12,25 @@ type FooterAndroidQrProps = {
 };
 
 /**
- * QR opens the Android landing page with autostart=1 so camera scanners
- * reliably kick off the APK download (raw APK URLs often stall in WebViews).
+ * QR encodes the attachment download API so a camera scan starts the APK
+ * without an intermediate HTML page.
  */
 export function FooterAndroidQr({
   size = 120,
   className = "",
 }: FooterAndroidQrProps) {
   const [dataUrl, setDataUrl] = useState<string | null>(null);
-  const [qrHref, setQrHref] = useState(resolveAndroidQrHref());
   const [downloadHref, setDownloadHref] = useState(resolveAndroidDownloadHref());
 
   useEffect(() => {
-    const origin = window.location.origin;
-    setQrHref(resolveAndroidQrHref(origin));
-    setDownloadHref(resolveAndroidDownloadHref(origin));
+    setDownloadHref(resolveAndroidDownloadHref(window.location.origin));
   }, []);
 
   useEffect(() => {
     let cancelled = false;
 
     void import("qrcode").then(({ default: QRCode }) =>
-      QRCode.toDataURL(qrHref, {
+      QRCode.toDataURL(downloadHref, {
         errorCorrectionLevel: "M",
         margin: 1,
         width: size * 2,
@@ -54,15 +50,16 @@ export function FooterAndroidQr({
     return () => {
       cancelled = true;
     };
-  }, [size, qrHref]);
+  }, [size, downloadHref]);
 
   return (
     <div className={`flex flex-col items-start gap-2 ${className}`}>
       <a
-        href={qrHref}
+        href={downloadHref}
+        download={MAITAB_ANDROID_APK_FILENAME}
         className="rounded-xl border border-white/15 bg-white p-2 shadow-sm transition hover:opacity-95"
         style={{ width: size + 16, height: size + 16 }}
-        aria-label="Open Android download page"
+        aria-label="Download the mAITab Android APK"
       >
         {dataUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -70,7 +67,7 @@ export function FooterAndroidQr({
             src={dataUrl}
             width={size}
             height={size}
-            alt="QR code — scan to download the mAITab Android app"
+            alt="QR code — scan to download the mAITab Android APK"
             className="block h-full w-full"
           />
         ) : (

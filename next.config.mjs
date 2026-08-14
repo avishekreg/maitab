@@ -37,6 +37,23 @@ const nextConfig = {
           },
         ],
       },
+      {
+        source: "/api/android-download",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+          {
+            key: "Content-Disposition",
+            value: 'attachment; filename="maitab-latest.apk"',
+          },
+          {
+            key: "Content-Type",
+            value: "application/vnd.android.package-archive",
+          },
+        ],
+      },
     ];
   },
 };

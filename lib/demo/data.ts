@@ -202,27 +202,34 @@ export const DEMO_METRICS: PlatformMetrics = {
   },
 };
 
+/**
+ * Unique venue catalog. Names come from landing copy (Heineken KDS token,
+ * BEER flash lockouts) plus the Surprise Games penalty catalog. No repeats.
+ */
 export const MENU_ITEMS = [
-  // Beers — landing promo + KDS ticket examples
   { name: "Heineken", category: "BEER", unit_price: 350 },
   { name: "Corona", category: "BEER", unit_price: 380 },
   { name: "Kingfisher Ultra", category: "BEER", unit_price: 320 },
   { name: "Bira Blonde", category: "BEER", unit_price: 300 },
-  // Cocktails — guest journey + game penalty catalog
+  { name: "Hoegaarden", category: "BEER", unit_price: 390 },
+  { name: "Budweiser Magnum", category: "BEER", unit_price: 360 },
   { name: "Espresso Martini", category: "COCKTAIL", unit_price: 650 },
   { name: "Old Fashioned", category: "COCKTAIL", unit_price: 720 },
   { name: "Gin & Tonic", category: "COCKTAIL", unit_price: 520 },
   { name: "Whiskey Sour", category: "COCKTAIL", unit_price: 680 },
   { name: "Classic Mojito", category: "COCKTAIL", unit_price: 550 },
   { name: "Negroni", category: "COCKTAIL", unit_price: 700 },
-  // Shots — Surprise Games / Pay Penalty CTAs
+  { name: "Long Island Iced Tea", category: "COCKTAIL", unit_price: 780 },
+  { name: "Cosmopolitan", category: "COCKTAIL", unit_price: 640 },
   { name: "Tequila Shot", category: "SHOT", unit_price: 280 },
   { name: "Vodka Shot", category: "SHOT", unit_price: 260 },
   { name: "Jägerbomb", category: "SHOT", unit_price: 450 },
   { name: "Kamikaze", category: "SHOT", unit_price: 300 },
-  // Soft + bites — responsible nightlife / longer dwell
+  { name: "Fireball Shot", category: "SHOT", unit_price: 290 },
   { name: "Fresh Lime Soda", category: "SOFT", unit_price: 180 },
   { name: "Red Bull", category: "SOFT", unit_price: 250 },
+  { name: "Coconut Water", category: "SOFT", unit_price: 160 },
   { name: "Truffle Fries", category: "BITES", unit_price: 420 },
   { name: "Loaded Nachos", category: "BITES", unit_price: 480 },
+  { name: "Chicken Wings", category: "BITES", unit_price: 520 },
 ] as const;

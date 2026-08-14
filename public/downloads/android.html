@@ -241,17 +241,8 @@
         }
 
         var params = new URLSearchParams(window.location.search)
-        if (params.get('autostart') === '1') {
-          setTimeout(function () {
-            if (apkDownload) {
-              // Programmatic navigation is more reliable than .click() for APK downloads.
-              window.location.href = apkDownload.getAttribute('href') || API_APK
-            }
-            if (status) {
-              status.textContent =
-                'If download did not start, tap "Download APK" or "Open in Chrome".'
-            }
-          }, 250)
+        if (params.get('autostart') === '1' || params.get('dl') === '1') {
+          window.location.replace(API_APK)
         }
       })()
     </script>

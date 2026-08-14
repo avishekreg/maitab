@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Gamepad2, QrCode, Receipt, Sparkles, Ticket } from "lucide-react";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
+import { GuestHeaderMenu } from "@/components/layout/GuestHeaderMenu";
 import { TierBadge } from "@/components/theme/TierChrome";
 import { TierThemeProvider } from "@/components/theme/TierThemeProvider";
 import { useSessionStore } from "@/lib/store/session-store";
@@ -57,6 +58,7 @@ export function AppShell({ children, showNav = true, title }: AppShellProps) {
               </Link>
             </div>
           </div>
+          <GuestHeaderMenu />
         </header>
 
         <main className="relative mx-auto w-full max-w-6xl px-4 pb-28 pt-6">

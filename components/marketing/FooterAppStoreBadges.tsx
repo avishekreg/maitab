@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
-import { MAITAB_ANDROID_LANDING_PATH } from "@/lib/android-app";
+import {
+  MAITAB_ANDROID_APK_FILENAME,
+  MAITAB_ANDROID_DOWNLOAD_API,
+} from "@/lib/android-app";
 
 const BADGE_IMG_STYLE: CSSProperties = { borderRadius: "8px" };
 const BADGE_IMG_CLASS =
@@ -53,9 +56,10 @@ export function FooterAppStoreBadges({
           aria-label="Download mAITab mobile apps"
         >
           <a
-            href={MAITAB_ANDROID_LANDING_PATH}
+            href={MAITAB_ANDROID_DOWNLOAD_API}
+            download={MAITAB_ANDROID_APK_FILENAME}
             className="inline-block"
-            aria-label="Get it on Google Play"
+            aria-label="Download the mAITab Android APK"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -110,10 +114,11 @@ export function FooterAppStoreBadges({
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <a
-                href={MAITAB_ANDROID_LANDING_PATH}
+                href={MAITAB_ANDROID_DOWNLOAD_API}
+                download={MAITAB_ANDROID_APK_FILENAME}
                 className="inline-flex h-11 flex-1 items-center justify-center rounded-xl bg-gradient-to-r from-[#8B5CF6] via-[#A855F7] to-[#06B6D4] px-4 text-sm font-semibold text-white"
               >
-                Get Android app
+                Download Android APK
               </a>
               <button
                 type="button"
