@@ -16,7 +16,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Activity, Droplets, Gauge, Shield } from "lucide-react";
+import { Activity, Droplets, FileText, Gauge, Shield } from "lucide-react";
 import {
   BRAND_PARTNER_SCOPES,
   DEMO_TELEMETRY,
@@ -148,6 +148,54 @@ export function DarkGlassTelemetry({
     }));
   }, [rows, category, scale]);
 
+  const categoryAudit = useMemo(() => {
+    const defs: { name: string; test: (r: (typeof rows)[number]) => boolean }[] = [
+      {
+        name: "Single Malts",
+        test: (r) =>
+          r.spirit_subcategory === "Single Malt Scotch" ||
+          r.spirit_subcategory === "Indian Craft Single Malt",
+      },
+      { name: "Tequila", test: (r) => r.spirit_category === "Tequila & Mezcal" },
+      { name: "Gin", test: (r) => r.spirit_category === "Gin" },
+      { name: "Vodka", test: (r) => r.spirit_category === "Vodka" },
+      {
+        name: "Draught Beer",
+        test: (r) =>
+          r.spirit_subcategory === "Draught/Craft Taps" ||
+          r.spirit_subcategory === "Stout",
+      },
+    ];
+    return defs.map((d) => {
+      const slice = rows.filter(d.test);
+      const volume = slice.reduce((s, r) => s + r.volume_ml, 0) * scale;
+      const gmv = slice.reduce((s, r) => s + r.billed_amount, 0) * scale;
+      return {
+        name: d.name,
+        pours: Math.round(slice.length * scale),
+        volume,
+        gmv,
+      };
+    });
+  }, [rows, scale]);
+
+  const venueLabel =
+    NETWORK_VENUES.find((v) => v.key === venue)?.label ?? "Network";
+  const partnerLabel =
+    BRAND_PARTNER_SCOPES.find((v) => v.key === partner)?.label ?? "Macro";
+  const tfLabel = TIMEFRAMES.find((v) => v.key === timeframe)?.label ?? "Tonight";
+  const stamp = new Date().toLocaleString("en-IN", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+
+  function exportPdf() {
+    const prev = document.title;
+    document.title = `mAITab Liquor Telemetry — ${venueLabel} — ${stamp}`;
+    window.print();
+    document.title = prev;
+  }
+
   const heading =
     title ||
     (scope === "partner"
@@ -157,15 +205,129 @@ export function DarkGlassTelemetry({
         : "Network liquor telemetry");
 
   return (
-    <div className="relative isolate space-y-5 overflow-hidden text-zinc-100">
-      {!hideHeading ? (
+    <div className="relative isolate space-y-5 text-zinc-100">
+      <div className="no-print flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-400">
-            Alcohol consumption engine
-          </p>
-          <h2 className="mt-1 font-display text-2xl text-zinc-100">{heading}</h2>
+          {!hideHeading ? (
+            <>
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-400">
+                Alcohol consumption engine
+              </p>
+              <h2 className="mt-1 font-display text-2xl text-zinc-100">{heading}</h2>
+            </>
+          ) : (
+            <p className="text-sm text-zinc-400">Executive liquor intelligence</p>
+          )}
         </div>
-      ) : null}
+        <button
+          type="button"
+          onClick={exportPdf}
+          className="inline-flex items-center gap-2 rounded-xl border border-zinc-600 bg-gradient-to-r from-zinc-200 via-zinc-100 to-zinc-300 px-4 py-2.5 text-sm font-semibold text-zinc-950 shadow-[0_0_20px_rgba(212,212,216,0.25)]"
+        >
+          <FileText className="h-4 w-4" />
+          Export Executive Liquor Telemetry PDF
+        </button>
+      </div>
+
+      <div className="print-only print-report hidden">
+        <h1 className="text-xl font-bold">
+          mAITab Liquor Intelligence &amp; Consumption Telemetry Report
+        </h1>
+        <p>
+          Venue: {venueLabel} · Partner: {partnerLabel} · Timeframe: {tfLabel} · Generated{" "}
+          {stamp}
+        </p>
+
+        <h2 className="mt-6 text-base font-semibold">KPI metrics overview</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total volume (ml)</td>
+              <td>{Math.round(kpis.bottles * 750).toLocaleString("en-IN")}</td>
+            </tr>
+            <tr>
+              <td>Bottles depleted (750ml)</td>
+              <td>{kpis.bottles.toFixed(1)}</td>
+            </tr>
+            <tr>
+              <td>Pour cost ratio</td>
+              <td>{kpis.avgCost.toFixed(1)}% (target &lt; 22%)</td>
+            </tr>
+            <tr>
+              <td>Alcohol GMV</td>
+              <td>{formatINR(kpis.gmv)}</td>
+            </tr>
+            <tr>
+              <td>Live pours</td>
+              <td>{kpis.pours}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 className="mt-6 text-base font-semibold">Category breakdown</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Pours</th>
+              <th>Volume (ml)</th>
+              <th>GMV</th>
+            </tr>
+          </thead>
+          <tbody>
+            {categoryAudit.map((c) => (
+              <tr key={c.name}>
+                <td>{c.name}</td>
+                <td>{c.pours}</td>
+                <td>{Math.round(c.volume).toLocaleString("en-IN")}</td>
+                <td>{formatINR(c.gmv)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <h2 className="mt-6 text-base font-semibold">
+          Fast-moving vs dead stock &amp; pour leakage audit
+        </h2>
+        <table>
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Fast-moving (24h bottles)</th>
+              <th>Dead stock (&gt;21 days)</th>
+              <th>Pour variance (ml lost)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {INVENTORY_ROWS.map((r) => (
+              <tr key={r.name}>
+                <td>{r.name}</td>
+                <td>{r.fast}</td>
+                <td>{r.dead}</td>
+                <td>{r.variance}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p>Estimated pour leakage rate: 1.4% (industry benchmark 4–6%).</p>
+
+        <h2 className="mt-6 text-base font-semibold">
+          Distributor requisition &amp; AI forecast
+        </h2>
+        <p>
+          Don Julio 1942 &amp; Talisker 10YO are consuming at 3.8× normal pace.
+          Projected stock depletion at 11:45 PM. One-tap purchase requisition is
+          ready for distributor dispatch to the bonded warehouse.
+        </p>
+      </div>
+
+      <div className="no-print space-y-5">
 
       <div className={`${CARD} p-4`}>
         <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
@@ -448,6 +610,7 @@ export function DarkGlassTelemetry({
         {draftNote ? (
           <p className="mt-3 text-xs font-medium text-emerald-300">{draftNote}</p>
         ) : null}
+      </div>
       </div>
     </div>
   );

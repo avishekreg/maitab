@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Gamepad2, QrCode, Receipt, Sparkles, Ticket, Wine } from "lucide-react";
-import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
+import { BrandLockup } from "@/components/branding/brand-lockup";
 import { GuestHeaderMenu } from "@/components/layout/GuestHeaderMenu";
 import { ResponsibleBadges } from "@/components/branding/responsible-badges";
 import { SaarthiProvider } from "@/components/saarthi/SaarthiProvider";
@@ -46,14 +46,14 @@ export function AppShell({
 
         <header className="optimus-glass sticky top-0 z-40 rounded-none border-x-0 border-t-0">
           <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
-            <Link href="/home" className="flex min-w-0 items-center gap-3">
-              <MaiTabLogo variant="FullLogoWithText" className="h-8 w-auto" />
+            <div className="flex min-w-0 items-center gap-3">
+              <BrandLockup href="/home" />
               {title ? (
                 <p className="hidden truncate text-[11px] uppercase tracking-[0.18em] text-muted-foreground sm:block">
                   {title}
                 </p>
               ) : null}
-            </Link>
+            </div>
             <div className="flex min-w-0 items-center gap-2">
               <TierBadge className="hidden sm:inline-flex" />
               <Link

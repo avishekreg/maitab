@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
+import { BrandLockup } from "@/components/branding/brand-lockup";
 import { DEMO_GATE_EVENTS } from "@/lib/demo/data";
 import { fetchRecentGateEvents } from "@/lib/data/gate";
 import { useGateRealtime } from "@/lib/hooks/use-gate-realtime";
@@ -107,7 +107,7 @@ export default function AvPanelPage() {
 
       <div className="relative z-10 flex min-h-[100dvh] flex-col">
         <header className="flex items-center justify-between px-8 py-6">
-          <MaiTabLogo variant="FullLogoWithText" className="h-12 w-auto" />
+          <BrandLockup />
           <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">
             LED / AV · Realtime
           </p>

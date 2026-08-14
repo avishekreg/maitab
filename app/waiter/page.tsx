@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
+import { BrandLockup } from "@/components/branding/brand-lockup";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { fetchClubOrders } from "@/lib/data/orders";
@@ -54,7 +54,7 @@ export default function WaiterCompanionPage() {
     <div className="min-h-[100dvh] bg-[#0B0E14] px-4 py-6 text-[#F8FAFC]">
       <div className="mx-auto max-w-lg">
         <div className="mb-6 flex items-center justify-between gap-3">
-          <MaiTabLogo variant="FullLogoWithText" onDark className="h-9 w-auto" />
+          <BrandLockup />
           <StatusPill label="WAITER" tone="violet" />
         </div>
 

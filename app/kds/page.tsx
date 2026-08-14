@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
+import { BrandLockup } from "@/components/branding/brand-lockup";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -178,7 +178,7 @@ export default function KdsPage() {
       <div className="mx-auto max-w-6xl">
         <div className="optimus-glass mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl px-4 py-3">
           <div className="flex min-w-0 items-center gap-3">
-            <MaiTabLogo variant="FullLogoWithText" className="h-8 w-auto" />
+            <BrandLockup />
             <div className="min-w-0">
               <h1 className="font-display text-3xl font-bold text-foreground">
                 Bar KDS
