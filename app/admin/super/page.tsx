@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { KeyRound } from "lucide-react";
 import { AdminSection, AdminShell, KpiStrip } from "@/components/admin/AdminShell";
+import { BillingOverridePanel } from "@/components/admin/BillingOverridePanel";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { DEMO_METRICS } from "@/lib/demo/data";
 import { useSystemConfigStore } from "@/lib/store/system-config-store";
@@ -286,6 +287,10 @@ export default function SuperAdminPage() {
             no-code hub — encrypted at rest before write.
           </p>
         </AdminSection>
+      </div>
+
+      <div className="mt-6">
+        <BillingOverridePanel />
       </div>
     </AdminShell>
   );

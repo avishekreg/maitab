@@ -12,7 +12,7 @@ export default function MerchantRefundPage() {
       updated="August 2026"
     >
       <p>
-        This policy describes how Syncra Systems and participating merchants
+        This policy describes how Syncra Systems LLP and participating merchants
         handle refunds, chargebacks, and AutoPay disputes initiated through
         mAITab sessions.
       </p>
@@ -32,7 +32,7 @@ export default function MerchantRefundPage() {
       <h2>3. Guest disputes</h2>
       <p>
         Guests should first contact the venue. If unresolved, disputes may be
-        escalated through the payment network. Syncra Systems will provide
+        escalated through the payment network. Syncra Systems LLP will provide
         session logs, token hashes, and settlement timestamps to support
         investigation.
       </p>

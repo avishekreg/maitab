@@ -16,7 +16,7 @@ export default function SecurityDisclaimerPage() {
       </p>
       <h2>1. Shared responsibility</h2>
       <p>
-        Syncra Systems hardens the application and infrastructure. Venues must
+        Syncra Systems LLP hardens the application and infrastructure. Venues must
         protect staff credentials, device access, and payment-provider keys, and
         follow operational SOPs on the floor.
       </p>
@@ -27,7 +27,7 @@ export default function SecurityDisclaimerPage() {
       </p>
       <h2>3. No absolute guarantee</h2>
       <p>
-        While we employ industry-standard controls, Syncra Systems does not
+        While we employ industry-standard controls, Syncra Systems LLP does not
         warrant uninterrupted or error-free operation, nor immunity from all
         unauthorized access, outages, or third-party provider failures.
       </p>

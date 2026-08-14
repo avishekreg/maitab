@@ -7,6 +7,7 @@ import {
   MarketingFooter,
   MarketingHeader,
 } from "@/components/marketing/MarketingChrome";
+import { ResponsibleBadges } from "@/components/branding/responsible-badges";
 import { HeroSection } from "@/components/marketing/HeroSection";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 
@@ -93,6 +94,12 @@ const ENTERPRISE_OPS = [
     title: "Multi-Venue Owner Switcher",
     body: "Manage multiple clubs, lounges, and rooftops under a single unified executive console with real-time GMV and KDS telemetry.",
     accent: "#34D399",
+  },
+  {
+    code: "04",
+    title: "License Compliance Watchdog",
+    body: "Liquor and FSSAI expiry monitoring with amber warnings 15 days out — then automatic floor freeze on guest ordering and check-in until renewal uploads restore LIVE status.",
+    accent: "#F472B6",
   },
 ];
 
@@ -218,7 +225,7 @@ const FAQ = [
   },
   {
     q: "How fast can a venue try it?",
-    a: "Immediately via the public demo roles on this deployment. For production, Syncra maps your clubs, tables, and staff into the Proprietary Real-Time Nightlife Engine, wires settlement credentials, and walks the floor team through a live night.",
+    a: "Immediately via the public demo roles on this deployment. For production, Syncra Systems LLP maps your clubs, tables, and staff into the Proprietary Real-Time Nightlife Engine, wires settlement credentials, and walks the floor team through a live night.",
   },
 ];
 
@@ -359,9 +366,9 @@ export default function MarketingLandingPage() {
               Operations modules built for multi-bar floors and group owners.
             </SectionTitle>
             <p className="type-body mt-5 max-w-2xl text-lg text-slate-800">
-              Floor routing, aggregator exclusivity, flash monetization, and
-              multi-property control — the layer that turns a single venue stack
-              into an enterprise nightlife OS.
+              Floor routing, flash monetization, multi-property control, and
+              license lockout — the layer that turns a single venue stack into
+              an enterprise nightlife OS.
             </p>
 
             <div className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -666,6 +673,13 @@ export default function MarketingLandingPage() {
           </div>
         </div>
       </section>
+
+      <div className="border-t border-white/10 bg-[#0c0c0f] px-4 py-8 sm:px-6">
+        <ResponsibleBadges
+          density="strip"
+          className="mx-auto max-w-4xl justify-center"
+        />
+      </div>
 
       <MarketingFooter />
     </div>

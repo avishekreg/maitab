@@ -37,7 +37,7 @@ export function LegalDoc({
           {children}
         </div>
         <p className="mt-12 border-t border-white/10 pt-6 text-xs text-white/35">
-          © 2026 mAITab. Designed, Built & Operated by Syncra Systems.
+          © 2026 mAITab. Designed, Built & Operated by Syncra Systems LLP.
         </p>
       </main>
     </div>

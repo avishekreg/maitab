@@ -35,8 +35,8 @@ values
   ('WEBHOOK_ORDERS', 'WEBHOOK_URLS', 'Orders Webhook URL', '', false),
   ('WEBHOOK_SETTLEMENT', 'WEBHOOK_URLS', 'Settlement Webhook URL', '', false),
   ('API_KDS_BASE', 'API_ENDPOINTS', 'KDS API Base URL', '', false),
-  ('COMMISSION_STARTER_PCT', 'COMMISSION_RATES', 'Starter GMV Commission %', '1.5', false),
-  ('COMMISSION_PRO_PCT', 'COMMISSION_RATES', 'Pro GMV Commission %', '1.0', false),
+  ('COMMISSION_STARTER_PCT', 'COMMISSION_RATES', 'Starter GMV Commission %', '10', false),
+  ('COMMISSION_PRO_PCT', 'COMMISSION_RATES', 'Pro GMV Commission %', '8', false),
   ('PLATFORM_MASTER_PIN_HINT', 'GLOBAL_KEYS', 'Vault 2FA PIN Hint', 'Set via vault UI', true)
 on conflict (config_key) do nothing;
 

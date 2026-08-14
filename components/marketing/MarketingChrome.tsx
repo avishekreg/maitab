@@ -155,7 +155,7 @@ export function MarketingFooter() {
           </p>
           <p className="mt-5 text-sm leading-relaxed text-slate-300/70">
             Designed, Built & Operated by{" "}
-            <span className="font-medium text-slate-200">Syncra Systems</span>.
+            <span className="font-medium text-slate-200">Syncra Systems LLP</span>.
           </p>
         </div>
 
@@ -207,7 +207,7 @@ export function MarketingFooter() {
 
       <div className="relative border-t border-white/10">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-5 text-sm text-slate-300/55 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>© 2026 mAITab. Designed, Built & Operated by Syncra Systems.</p>
+          <p>© 2026 mAITab. Designed, Built & Operated by Syncra Systems LLP.</p>
           <p>
             Zero-Hardware Nightlife OS & Cryptographic Bar Tab Infrastructure.
           </p>

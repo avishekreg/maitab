@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
+import { GoogleContinueButton } from "@/components/auth/GoogleContinueButton";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { DEMO_PASSWORD, PUBLIC_DEMO_USERS } from "@/lib/auth/demo-users";
@@ -12,6 +13,7 @@ function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
   const denied = params.get("denied");
+  const oauthError = params.get("error");
   const [loadingRole, setLoadingRole] = useState<UserRole | null>(null);
   const [note, setNote] = useState<string | null>(null);
 
@@ -38,7 +40,6 @@ function LoginForm() {
       else setNote(`${data.email ?? role} · ${data.mode ?? "cookie"}`);
       router.push(home);
     } catch {
-      // Never write auth cookies from JS (HttpOnly). Retry via API is required.
       setNote("Sign-in failed — retry demo login.");
     } finally {
       setLoadingRole(null);
@@ -59,20 +60,34 @@ function LoginForm() {
             className="h-11 w-auto min-w-[11rem]"
           />
           <h1 className="mt-6 font-display text-3xl font-bold tracking-tight text-[#F8FAFC]">
-            Venue demo logins
+            Sign in
           </h1>
           <p className="mt-2 max-w-xl text-base leading-relaxed text-[#E2E8F0]">
-            One-click entry for floor roles. Shared demo password{" "}
-            <code className="rounded border border-white/15 bg-white/10 px-1.5 py-0.5 text-amber-400">
-              {DEMO_PASSWORD}
-            </code>
-            .
+            Continue with Google for production access, or use a venue demo
+            role below.
           </p>
-          {denied ? (
+          {denied === "403" || oauthError === "super_admin_forbidden" ? (
             <p className="mt-3 text-sm text-rose-400">
-              Access denied for {denied}. Pick a role that can open that route.
+              403 Forbidden — Super Admin access requires an authorized Google
+              identity.
+            </p>
+          ) : denied ? (
+            <p className="mt-3 text-sm text-rose-400">
+              Access denied for {denied}
+              {oauthError ? ` (${oauthError})` : ""}. Pick a role that can open
+              that route.
             </p>
           ) : null}
+        </div>
+
+        <GoogleContinueButton className="mb-8" />
+
+        <div className="mb-4 flex items-center gap-3">
+          <div className="h-px flex-1 bg-white/10" />
+          <p className="text-xs uppercase tracking-[0.18em] text-[#94A3B8]">
+            Or demo roles · {DEMO_PASSWORD}
+          </p>
+          <div className="h-px flex-1 bg-white/10" />
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -107,7 +122,9 @@ function LoginForm() {
                 <div className="mt-4 space-y-1.5 text-sm">
                   <p className="break-all">
                     <span className="text-[#94A3B8]">Email · </span>
-                    <span className="font-medium text-cyan-400">{user.email}</span>
+                    <span className="font-medium text-cyan-400">
+                      {user.email}
+                    </span>
                   </p>
                   <p>
                     <span className="text-[#94A3B8]">Opens · </span>
@@ -148,7 +165,7 @@ export default function LoginPage() {
     <Suspense
       fallback={
         <div className="grid min-h-[100dvh] place-items-center bg-[#0B0E14] text-[#E2E8F0]">
-          Loading demo logins…
+          Loading sign-in…
         </div>
       }
     >

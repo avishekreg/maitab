@@ -57,14 +57,14 @@ const DEFAULTS: Omit<PlatformConfigRow, "id" | "updated_at">[] = [
     config_key: "COMMISSION_STARTER_PCT",
     config_group: "COMMISSION_RATES",
     label: "Starter GMV Commission %",
-    value_encrypted: "1.5",
+    value_encrypted: "10",
     is_secret: false,
   },
   {
     config_key: "COMMISSION_PRO_PCT",
     config_group: "COMMISSION_RATES",
     label: "Pro GMV Commission %",
-    value_encrypted: "1.0",
+    value_encrypted: "8",
     is_secret: false,
   },
 ];

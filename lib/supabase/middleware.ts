@@ -7,6 +7,7 @@ import { isSupabaseConfigured } from "@/lib/supabase/env";
 export async function updateSession(request: NextRequest): Promise<{
   response: NextResponse;
   role: UserRole | null;
+  email: string | null;
 }> {
   let response = NextResponse.next({
     request: {
@@ -15,7 +16,7 @@ export async function updateSession(request: NextRequest): Promise<{
   });
 
   if (!isSupabaseConfigured()) {
-    return { response, role: null };
+    return { response, role: null, email: null };
   }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -52,6 +53,7 @@ export async function updateSession(request: NextRequest): Promise<{
   } = await supabase.auth.getUser();
 
   let role = roleFromClaims(user);
+  const email = user?.email?.trim().toLowerCase() ?? null;
 
   if (user && !role) {
     const { data } = await supabase
@@ -62,5 +64,5 @@ export async function updateSession(request: NextRequest): Promise<{
     if (data?.role) role = data.role as UserRole;
   }
 
-  return { response, role };
+  return { response, role, email };
 }

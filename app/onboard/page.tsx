@@ -7,6 +7,7 @@ import {
   MarketingFooter,
   MarketingHeader,
 } from "@/components/marketing/MarketingChrome";
+import { GoogleContinueButton } from "@/components/auth/GoogleContinueButton";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { cn, formatINR } from "@/lib/utils";
@@ -24,8 +25,8 @@ const PLANS: {
   {
     id: "STARTER",
     name: "Starter",
-    price: formatINR(14999) + "/mo",
-    gmv: "+ 1.5% GMV",
+    price: formatINR(19999) + "/mo",
+    gmv: "+ 10% GMV",
     blurb: "Single venue — gate, tab, KDS, and AutoPay.",
     highlights: ["1 venue", "Floor QR & Member Pass", "Basic flash promos"],
   },
@@ -33,7 +34,7 @@ const PLANS: {
     id: "PRO",
     name: "Pro",
     price: formatINR(29999) + "/mo",
-    gmv: "+ 1% GMV",
+    gmv: "+ 8% GMV",
     blurb: "Multi-venue portfolio with floor routing.",
     highlights: [
       "Multi-venue switcher",
@@ -116,6 +117,15 @@ export default function OnboardPage() {
           Choose a plan, capture settlement, and auto-provision your Club Admin
           workspace — then upload KYC licenses to go live.
         </p>
+
+        <div className="mt-8 max-w-md">
+          <GoogleContinueButton label="Continue with Google to start" />
+          <p className="mt-2 text-xs text-[#94A3B8]">
+            Super Admin identities listed in{" "}
+            <code className="text-amber-300">SUPER_ADMIN_EMAILS</code> route
+            straight to the command console.
+          </p>
+        </div>
 
         <div className="mt-10 grid gap-4 md:grid-cols-3">
           {PLANS.map((p) => (

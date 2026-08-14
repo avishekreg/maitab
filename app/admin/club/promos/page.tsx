@@ -157,7 +157,7 @@ export default function FlashPromosPage() {
 
         <AdminSection
           title="Launch flash deal"
-          description="Checked-in only is free. Global geo-zone push burns Platform Promo Credits (Syncra SaaS)."
+          description="Checked-in only is free. Global geo-zone push burns Platform Promo Credits (Syncra Systems LLP SaaS)."
         >
           <div className="grid gap-4 md:grid-cols-2">
             <label className="block text-sm">
@@ -225,7 +225,7 @@ export default function FlashPromosPage() {
 
         <AdminSection
           title="Top up Platform Promo Credits"
-          description="Settlement gateway top-ups create Syncra Systems SaaS revenue."
+          description="Settlement gateway top-ups create Syncra Systems LLP SaaS revenue."
         >
           <div className="flex flex-wrap gap-2">
             <NeonButton

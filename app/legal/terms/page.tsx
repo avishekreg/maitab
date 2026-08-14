@@ -11,7 +11,7 @@ export default function TermsPage() {
       <p>
         These Terms govern access to and use of the mAITab Nightlife operating
         system, including demo environments, venue consoles, Member Pass, prepaid
-        tabs, and related APIs operated by Syncra Systems (“we”, “us”).
+        tabs, and related APIs operated by Syncra Systems LLP (“we”, “us”).
       </p>
       <h2>1. Acceptance</h2>
       <p>

@@ -9,7 +9,7 @@ export default function PrivacyPage() {
   return (
     <LegalDoc title="Privacy Policy" updated="August 2026">
       <p>
-        Syncra Systems processes personal and operational data to run mAITab —
+        Syncra Systems LLP processes personal and operational data to run mAITab —
         Member Pass verification, prepaid sessions, order tickets, game events,
         and AutoPay settlement for participating venues.
       </p>

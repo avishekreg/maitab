@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { apiRoleAllowed, roleAllowed } from "@/lib/auth/rbac";
 import { isValidRole } from "@/lib/auth/claims";
+import { isSuperAdminEmail, superAdminEmails } from "@/lib/auth/google";
 import type { UserRole } from "@/lib/types";
 import { updateSession } from "@/lib/supabase/middleware";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
@@ -22,6 +23,15 @@ function isGuestAppPath(pathname: string): boolean {
   );
 }
 
+function isSuperAdminSurface(pathname: string): boolean {
+  return (
+    pathname === "/admin/super" ||
+    pathname.startsWith("/admin/super/") ||
+    pathname === "/super-admin-vault" ||
+    pathname.startsWith("/super-admin-vault/")
+  );
+}
+
 function readDemoRole(request: NextRequest): UserRole | null {
   const value = request.cookies.get(DEMO_ROLE_COOKIE)?.value;
   return isValidRole(value) ? value : null;
@@ -33,8 +43,6 @@ function resolveRole(
   pathname: string
 ): UserRole | null {
   const demo = readDemoRole(request);
-  // Guest surfaces: honor CUSTOMER demo cookie over a leftover staff JWT
-  // (common on production after switching demo roles).
   if (
     demo === "CUSTOMER" &&
     GUEST_APP_PREFIXES.some(
@@ -58,20 +66,40 @@ async function deviceBindOk(request: NextRequest): Promise<boolean> {
   return bind.uaHash === uaHash;
 }
 
+function forbidSuperAdmin(request: NextRequest) {
+  const url = request.nextUrl.clone();
+  url.pathname = "/login";
+  url.searchParams.set("denied", "403");
+  url.searchParams.set("error", "super_admin_forbidden");
+  return NextResponse.redirect(url);
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const { response, role: jwtRole } = await updateSession(request);
+  const {
+    response,
+    role: jwtRole,
+    email: jwtEmail,
+  } = await updateSession(request);
 
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/t/") ||
     pathname === "/login" ||
     pathname === "/admin/super-portal" ||
-    pathname === "/super-admin-vault" ||
+    pathname === "/auth/callback" ||
+    pathname.startsWith("/auth/") ||
     pathname === "/onboard" ||
     pathname.startsWith("/onboard/") ||
     pathname === "/favicon.ico"
   ) {
+    return response;
+  }
+
+  if (pathname === "/super-admin-vault") {
+    if (superAdminEmails().length > 0 && !isSuperAdminEmail(jwtEmail)) {
+      return forbidSuperAdmin(request);
+    }
     return response;
   }
 
@@ -110,11 +138,25 @@ export async function middleware(request: NextRequest) {
     bootstrappedGuest = true;
   }
 
-  // Production: leftover staff JWT used to block /home. Guest app always
-  // opens as CUSTOMER for the nightlife demo (matches local no-Supabase behavior).
   if (isGuestAppPath(pathname) && !roleAllowed(pathname, role)) {
     role = "CUSTOMER";
     bootstrappedGuest = true;
+  }
+
+  // Sovereign Super Admin identity lock
+  if (isSuperAdminSurface(pathname) && superAdminEmails().length > 0) {
+    const demoEmail = (process.env.SUPER_ADMIN_DEMO_EMAIL || "")
+      .trim()
+      .toLowerCase();
+    const emailOk =
+      isSuperAdminEmail(jwtEmail) ||
+      (role === "SUPER_ADMIN" &&
+        Boolean(demoEmail) &&
+        isSuperAdminEmail(demoEmail) &&
+        !jwtEmail);
+    if (!emailOk) {
+      return forbidSuperAdmin(request);
+    }
   }
 
   if (pathname.startsWith("/api")) {
@@ -128,6 +170,17 @@ export async function middleware(request: NextRequest) {
     ) {
       role = "CUSTOMER";
       bootstrappedGuest = true;
+    }
+
+    if (
+      pathname.startsWith("/api/admin") &&
+      superAdminEmails().length > 0 &&
+      !isSuperAdminEmail(jwtEmail)
+    ) {
+      return NextResponse.json(
+        { ok: false, error: "403 Forbidden — Super Admin email required" },
+        { status: 403 }
+      );
     }
 
     const guard = apiRoleAllowed(pathname, role);
@@ -155,10 +208,10 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!roleAllowed(pathname, role)) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    url.searchParams.set("denied", pathname);
-    return NextResponse.redirect(url);
+    const dest = request.nextUrl.clone();
+    dest.pathname = "/login";
+    dest.searchParams.set("denied", pathname);
+    return NextResponse.redirect(dest);
   }
 
   if (bootstrappedGuest) {

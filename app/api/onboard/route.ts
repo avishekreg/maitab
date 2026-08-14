@@ -17,8 +17,8 @@ const PLAN_META: Record<
   SaasPlan,
   { monthly: number | null; gmv_pct: number; label: string }
 > = {
-  STARTER: { monthly: 14999, gmv_pct: 1.5, label: "Starter · Single Venue" },
-  PRO: { monthly: 29999, gmv_pct: 1.0, label: "Pro · Multi-Venue & Routing" },
+  STARTER: { monthly: 19999, gmv_pct: 10, label: "Starter · Single Venue" },
+  PRO: { monthly: 29999, gmv_pct: 8, label: "Pro · Multi-Venue & Routing" },
   ENTERPRISE: { monthly: null, gmv_pct: 0, label: "Enterprise Group · Annual SLA" },
 };
 

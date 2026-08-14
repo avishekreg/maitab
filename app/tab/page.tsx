@@ -11,6 +11,7 @@ import {
   ComplianceBanner,
   useOrderingFrozen,
 } from "@/components/compliance/ComplianceBanner";
+import { ResponsibleBadges } from "@/components/branding/responsible-badges";
 import { AppShell } from "@/components/layout/AppShell";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -469,6 +470,11 @@ function TabBody() {
         onClose={() => setDealModal(false)}
         session={session}
       />
+
+      <ResponsibleBadges density="micro" className="mt-8 pb-2" />
+      <p className="mt-2 text-center text-[10px] text-muted-foreground">
+        Legal compliance · alcohol service for guests 21+ only
+      </p>
     </>
   );
 }
