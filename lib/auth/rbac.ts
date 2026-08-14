@@ -4,6 +4,12 @@ export const PROTECTED_ROUTES: Record<string, UserRole[]> = {
   "/admin/super": ["SUPER_ADMIN"],
   "/super-admin-vault": ["SUPER_ADMIN"],
   "/admin/club": ["CLUB_ADMIN", "FLOOR_MANAGER", "CAPTAIN", "SUPER_ADMIN"],
+  "/partner/liquor-intelligence": [
+    "SUPER_ADMIN",
+    "CLUB_ADMIN",
+    "FLOOR_MANAGER",
+    "CAPTAIN",
+  ],
   "/admin/manager": [
     "FLOOR_MANAGER",
     "CAPTAIN",

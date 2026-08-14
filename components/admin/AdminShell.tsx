@@ -24,6 +24,7 @@ interface AdminShellProps {
 
 const CLUB_NAV = [
   { href: "/admin/club", label: "Venue" },
+  { href: "/admin/club/analytics", label: "Telemetry" },
   { href: "/admin/club/promos", label: "Flash" },
   { href: "/admin/club/settings", label: "Settings" },
   { href: "/admin/manager", label: "Floor" },
@@ -44,6 +45,7 @@ const MANAGER_NAV = [
 
 const SUPER_NAV = [
   { href: "/admin/super", label: "Command" },
+  { href: "/admin/super/telemetry", label: "Telemetry" },
   { href: "/admin/super/config", label: "Integrations" },
   { href: "/super-admin-vault", label: "Vault" },
   { href: "/admin/club", label: "Sample venue" },
