@@ -22,7 +22,7 @@ export function FooterAndroidQr({
 }: FooterAndroidQrProps) {
   const [dataUrl, setDataUrl] = useState<string | null>(null);
   const [qrHref, setQrHref] = useState(resolveAndroidQrHref());
-  const [downloadHref, setDownloadHref] = useState(MAITAB_ANDROID_APK_PATH);
+  const [downloadHref, setDownloadHref] = useState(resolveAndroidDownloadHref());
 
   useEffect(() => {
     const origin = window.location.origin;
