@@ -122,8 +122,8 @@ export function DarkGlassTelemetry({
       cur.volume += r.volume_ml;
       byCompany.set(r.parent_company, cur);
     }
-    const totalVol = [...byCompany.values()].reduce((s, v) => s + v.volume, 0);
-    return [...byCompany.entries()].map(([name, v]) => ({
+    const totalVol = Array.from(byCompany.values()).reduce((s, v) => s + v.volume, 0);
+    return Array.from(byCompany.entries()).map(([name, v]) => ({
       name,
       value: Number(((v.volume / Math.max(totalVol, 1)) * 100).toFixed(1)),
       revenue: v.revenue,
