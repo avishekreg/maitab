@@ -83,9 +83,9 @@ export default function SaarthiDriverPortal() {
         </div>
       </header>
       <main className="mx-auto max-w-3xl px-4 py-8">
-        <h1 className="font-display text-3xl">MaiSaarthi</h1>
+        <h1 className="font-display text-3xl">mAI Saarthi</h1>
         <p className="mt-1 text-sm text-zinc-400">
-          Verified chauffeur dispatch · DL + PCC gate
+          Personal Chauffeur Service • Safe Night Transit
         </p>
 
         {driver ? (

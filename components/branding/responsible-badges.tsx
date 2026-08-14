@@ -12,7 +12,7 @@ interface ResponsibleBadgesProps {
 }
 
 /**
- * Ultra-luxury metallic compliance capsules — Drink Responsibly + MaiSaarthi.
+ * Ultra-luxury metallic compliance capsules — Drink Responsibly + mAI Saarthi.
  */
 export function ResponsibleBadges({
   density = "strip",
@@ -68,7 +68,7 @@ function DontDrinkAndDriveBadge() {
           Don&apos;t Drink &amp; Drive
         </span>
         <span className="text-[10px] text-zinc-300 transition-colors group-hover:text-cyan-300">
-          Book a Verified MaiSaarthi Chauffeur ➔
+          Book a Verified mAI Saarthi Chauffeur ➔
         </span>
       </div>
     </button>

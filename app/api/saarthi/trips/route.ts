@@ -27,9 +27,9 @@ export async function POST(request: NextRequest) {
   const drop_address = String(body.drop_address || "").trim();
   const pickup_venue_name = String(body.pickup_venue_name || "").trim();
 
-  if (!guest_name || !guest_phone || !car_brand || !car_model || !drop_address) {
+  if (!guest_name || !guest_phone || !car_brand || !drop_address) {
     return NextResponse.json(
-      { ok: false, error: "Guest, vehicle, and drop address are required" },
+      { ok: false, error: "Guest, vehicle segment, and drop address are required" },
       { status: 400 }
     );
   }
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     guest_phone,
     venue_id: body.venue_id ? String(body.venue_id) : undefined,
     car_brand,
-    car_model,
+    car_model: car_model || "Valet identification pending",
     transmission_type,
     pickup_venue_name: pickup_venue_name || "Neon District",
     drop_address,

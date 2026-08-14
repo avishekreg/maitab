@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { SaarthiBookingDrawer } from "@/components/saarthi/SaarthiBookingDrawer";
+import { SaarthiBookingDrawer } from "@/components/saarthi/booking-drawer";
 
 type SaarthiContextValue = {
   openBooking: () => void;

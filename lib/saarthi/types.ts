@@ -52,48 +52,22 @@ export interface SaarthiTrip {
 
 export const SAARTHI_BASE_FARE = 899;
 
-export const CAR_CATALOG: {
-  brand: string;
-  models: { name: string; transmission: TransmissionType }[];
-}[] = [
-  {
-    brand: "Mercedes-Benz",
-    models: [
-      { name: "GLA 200d", transmission: "AUTOMATIC" },
-      { name: "C 300e", transmission: "LUXURY_EV" },
-      { name: "S-Class", transmission: "AUTOMATIC" },
-    ],
-  },
-  {
-    brand: "BMW",
-    models: [
-      { name: "330i", transmission: "AUTOMATIC" },
-      { name: "iX1", transmission: "LUXURY_EV" },
-      { name: "X5", transmission: "AUTOMATIC" },
-    ],
-  },
-  {
-    brand: "Audi",
-    models: [
-      { name: "A4", transmission: "AUTOMATIC" },
-      { name: "Q8 e-tron", transmission: "LUXURY_EV" },
-    ],
-  },
-  {
-    brand: "Jaguar",
-    models: [
-      { name: "XF", transmission: "AUTOMATIC" },
-      { name: "I-PACE", transmission: "LUXURY_EV" },
-    ],
-  },
-  {
-    brand: "Tata",
-    models: [
-      { name: "Nexon EV", transmission: "LUXURY_EV" },
-      { name: "Harrier", transmission: "MANUAL" },
-      { name: "Safari", transmission: "AUTOMATIC" },
-    ],
-  },
+export const SAARTHI_BRAND = "mAI Saarthi";
+
+export const SAARTHI_TAGLINE = "Personal Chauffeur Service • Safe Night Transit";
+
+export type VehicleSegment = "SEDAN_HATCH" | "SUV_4X4" | "ULTRA_LUXURY";
+
+export const VEHICLE_SEGMENTS: { id: VehicleSegment; label: string }[] = [
+  { id: "SEDAN_HATCH", label: "Sedan / Hatchback" },
+  { id: "SUV_4X4", label: "SUV / 4x4" },
+  { id: "ULTRA_LUXURY", label: "Ultra-Luxury / Saloon" },
+];
+
+export const TRANSMISSION_PILLS: { id: TransmissionType; label: string }[] = [
+  { id: "AUTOMATIC", label: "Automatic (AT / DCT)" },
+  { id: "MANUAL", label: "Manual (MT)" },
+  { id: "LUXURY_EV", label: "Electric (EV)" },
 ];
 
 export const DEMO_SAARTHI_DRIVER_ID =

@@ -10,6 +10,7 @@ import {
 
 const DEMO_DRIVER_MEERA = "aa111111-1111-1111-1111-111111111112";
 const DEMO_DRIVER_VIKRAM = "aa111111-1111-1111-1111-111111111113";
+const DEMO_DRIVER_RHEA = "aa111111-1111-1111-1111-111111111114";
 
 let drivers: SaarthiDriver[] = [
   {
@@ -59,6 +60,22 @@ let drivers: SaarthiDriver[] = [
     current_lng: 72.8762,
     rating: 4.99,
     total_trips_completed: 640,
+  },
+  {
+    id: DEMO_DRIVER_RHEA,
+    full_name: "Rhea Menon",
+    phone: "+919811100004",
+    email: "rhea.saarthi@maitab.demo",
+    dl_number: "KA03 20200881220",
+    dl_expiry: "2028-04-09",
+    pcc_certificate_url: "/compliance/pcc-rhea.pdf",
+    police_verification_status: "VERIFIED",
+    transmission_specialties: ["AUTOMATIC", "LUXURY_EV"],
+    is_online: true,
+    current_lat: 19.0756,
+    current_lng: 72.8784,
+    rating: 4.97,
+    total_trips_completed: 351,
   },
 ];
 
