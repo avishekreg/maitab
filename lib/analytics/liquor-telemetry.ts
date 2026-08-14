@@ -60,6 +60,7 @@ export interface ConsumptionTelemetry {
   parent_company: ParentCompany;
   spirit_category: SpiritFamily;
   spirit_subcategory: SpiritSubcategory;
+  spirit_subtype: string;
   volume_ml: number;
   billed_amount: number;
   pour_cost_pct: number;
@@ -131,6 +132,24 @@ const VENUE_IDS: Record<Exclude<NetworkVenueKey, "all">, string> = {
 };
 const ZONES = ["VIP Lounge", "Main Floor", "Rooftop Bar"] as const;
 
+export function toSpiritSubtype(sub: SpiritSubcategory): string {
+  switch (sub) {
+    case "Single Malt Scotch":
+    case "Indian Craft Single Malt":
+      return "Single Malt";
+    case "Blanco":
+      return "Blanco Tequila";
+    case "Botanical Craft":
+    case "London Dry":
+      return "Botanical Gin";
+    case "Draught/Craft Taps":
+    case "Premium Imported Lager":
+      return "Draught Lager";
+    default:
+      return sub;
+  }
+}
+
 function weightedHour(i: number): number {
   const weights = [20, 20, 21, 22, 22, 23, 23, 0, 0, 1, 1, 1, 1, 2, 2, 3, 4];
   return weights[i % weights.length];
@@ -150,6 +169,7 @@ export function buildDemoTelemetry(count = 420): ConsumptionTelemetry[] {
       parent_company: sku.parent_company,
       spirit_category: sku.spirit_category,
       spirit_subcategory: sku.spirit_subcategory,
+      spirit_subtype: toSpiritSubtype(sku.spirit_subcategory),
       volume_ml: sku.volume_ml,
       billed_amount: sku.billed_amount + (g % 7) * 12,
       pour_cost_pct: Number((16.4 + (g % 11) * 0.28).toFixed(2)),
@@ -182,7 +202,7 @@ export function filterTelemetry(
 export const SHARE_TABS = [
   "All Spirits",
   "Single Malts",
-  "Tequila/Agave",
+  "Tequila / Agave",
   "Craft Gin",
   "Draught Beers",
 ] as const;
@@ -197,7 +217,7 @@ export function matchesShareTab(row: ConsumptionTelemetry, tab: ShareTab): boole
       row.spirit_subcategory === "Indian Craft Single Malt"
     );
   }
-  if (tab === "Tequila/Agave") return row.spirit_category === "Tequila & Mezcal";
+  if (tab === "Tequila / Agave") return row.spirit_category === "Tequila & Mezcal";
   if (tab === "Craft Gin") return row.spirit_category === "Gin";
   return (
     row.spirit_subcategory === "Draught/Craft Taps" ||
@@ -226,6 +246,7 @@ export const INVENTORY_ROWS = [
 export const HOURLY_VELOCITY = [
   { hour: "8:00 PM", beer: 46, cocktails: 32, tequila: 10, malts: 8, hydration: 6 },
   { hour: "10:00 PM", beer: 44, cocktails: 38, tequila: 22, malts: 16, hydration: 10 },
+  { hour: "11:30 PM", beer: 28, cocktails: 30, tequila: 38, malts: 30, hydration: 12 },
   { hour: "12:00 AM", beer: 24, cocktails: 28, tequila: 41, malts: 34, hydration: 14 },
   { hour: "1:30 AM", beer: 16, cocktails: 18, tequila: 45, malts: 36, hydration: 18 },
   { hour: "3:00 AM", beer: 8, cocktails: 10, tequila: 14, malts: 11, hydration: 36 },

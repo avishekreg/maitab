@@ -5,12 +5,8 @@ import { DarkGlassTelemetry } from "@/components/analytics/dark-glass-telemetry"
 
 export default function ClubAnalyticsPage() {
   return (
-    <AdminShell
-      role="CLUB_ADMIN"
-      title="Venue analytics"
-      subtitle="Pour-cost, leakage, and brand mix for the active club."
-    >
-      <DarkGlassTelemetry scope="venue" hideHeading />
+    <AdminShell role="CLUB_ADMIN" title="Venue analytics" hideTitle>
+      <DarkGlassTelemetry scope="venue" />
     </AdminShell>
   );
 }

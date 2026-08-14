@@ -82,15 +82,15 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Default headings are readable sans — display is opt-in */
-h1,
-h2,
-h3,
-h4,
+/* Body/UI copy stays Plus Jakarta. Display titles opt in via .font-display */
+h1:not(.font-display),
+h2:not(.font-display),
+h3:not(.font-display),
+h4:not(.font-display),
 p,
 a,
 li,
-button,
+button:not(.font-display),
 input,
 textarea,
 label,
@@ -103,11 +103,13 @@ nav {
   letter-spacing: normal;
 }
 
-/* Wide display face — section heroes / primary titles only */
+/* Gold-standard hero face — same DNA as “Turn every night into…” */
 .font-display {
-  font-family: var(--font-display), Syne, ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: -0.03em;
+  font-family: var(--font-display), var(--font-display-wide), Syne,
+    "Space Grotesk", ui-sans-serif, system-ui, sans-serif !important;
+  letter-spacing: -0.04em;
   font-weight: 800;
+  font-stretch: expanded;
 }
 
 .type-eyebrow {

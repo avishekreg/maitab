@@ -63,7 +63,7 @@ export function AdminNav({
 
   return (
     <header className="print:hidden sticky top-0 z-30 w-full border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur-xl">
-      <div className="flex items-center justify-between gap-4 px-6 py-3.5">
+      <div className="flex items-center justify-between px-6 py-3.5">
         <BrandLockup />
 
         <nav className="hidden min-w-0 flex-1 items-center justify-center gap-1 overflow-x-auto md:flex">

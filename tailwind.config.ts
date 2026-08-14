@@ -117,7 +117,9 @@ const config: Config = {
       fontFamily: {
         display: [
           "var(--font-display)",
+          "var(--font-display-wide)",
           "Syne",
+          "Space Grotesk",
           "ui-sans-serif",
           "system-ui",
           "sans-serif",

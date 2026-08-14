@@ -1,14 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, Syne } from "next/font/google";
+import { Plus_Jakarta_Sans, Space_Grotesk, Syne } from "next/font/google";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { maitabFaviconDataUri } from "@/lib/branding/favicon";
 import "./globals.css";
 
-/** Display — titles & section headings only */
+/** Display — ultra-wide geometric titles (hero DNA: Syne + Space Grotesk) */
 const display = Syne({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["600", "700", "800"],
+  weight: ["700", "800"],
+});
+
+const displayWide = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display-wide",
+  weight: ["500", "600", "700"],
 });
 
 /** Body — high-legibility standard-width sans for all UI copy */
@@ -51,7 +57,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable}`}>
+    <html lang="en" className={`${display.variable} ${displayWide.variable} ${sans.variable}`}>
       <body className="min-h-[100dvh] bg-background font-sans text-foreground antialiased tracking-normal">
         <AppProviders>{children}</AppProviders>
       </body>

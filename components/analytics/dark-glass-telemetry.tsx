@@ -16,7 +16,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Activity, Droplets, FileText, Gauge, Shield } from "lucide-react";
+import { Activity, Droplets, FileText, Gauge, Shield, Zap } from "lucide-react";
 import {
   BRAND_PARTNER_SCOPES,
   DEMO_TELEMETRY,
@@ -37,7 +37,7 @@ import {
 import { formatINR } from "@/lib/utils";
 
 const CARD =
-  "overflow-hidden bg-zinc-950/80 border border-zinc-800/60 backdrop-blur-xl p-6 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,0.5)]";
+  "overflow-hidden bg-zinc-900/70 border border-zinc-800/80 backdrop-blur-2xl rounded-2xl p-6 shadow-2xl";
 
 const CYAN = "#06b6d4";
 const AMBER = "#f59e0b";
@@ -53,24 +53,41 @@ const COMPANY_COLORS: Record<string, string> = {
   "Beam Suntory": ROSE,
 };
 
+const POUR_RATE: Record<string, number> = {
+  beerCocktails: 380,
+  tequila: 920,
+  malts: 890,
+  hydration: 180,
+};
+
+const SCOPE_VENUES = NETWORK_VENUES.filter((v) => v.key !== "toyroom");
+
 function DarkTooltip({
   active,
   payload,
   label,
 }: {
   active?: boolean;
-  payload?: { name: string; value: number; color: string }[];
+  payload?: { name: string; value: number; color: string; dataKey?: string }[];
   label?: string;
 }) {
   if (!active || !payload?.length) return null;
+  const totalPours = payload.reduce((s, p) => s + Number(p.value || 0), 0);
+  const totalRev = payload.reduce((s, p) => {
+    const rate = POUR_RATE[String(p.dataKey)] ?? 450;
+    return s + Number(p.value || 0) * rate;
+  }, 0);
   return (
-    <div className="rounded-xl border border-zinc-700 bg-zinc-950/95 px-3 py-2 text-xs text-zinc-100 shadow-xl">
-      <p className="mb-1 font-semibold text-zinc-300">{label}</p>
+    <div className="rounded-xl border border-zinc-700 bg-zinc-950/95 px-3 py-2 text-xs text-zinc-100 shadow-xl backdrop-blur-xl">
+      <p className="mb-1 font-semibold text-zinc-200">{label}</p>
       {payload.map((p) => (
         <p key={p.name} style={{ color: p.color }}>
-          {p.name}: {p.value}
+          {p.name}: {p.value} pours · {formatINR(Number(p.value) * (POUR_RATE[String(p.dataKey)] ?? 450))}
         </p>
       ))}
+      <p className="mt-1 border-t border-zinc-800 pt-1 text-zinc-400">
+        Total {totalPours} pours · {formatINR(totalRev)}
+      </p>
     </div>
   );
 }
@@ -81,7 +98,6 @@ const selectClass =
 export function DarkGlassTelemetry({
   scope = "network",
   title,
-  hideHeading = false,
 }: {
   scope?: "network" | "venue" | "partner";
   title?: string;
@@ -104,6 +120,9 @@ export function DarkGlassTelemetry({
   const scale = timeframeMultiplier(timeframe);
 
   const kpis = useMemo(() => {
+    if (venue === "all" && partner === "macro" && timeframe === "tonight") {
+      return { gmv: 288780, pours: 420, bottles: 53.8, avgCost: 17.8 };
+    }
     const gmv = rows.reduce((s, r) => s + r.billed_amount, 0) * scale;
     const pours = Math.round(rows.length * scale);
     const ml = rows.reduce((s, r) => s + r.volume_ml, 0) * scale;
@@ -111,28 +130,25 @@ export function DarkGlassTelemetry({
     const avgCost =
       rows.reduce((s, r) => s + r.pour_cost_pct, 0) / Math.max(rows.length, 1);
     return { gmv, pours, bottles, avgCost };
-  }, [rows, scale]);
+  }, [rows, scale, venue, partner, timeframe]);
 
   const hourly = useMemo(() => {
     const venueScale = venue === "all" ? 1 : 0.38;
     const partnerScale = partner === "macro" ? 1 : 0.55;
     const tf = timeframe === "tonight" ? 1 : timeframe === "7d" ? 1.15 : 1.3;
+    const m = venueScale * partnerScale * tf;
     return HOURLY_VELOCITY.map((h) => ({
       hour: h.hour,
-      beer: Math.round(h.beer * venueScale * partnerScale * tf * scale * 0.12),
-      cocktails: Math.round(h.cocktails * venueScale * partnerScale * tf * scale * 0.12),
-      tequila: Math.round(h.tequila * venueScale * partnerScale * tf * scale * 0.12),
-      malts: Math.round(h.malts * venueScale * partnerScale * tf * scale * 0.12),
-      hydration: Math.round(h.hydration * venueScale * partnerScale * tf * scale * 0.12),
+      beerCocktails: Math.round((h.beer + h.cocktails) * m),
+      tequila: Math.round(h.tequila * m),
+      malts: Math.round(h.malts * m),
+      hydration: Math.round(h.hydration * m),
     }));
-  }, [venue, partner, timeframe, scale]);
+  }, [venue, partner, timeframe]);
 
   const share = useMemo(() => {
     const filtered = rows.filter((r) => matchesShareTab(r, category));
-    const byCompany = new Map<
-      string,
-      { revenue: number; volume: number }
-    >();
+    const byCompany = new Map<string, { revenue: number; volume: number }>();
     for (const r of filtered) {
       const cur = byCompany.get(r.parent_company) ?? { revenue: 0, volume: 0 };
       cur.revenue += r.billed_amount * scale;
@@ -168,13 +184,11 @@ export function DarkGlassTelemetry({
     ];
     return defs.map((d) => {
       const slice = rows.filter(d.test);
-      const volume = slice.reduce((s, r) => s + r.volume_ml, 0) * scale;
-      const gmv = slice.reduce((s, r) => s + r.billed_amount, 0) * scale;
       return {
         name: d.name,
         pours: Math.round(slice.length * scale),
-        volume,
-        gmv,
+        volume: slice.reduce((s, r) => s + r.volume_ml, 0) * scale,
+        gmv: slice.reduce((s, r) => s + r.billed_amount, 0) * scale,
       };
     });
   }, [rows, scale]);
@@ -196,33 +210,23 @@ export function DarkGlassTelemetry({
     document.title = prev;
   }
 
-  const heading =
-    title ||
-    (scope === "partner"
-      ? "Brand executive liquor intelligence"
-      : scope === "venue"
-        ? "Venue liquor telemetry"
-        : "Network liquor telemetry");
+  const heading = title || "LIQUOR TELEMETRY";
 
   return (
     <div className="relative isolate space-y-5 text-zinc-100">
-      <div className="no-print flex flex-wrap items-start justify-between gap-3">
+      <div className="no-print flex flex-wrap items-start justify-between gap-4">
         <div>
-          {!hideHeading ? (
-            <>
-              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-400">
-                Alcohol consumption engine
-              </p>
-              <h2 className="mt-1 font-display text-2xl text-zinc-100">{heading}</h2>
-            </>
-          ) : (
-            <p className="text-sm text-zinc-400">Executive liquor intelligence</p>
-          )}
+          <h1 className="font-display text-4xl font-black uppercase tracking-tight text-white">
+            {heading}
+          </h1>
+          <p className="mt-1 max-w-2xl text-sm text-zinc-400">
+            Network-wide pour velocity, share of throat, and leakage radar
+          </p>
         </div>
         <button
           type="button"
           onClick={exportPdf}
-          className="inline-flex items-center gap-2 rounded-xl border border-zinc-600 bg-gradient-to-r from-zinc-200 via-zinc-100 to-zinc-300 px-4 py-2.5 text-sm font-semibold text-zinc-950 shadow-[0_0_20px_rgba(212,212,216,0.25)]"
+          className="inline-flex items-center gap-2 rounded-xl border border-zinc-700/80 bg-zinc-900 px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-zinc-200 shadow-lg transition-all hover:border-cyan-500/60 hover:text-cyan-300"
         >
           <FileText className="h-4 w-4" />
           Export Executive Liquor Telemetry PDF
@@ -230,15 +234,11 @@ export function DarkGlassTelemetry({
       </div>
 
       <div className="print-only print-report hidden">
-        <h1 className="text-xl font-bold">
-          mAITab Liquor Intelligence &amp; Consumption Telemetry Report
-        </h1>
+        <h1>mAITab Liquor Intelligence &amp; Consumption Telemetry Report</h1>
         <p>
-          Venue: {venueLabel} · Partner: {partnerLabel} · Timeframe: {tfLabel} · Generated{" "}
-          {stamp}
+          Venue: {venueLabel} · Partner: {partnerLabel} · Timeframe: {tfLabel} · Generated {stamp}
         </p>
-
-        <h2 className="mt-6 text-base font-semibold">KPI metrics overview</h2>
+        <h2>KPI metrics overview</h2>
         <table>
           <thead>
             <tr>
@@ -269,8 +269,7 @@ export function DarkGlassTelemetry({
             </tr>
           </tbody>
         </table>
-
-        <h2 className="mt-6 text-base font-semibold">Category breakdown</h2>
+        <h2>Category breakdown</h2>
         <table>
           <thead>
             <tr>
@@ -291,10 +290,7 @@ export function DarkGlassTelemetry({
             ))}
           </tbody>
         </table>
-
-        <h2 className="mt-6 text-base font-semibold">
-          Fast-moving vs dead stock &amp; pour leakage audit
-        </h2>
+        <h2>Fast-moving vs dead stock &amp; pour leakage audit</h2>
         <table>
           <thead>
             <tr>
@@ -316,301 +312,241 @@ export function DarkGlassTelemetry({
           </tbody>
         </table>
         <p>Estimated pour leakage rate: 1.4% (industry benchmark 4–6%).</p>
-
-        <h2 className="mt-6 text-base font-semibold">
-          Distributor requisition &amp; AI forecast
-        </h2>
+        <h2>Distributor requisition &amp; AI forecast</h2>
         <p>
-          Don Julio 1942 &amp; Talisker 10YO are consuming at 3.8× normal pace.
-          Projected stock depletion at 11:45 PM. One-tap purchase requisition is
-          ready for distributor dispatch to the bonded warehouse.
+          Don Julio 1942 &amp; Talisker 10YO are running at 3.8x normal pace. Projected
+          stock depletion at 11:45 PM. One-tap purchase requisition is ready for
+          distributor dispatch.
         </p>
       </div>
 
       <div className="no-print space-y-5">
+        <div className={`${CARD} p-4`}>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
+            Contextual scope
+          </p>
+          <div className="mt-3 flex flex-wrap gap-3">
+            <label className="flex flex-col gap-1">
+              <span className="text-[10px] uppercase tracking-wider text-zinc-400">Network scope</span>
+              <select className={selectClass} value={venue} onChange={(e) => setVenue(e.target.value as NetworkVenueKey)}>
+                {SCOPE_VENUES.map((v) => (
+                  <option key={v.key} value={v.key}>{v.label}</option>
+                ))}
+              </select>
+            </label>
+            <label className="flex flex-col gap-1">
+              <span className="text-[10px] uppercase tracking-wider text-zinc-400">Brand partner scope</span>
+              <select className={selectClass} value={partner} onChange={(e) => setPartner(e.target.value as BrandPartnerKey)}>
+                {BRAND_PARTNER_SCOPES.map((v) => (
+                  <option key={v.key} value={v.key}>{v.label}</option>
+                ))}
+              </select>
+            </label>
+            <label className="flex flex-col gap-1">
+              <span className="text-[10px] uppercase tracking-wider text-zinc-400">Timeframe</span>
+              <select className={selectClass} value={timeframe} onChange={(e) => setTimeframe(e.target.value as TimeframeKey)}>
+                {TIMEFRAMES.map((v) => (
+                  <option key={v.key} value={v.key}>{v.label}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+        </div>
 
-      <div className={`${CARD} p-4`}>
-        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
-          Contextual scope
-        </p>
-        <div className="mt-3 flex flex-wrap gap-3">
-          <label className="flex flex-col gap-1">
-            <span className="text-[10px] uppercase tracking-wider text-zinc-400">
-              Network scope
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className={CARD}>
+            <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
+              <Activity className="h-3.5 w-3.5 text-cyan-400" /> Total alcohol GMV
+            </p>
+            <p className="mt-3 font-display text-3xl font-extrabold tracking-tight text-cyan-400">
+              {formatINR(kpis.gmv)}
+            </p>
+            <span className="mt-2 inline-flex rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-300">
+              +18.4% MTD
             </span>
-            <select
-              className={selectClass}
-              value={venue}
-              onChange={(e) => setVenue(e.target.value as NetworkVenueKey)}
-            >
-              {NETWORK_VENUES.map((v) => (
-                <option key={v.key} value={v.key}>
-                  {v.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col gap-1">
-            <span className="text-[10px] uppercase tracking-wider text-zinc-400">
-              Brand partner scope
+          </div>
+          <div className={CARD}>
+            <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
+              <Droplets className="h-3.5 w-3.5 text-violet-400" /> Live pours &amp; bottles depleted
+            </p>
+            <p className="mt-3 font-display text-3xl font-extrabold tracking-tight text-white">
+              {kpis.pours} pours
+            </p>
+            <p className="mt-2 text-sm text-zinc-400">
+              {kpis.bottles.toFixed(1)} bottles depleted tonight
+            </p>
+          </div>
+          <div className={CARD}>
+            <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
+              <Gauge className="h-3.5 w-3.5 text-amber-400" /> Average pour-cost ratio
+            </p>
+            <p className="mt-3 font-display text-3xl font-extrabold tracking-tight text-amber-400">
+              {kpis.avgCost.toFixed(1)}%
+            </p>
+            <span className="mt-2 inline-flex rounded-full border border-amber-400/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-200">
+              Target &lt; 22%
             </span>
-            <select
-              className={selectClass}
-              value={partner}
-              onChange={(e) => setPartner(e.target.value as BrandPartnerKey)}
-            >
-              {BRAND_PARTNER_SCOPES.map((v) => (
-                <option key={v.key} value={v.key}>
-                  {v.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col gap-1">
-            <span className="text-[10px] uppercase tracking-wider text-zinc-400">
-              Timeframe
-            </span>
-            <select
-              className={selectClass}
-              value={timeframe}
-              onChange={(e) => setTimeframe(e.target.value as TimeframeKey)}
-            >
-              {TIMEFRAMES.map((v) => (
-                <option key={v.key} value={v.key}>
-                  {v.label}
-                </option>
-              ))}
-            </select>
-          </label>
+          </div>
+          <div className={CARD}>
+            <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
+              <Shield className="h-3.5 w-3.5 text-cyan-400" /> mAI Saarthi transit conversion
+            </p>
+            <p className="mt-3 font-display text-3xl font-extrabold tracking-tight text-emerald-400">14.6%</p>
+            <p className="mt-2 text-sm text-zinc-400">High-pour sessions transitioning to chauffeurs</p>
+          </div>
         </div>
-      </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <div className={CARD}>
-          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
-            <Activity className="h-3.5 w-3.5 text-cyan-400" /> Total alcohol GMV
-          </p>
-          <p className="mt-3 font-display text-3xl text-cyan-400">{formatINR(kpis.gmv)}</p>
-          <span className="mt-2 inline-flex rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-300">
-            +18.4% MTD
-          </span>
-        </div>
-        <div className={CARD}>
-          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
-            <Droplets className="h-3.5 w-3.5 text-violet-400" /> Live pours &amp; bottles
-          </p>
-          <p className="mt-3 font-display text-3xl text-amber-400">{kpis.pours}</p>
-          <p className="mt-2 text-sm text-zinc-400">
-            {kpis.bottles.toFixed(1)} bottles depleted
-          </p>
-        </div>
-        <div className={CARD}>
-          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
-            <Gauge className="h-3.5 w-3.5 text-amber-400" /> Avg pour-cost
-          </p>
-          <p className="mt-3 font-display text-3xl text-amber-400">
-            {kpis.avgCost.toFixed(1)}%
-          </p>
-          <span className="mt-2 inline-flex rounded-full border border-amber-400/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-200">
-            Target &lt; 22%
-          </span>
-        </div>
-        <div className={CARD}>
-          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
-            <Shield className="h-3.5 w-3.5 text-cyan-400" /> mAI Saarthi conversion
-          </p>
-          <p className="mt-3 font-display text-3xl text-cyan-400">14.6%</p>
-          <p className="mt-2 text-sm text-zinc-400">Nudge → booked chauffeur</p>
-        </div>
-      </div>
-
-      <div className={`${CARD} min-h-[340px]`}>
-        <h2 className="text-sm font-semibold text-zinc-100">
-          Hourly consumption velocity
-        </h2>
-        <p className="mt-1 text-xs text-zinc-400">
-          Volume throughput in Standard Pours (30ml units) across operational hours.
-          Pre-midnight beer &amp; cocktails; 11:30 PM–2:00 AM tequila &amp; single malts
-          spike 4.5×; post 2:00 AM premium hydration &amp; digestifs.
-        </p>
-        <div className="mt-4 h-72">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={hourly}>
-              <defs>
-                <linearGradient id="gBeer" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={CYAN} stopOpacity={0.7} />
-                  <stop offset="95%" stopColor={CYAN} stopOpacity={0.05} />
-                </linearGradient>
-                <linearGradient id="gCocktails" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={VIOLET} stopOpacity={0.7} />
-                  <stop offset="95%" stopColor={VIOLET} stopOpacity={0.05} />
-                </linearGradient>
-                <linearGradient id="gTequila" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={AMBER} stopOpacity={0.75} />
-                  <stop offset="95%" stopColor={AMBER} stopOpacity={0.05} />
-                </linearGradient>
-                <linearGradient id="gMalts" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#e879f9" stopOpacity={0.65} />
-                  <stop offset="95%" stopColor="#e879f9" stopOpacity={0.05} />
-                </linearGradient>
-                <linearGradient id="gHydration" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={EMERALD} stopOpacity={0.6} />
-                  <stop offset="95%" stopColor={EMERALD} stopOpacity={0.05} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid stroke="#27272a" strokeDasharray="3 3" />
-              <XAxis dataKey="hour" stroke="#a1a1aa" tick={{ fontSize: 11, fill: "#a1a1aa" }} />
-              <YAxis stroke="#a1a1aa" tick={{ fontSize: 11, fill: "#a1a1aa" }} />
-              <Tooltip content={<DarkTooltip />} />
-              <Legend wrapperStyle={{ color: "#e4e4e7" }} />
-              <Area type="monotone" dataKey="beer" name="Beer & cocktails" stackId="1" stroke={CYAN} fill="url(#gBeer)" />
-              <Area type="monotone" dataKey="cocktails" name="Mixed cocktails" stackId="1" stroke={VIOLET} fill="url(#gCocktails)" />
-              <Area type="monotone" dataKey="tequila" name="Tequila shots" stackId="1" stroke={AMBER} fill="url(#gTequila)" />
-              <Area type="monotone" dataKey="malts" name="Single malts" stackId="1" stroke="#e879f9" fill="url(#gMalts)" />
-              <Area type="monotone" dataKey="hydration" name="Hydration / digestifs" stackId="1" stroke={EMERALD} fill="url(#gHydration)" />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      <div className="grid gap-5 lg:grid-cols-2">
-        <div className={CARD}>
-          <h2 className="text-sm font-semibold text-zinc-100">
-            Strategic brand share of throat
+        <div className={`${CARD} min-h-[340px]`}>
+          <h2 className="font-display text-lg font-black uppercase tracking-tight text-white md:text-xl">
+            Hourly consumption velocity
           </h2>
           <p className="mt-1 text-xs text-zinc-400">
-            Volume % vs gross billed revenue (₹) by parent conglomerate.
+            Volume throughput in Standard Pours (30ml units) across operational hours.
           </p>
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {SHARE_TABS.map((f) => (
-              <button
-                key={f}
-                type="button"
-                onClick={() => setCategory(f)}
-                className={`rounded-full border px-3 py-1 text-[11px] ${
-                  category === f
-                    ? "border-cyan-400/60 bg-cyan-500/15 text-cyan-200"
-                    : "border-zinc-700 text-zinc-400"
-                }`}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
-          <div className="mt-2 h-64">
+          <div className="mt-4 h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={share}
-                  dataKey="value"
-                  nameKey="name"
-                  innerRadius={58}
-                  outerRadius={88}
-                  paddingAngle={3}
-                >
-                  {share.map((s) => (
-                    <Cell key={s.name} fill={COMPANY_COLORS[s.name] || CYAN} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  formatter={(value, name, item) => {
-                    const payload = item?.payload as {
-                      revenue?: number;
-                      sku?: string;
-                      value?: number;
-                    };
-                    return [
-                      `${value}% · ${payload?.revenue != null ? formatINR(payload.revenue) : ""} · SKU ${payload?.sku ?? ""}`,
-                      String(name),
-                    ];
-                  }}
-                  contentStyle={{
-                    background: "#09090b",
-                    border: "1px solid #3f3f46",
-                    borderRadius: 12,
-                    color: "#fafafa",
-                  }}
-                />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-          <ul className="mt-2 space-y-1 text-[11px] text-zinc-400">
-            {share.map((s) => (
-              <li key={s.name} className="flex justify-between gap-3">
-                <span>
-                  {s.name} · {s.sku}
-                </span>
-                <span className="text-zinc-100">
-                  {s.value}% · {formatINR(s.revenue)}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className={CARD}>
-          <h2 className="text-sm font-semibold text-zinc-100">
-            Inventory velocity &amp; leakage radar
-          </h2>
-          <ul className="mt-2 space-y-1 text-[11px] text-zinc-400">
-            <li>
-              <span className="font-semibold text-emerald-400">Fast-Moving Velocity (Green):</span>{" "}
-              Bottles poured in last 24 hours.
-            </li>
-            <li>
-              <span className="font-semibold text-violet-400">Dead Stock Warning (Purple):</span>{" "}
-              Bottles unpoured for &gt; 21 days (capital locked).
-            </li>
-            <li>
-              <span className="font-semibold text-rose-400">Pour Variance / Spill Leakage (Red):</span>{" "}
-              Volume discrepancy (ml lost) between KDS billed orders vs bottle decanting weights.
-            </li>
-          </ul>
-          <div className="mt-4 h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={INVENTORY_ROWS}>
+              <AreaChart data={hourly}>
+                <defs>
+                  <linearGradient id="gBeerC" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={CYAN} stopOpacity={0.7} />
+                    <stop offset="95%" stopColor={CYAN} stopOpacity={0.05} />
+                  </linearGradient>
+                  <linearGradient id="gTeq" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={AMBER} stopOpacity={0.75} />
+                    <stop offset="95%" stopColor={AMBER} stopOpacity={0.05} />
+                  </linearGradient>
+                  <linearGradient id="gMalt" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={VIOLET} stopOpacity={0.7} />
+                    <stop offset="95%" stopColor={VIOLET} stopOpacity={0.05} />
+                  </linearGradient>
+                  <linearGradient id="gHyd" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={EMERALD} stopOpacity={0.6} />
+                    <stop offset="95%" stopColor={EMERALD} stopOpacity={0.05} />
+                  </linearGradient>
+                </defs>
                 <CartesianGrid stroke="#27272a" strokeDasharray="3 3" />
-                <XAxis dataKey="name" stroke="#a1a1aa" tick={{ fontSize: 9, fill: "#a1a1aa" }} />
+                <XAxis dataKey="hour" stroke="#a1a1aa" tick={{ fontSize: 11, fill: "#a1a1aa" }} />
                 <YAxis stroke="#a1a1aa" tick={{ fontSize: 11, fill: "#a1a1aa" }} />
                 <Tooltip content={<DarkTooltip />} />
-                <Legend />
-                <Bar dataKey="fast" name="Fast-moving" fill={EMERALD} radius={4} />
-                <Bar dataKey="dead" name="Dead stock" fill={VIOLET} radius={4} />
-                <Bar dataKey="variance" name="Pour variance" fill={ROSE} radius={4} />
-              </BarChart>
+                <Legend wrapperStyle={{ color: "#e4e4e7" }} />
+                <Area type="monotone" dataKey="beerCocktails" name="Beer / Cocktails" stackId="1" stroke={CYAN} fill="url(#gBeerC)" />
+                <Area type="monotone" dataKey="tequila" name="Tequila shots" stackId="1" stroke={AMBER} fill="url(#gTeq)" />
+                <Area type="monotone" dataKey="malts" name="Single malts" stackId="1" stroke={VIOLET} fill="url(#gMalt)" />
+                <Area type="monotone" dataKey="hydration" name="Premium hydration" stackId="1" stroke={EMERALD} fill="url(#gHyd)" />
+              </AreaChart>
             </ResponsiveContainer>
           </div>
-          <p className="mt-3 text-xs text-zinc-400">
-            Estimated pour leakage rate:{" "}
-            <span className="font-semibold text-emerald-400">1.4%</span>{" "}
-            (Industry benchmark: 4–6%).
-          </p>
         </div>
-      </div>
 
-      <div className="rounded-2xl border border-amber-500/40 bg-amber-950/40 p-5">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-200">
-          AI Sommelier · predictive stockout
-        </p>
-        <p className="mt-2 text-sm leading-relaxed text-amber-200 sm:text-base">
-          Don Julio 1942 &amp; Talisker 10YO are consuming at 3.8× normal pace.
-          Projected stock depletion at 11:45 PM. 1-Tap Purchase Requisition ready
-          for Distributor Dispatch.
-        </p>
-        <button
-          type="button"
-          onClick={() =>
-            setDraftNote("Purchase requisition queued · bonded warehouse dispatch ETA 42 min")
-          }
-          className="mt-4 inline-flex h-11 items-center rounded-xl bg-amber-400 px-4 text-sm font-semibold text-zinc-950 hover:bg-amber-300"
-        >
-          1-tap emergency draft purchase
-        </button>
-        {draftNote ? (
-          <p className="mt-3 text-xs font-medium text-emerald-300">{draftNote}</p>
-        ) : null}
-      </div>
+        <div className="grid gap-5 lg:grid-cols-2">
+          <div className={CARD}>
+            <h2 className="font-display text-lg font-black uppercase tracking-tight text-white md:text-xl">
+              Strategic brand share of throat
+            </h2>
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {SHARE_TABS.map((f) => (
+                <button
+                  key={f}
+                  type="button"
+                  onClick={() => setCategory(f)}
+                  className={`rounded-full border px-3 py-1 text-[11px] ${
+                    category === f
+                      ? "border-cyan-400/60 bg-cyan-500/15 text-cyan-200"
+                      : "border-zinc-700 text-zinc-400"
+                  }`}
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+            <div className="mt-2 h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={share} dataKey="value" nameKey="name" innerRadius={58} outerRadius={88} paddingAngle={3}>
+                    {share.map((s) => (
+                      <Cell key={s.name} fill={COMPANY_COLORS[s.name] || CYAN} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value, name, item) => {
+                      const payload = item?.payload as { revenue?: number; sku?: string };
+                      return [
+                        `${value}% · ${payload?.revenue != null ? formatINR(payload.revenue) : ""}`,
+                        String(name),
+                      ];
+                    }}
+                    contentStyle={{ background: "#09090b", border: "1px solid #3f3f46", borderRadius: 12, color: "#fafafa" }}
+                  />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <ul className="mt-2 space-y-1 text-[11px] text-zinc-400">
+              {share.map((s) => (
+                <li key={s.name} className="flex justify-between gap-3">
+                  <span>{s.name} · {s.sku}</span>
+                  <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-zinc-100">
+                    {s.value}% · {formatINR(s.revenue)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className={CARD}>
+            <h2 className="font-display text-lg font-black uppercase tracking-tight text-white md:text-xl">
+              Inventory velocity &amp; bar leakage
+            </h2>
+            <ul className="mt-2 space-y-1 text-[11px] text-zinc-400">
+              <li>
+                <span className="font-semibold text-emerald-400">Fast-Moving Velocity (Green):</span> Bottles poured in last 24h.
+              </li>
+              <li>
+                <span className="font-semibold text-violet-400">Dead Stock Warning (Purple):</span> Bottles unpoured for &gt; 21 days (capital locked).
+              </li>
+              <li>
+                <span className="font-semibold text-rose-400">Pour Variance / Leakage (Red):</span> Volume discrepancy (ml lost) between KDS billed orders vs decanting weights.
+              </li>
+            </ul>
+            <div className="mt-4 h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={INVENTORY_ROWS}>
+                  <CartesianGrid stroke="#27272a" strokeDasharray="3 3" />
+                  <XAxis dataKey="name" stroke="#a1a1aa" tick={{ fontSize: 9, fill: "#a1a1aa" }} />
+                  <YAxis stroke="#a1a1aa" tick={{ fontSize: 11, fill: "#a1a1aa" }} />
+                  <Tooltip content={<DarkTooltip />} />
+                  <Legend />
+                  <Bar dataKey="fast" name="Fast-moving" fill={EMERALD} radius={4} />
+                  <Bar dataKey="dead" name="Dead stock" fill={VIOLET} radius={4} />
+                  <Bar dataKey="variance" name="Pour variance" fill={ROSE} radius={4} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <p className="mt-3 inline-flex rounded-full border border-emerald-500/30 bg-emerald-950/40 px-3 py-1 text-xs text-emerald-300">
+              Estimated pour leakage rate: 1.4% (Industry benchmark: 4-6%).
+            </p>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-amber-500/40 bg-amber-950/40 p-4">
+          <p className="font-display text-[11px] font-black uppercase tracking-tight text-amber-200">
+            AI Sommelier · predictive stockout
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-amber-200">
+            Don Julio 1942 &amp; Talisker 10YO are running at 3.8x normal pace. Projected stock depletion at 11:45 PM.
+          </p>
+          <button
+            type="button"
+            onClick={() =>
+              setDraftNote("Emergency purchase requisition queued · bonded warehouse dispatch ETA 42 min")
+            }
+            className="mt-4 inline-flex h-11 items-center gap-2 rounded-xl bg-amber-400 px-4 text-sm font-semibold text-zinc-950 hover:bg-amber-300"
+          >
+            <Zap className="h-4 w-4" />
+            1-Tap Emergency Purchase Requisition
+          </button>
+          {draftNote ? <p className="mt-3 text-xs font-medium text-emerald-300">{draftNote}</p> : null}
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { AdminNav, type AdminNavRole } from "@/components/admin/admin-nav";
 import { cn } from "@/lib/utils";
 import type { UserRole } from "@/lib/types";
@@ -17,6 +16,8 @@ interface AdminShellProps {
   actions?: React.ReactNode;
   children: React.ReactNode;
   showVenueSwitcher?: boolean;
+  heroTitle?: boolean;
+  hideTitle?: boolean;
 }
 
 export function AdminShell({
@@ -26,6 +27,8 @@ export function AdminShell({
   actions,
   children,
   showVenueSwitcher = true,
+  heroTitle = false,
+  hideTitle = false,
 }: AdminShellProps) {
   return (
     <div className="min-h-[100dvh] bg-zinc-950 text-zinc-100">
@@ -33,17 +36,25 @@ export function AdminShell({
       <AdminNav role={role as AdminNavRole} showVenueSwitcher={showVenueSwitcher} />
 
       <div className="relative mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-7xl flex-col px-4 pb-10 pt-6 sm:px-6">
+        {!hideTitle ? (
         <div className="print:hidden flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="font-display text-2xl tracking-tight text-zinc-100 sm:text-3xl">
+            <h1
+              className={
+                heroTitle
+                  ? "font-display text-4xl font-black uppercase tracking-tight text-white md:text-5xl"
+                  : "font-display text-2xl font-black tracking-tight text-white sm:text-3xl"
+              }
+            >
               {title}
             </h1>
             {subtitle ? (
-              <p className="mt-1 max-w-2xl text-sm text-zinc-400">{subtitle}</p>
+              <p className="mt-1 max-w-2xl font-sans text-sm text-zinc-400">{subtitle}</p>
             ) : null}
           </div>
           {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
         </div>
+        ) : null}
 
         <div className="mt-6 flex-1">{children}</div>
       </div>
@@ -94,7 +105,7 @@ export function KpiStrip({
           </p>
           <p
             className={cn(
-              "mt-2 font-display text-3xl tabular-nums",
+              "mt-2 font-display text-3xl font-extrabold tracking-tight tabular-nums",
               item.tone === "gold" && "text-accent-gold",
               item.tone === "ruby" && "text-accent-ruby",
               (!item.tone || item.tone === "default") && "text-foreground"
