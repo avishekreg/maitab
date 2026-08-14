@@ -8,6 +8,7 @@ import {
   MarketingHeader,
 } from "@/components/marketing/MarketingChrome";
 import { ResponsibleBadges } from "@/components/branding/responsible-badges";
+import { SaarthiProvider } from "@/components/saarthi/SaarthiProvider";
 import { HeroSection } from "@/components/marketing/HeroSection";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 
@@ -265,6 +266,7 @@ function SectionTitle({
 
 export default function MarketingLandingPage() {
   return (
+    <SaarthiProvider>
     <div className="min-h-[100dvh] bg-[#FAF9F5] text-[#080503]">
       <MarketingHeader />
 
@@ -683,5 +685,6 @@ export default function MarketingLandingPage() {
 
       <MarketingFooter />
     </div>
+    </SaarthiProvider>
   );
 }

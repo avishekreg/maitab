@@ -74,6 +74,14 @@ export const PUBLIC_DEMO_USERS: DemoUserAccount[] = [
     home: ROLE_HOME.CAPTAIN,
     description: "Senior floor lead · shift override",
   },
+  {
+    role: "SAARTHI_DRIVER",
+    email: "arjun.saarthi@maitab.demo",
+    password: DEMO_PASSWORD,
+    name: "Arjun Khanna",
+    home: ROLE_HOME.SAARTHI_DRIVER,
+    description: "MaiSaarthi chauffeur companion · verified DL + PCC",
+  },
 ];
 
 /** @deprecated Use PUBLIC_DEMO_USERS — kept as alias for public roster only */

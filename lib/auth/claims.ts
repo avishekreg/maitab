@@ -10,6 +10,7 @@ const ROLES: UserRole[] = [
   "BARTENDER",
   "AV_CONTROLLER",
   "CUSTOMER",
+  "SAARTHI_DRIVER",
 ];
 
 export function roleFromClaims(user: User | null | undefined): UserRole | null {

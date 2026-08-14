@@ -15,7 +15,7 @@ import {
   verifyDeviceBind,
 } from "@/lib/security/session-cookies";
 
-const GUEST_APP_PREFIXES = ["/home", "/tab", "/pass", "/game"] as const;
+const GUEST_APP_PREFIXES = ["/home", "/tab", "/pass", "/game", "/menu"] as const;
 
 function isGuestAppPath(pathname: string): boolean {
   return GUEST_APP_PREFIXES.some(
@@ -97,7 +97,8 @@ export async function middleware(request: NextRequest) {
     pathname === "/favicon.ico" ||
     pathname.startsWith("/downloads/") ||
     pathname.startsWith("/badges/") ||
-    pathname === "/api/android-download"
+    pathname === "/api/android-download" ||
+    pathname.startsWith("/api/saarthi")
   ) {
     return response;
   }

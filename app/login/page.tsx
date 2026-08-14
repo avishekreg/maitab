@@ -19,6 +19,7 @@ const STAFF_ROLES: UserRole[] = [
   "CAPTAIN",
   "BARTENDER",
   "GATE_STAFF",
+  "SAARTHI_DRIVER",
 ];
 
 function LoginHub() {

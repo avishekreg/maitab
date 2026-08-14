@@ -14,6 +14,7 @@ export const ALL_ROLES: UserRole[] = [
   "BARTENDER",
   "AV_CONTROLLER",
   "CUSTOMER",
+  "SAARTHI_DRIVER",
 ];
 
 /** Roles that can allocate waiters/zones/bar counters */

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Camera, ChevronRight, MapPin, Sparkles, Vibrate } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
-import { ResponsibleBadges } from "@/components/branding/responsible-badges";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { TierGlassCard, TierProgressRing } from "@/components/theme/TierChrome";
@@ -196,7 +195,6 @@ export default function CustomerHomePage() {
   return (
     <AppShell title="Tonight">
       <HomeBody />
-      <ResponsibleBadges density="micro" className="mt-8 pb-2" />
     </AppShell>
   );
 }

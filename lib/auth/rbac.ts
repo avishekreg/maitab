@@ -31,6 +31,8 @@ export const PROTECTED_ROUTES: Record<string, UserRole[]> = {
   "/pass": ["CUSTOMER", "SUPER_ADMIN"],
   "/game": ["CUSTOMER", "SUPER_ADMIN"],
   "/home": ["CUSTOMER", "SUPER_ADMIN"],
+  "/menu": ["CUSTOMER", "SUPER_ADMIN"],
+  "/saarthi": ["SAARTHI_DRIVER", "SUPER_ADMIN"],
 };
 
 /** API routes that require JWT / demo-role claims. More specific prefixes first. */
@@ -132,6 +134,7 @@ export const PUBLIC_API_PREFIXES = [
   "/api/payments/webhooks/",
   "/api/onboard",
   "/api/android-download",
+  "/api/saarthi",
 ];
 
 export type ApiGuardResult =

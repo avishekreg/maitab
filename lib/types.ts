@@ -6,7 +6,8 @@ export type UserRole =
   | "GATE_STAFF"
   | "BARTENDER"
   | "AV_CONTROLLER"
-  | "CUSTOMER";
+  | "CUSTOMER"
+  | "SAARTHI_DRIVER";
 
 export type SpendTier = "BRONZE" | "SILVER" | "GOLD" | "TITAN";
 
@@ -174,6 +175,7 @@ export const ROLE_HOME: Record<UserRole, string> = {
   BARTENDER: "/kds",
   AV_CONTROLLER: "/av-panel",
   CUSTOMER: "/home",
+  SAARTHI_DRIVER: "/saarthi",
 };
 
 export const TIER_RANK: Record<SpendTier, number> = {

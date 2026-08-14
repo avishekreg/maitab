@@ -1,4 +1,7 @@
+"use client";
+
 import { cn } from "@/lib/utils";
+import { useSaarthiBooking } from "@/components/saarthi/SaarthiProvider";
 
 type BadgeDensity = "strip" | "stack" | "micro";
 
@@ -9,13 +12,11 @@ interface ResponsibleBadgesProps {
 }
 
 /**
- * Responsible hospitality compliance badges — Drink Responsibly (21+)
- * and Don't Drink & Drive.
+ * Ultra-luxury metallic compliance capsules — Drink Responsibly + MaiSaarthi.
  */
 export function ResponsibleBadges({
   density = "strip",
   className,
-  onDark = true,
 }: ResponsibleBadgesProps) {
   const wrap =
     density === "stack"
@@ -30,109 +31,101 @@ export function ResponsibleBadges({
       aria-label="Responsible hospitality"
       className={cn(wrap, className)}
     >
-      <DrinkResponsiblyBadge onDark={onDark} micro={density === "micro"} />
-      <DontDrinkAndDriveBadge onDark={onDark} micro={density === "micro"} />
+      <DrinkResponsiblyBadge />
+      <DontDrinkAndDriveBadge />
     </div>
   );
 }
 
-function DrinkResponsiblyBadge({
-  onDark,
-  micro,
-}: {
-  onDark: boolean;
-  micro?: boolean;
-}) {
+function DrinkResponsiblyBadge() {
   return (
-    <div
-      className={cn(
-        "inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-black/40 text-amber-100/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm",
-        micro ? "px-2.5 py-1 text-[10px] leading-tight" : "px-3.5 py-2 text-xs sm:text-sm",
-        !onDark && "bg-slate-950/80 text-amber-50"
-      )}
-    >
-      <AgeShieldIcon className={micro ? "h-3.5 w-3.5" : "h-4 w-4"} />
-      <span className="font-medium tracking-wide">
-        {micro
-          ? "Drink Responsibly · 21+"
-          : "Drink Responsibly • Be 21+ & Know Your Limit"}
-      </span>
+    <div className="inline-flex items-center gap-3 rounded-full border border-amber-500/30 bg-zinc-950/80 px-4 py-2 shadow-[0_0_20px_rgba(245,158,11,0.12)] backdrop-blur-md transition-all hover:border-amber-500/60">
+      <GoldShieldIcon />
+      <div className="flex flex-col leading-tight">
+        <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-400">
+          Drink Responsibly
+        </span>
+        <span className="text-[10px] text-zinc-400">
+          Know Your Limits • Zero Underage Service
+        </span>
+      </div>
     </div>
   );
 }
 
-function DontDrinkAndDriveBadge({
-  onDark,
-  micro,
-}: {
-  onDark: boolean;
-  micro?: boolean;
-}) {
+function DontDrinkAndDriveBadge() {
+  const saarthi = useSaarthiBooking();
+
   return (
-    <div
-      className={cn(
-        "inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-black/40 text-cyan-50/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm",
-        micro ? "px-2.5 py-1 text-[10px] leading-tight" : "px-3.5 py-2 text-xs sm:text-sm",
-        !onDark && "bg-slate-950/80 text-cyan-50"
-      )}
+    <button
+      type="button"
+      onClick={() => saarthi?.openBooking()}
+      className="group inline-flex cursor-pointer items-center gap-3 rounded-full border border-cyan-500/30 bg-zinc-950/80 px-4 py-2 shadow-[0_0_20px_rgba(6,182,212,0.15)] backdrop-blur-md transition-all hover:border-cyan-400/70"
     >
-      <SafeRideIcon className={micro ? "h-3.5 w-3.5" : "h-4 w-4"} />
-      <span className="font-medium tracking-wide">
-        {micro
-          ? "Don't Drink & Drive"
-          : "Don't Drink & Drive • Book a Safe Ride Home"}
-      </span>
-    </div>
+      <SteeringPulseIcon />
+      <div className="flex flex-col text-left leading-tight">
+        <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-cyan-400">
+          Don&apos;t Drink &amp; Drive
+        </span>
+        <span className="text-[10px] text-zinc-300 transition-colors group-hover:text-cyan-300">
+          Book a Verified MaiSaarthi Chauffeur ➔
+        </span>
+      </div>
+    </button>
   );
 }
 
-function AgeShieldIcon({ className }: { className?: string }) {
+function GoldShieldIcon() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      className={cn("shrink-0 text-amber-400", className)}
-      aria-hidden
-    >
+    <svg viewBox="0 0 40 40" className="h-9 w-9 shrink-0" aria-hidden>
+      <defs>
+        <linearGradient id="gold-shield" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#FDE68A" />
+          <stop offset="45%" stopColor="#F59E0B" />
+          <stop offset="100%" stopColor="#B45309" />
+        </linearGradient>
+      </defs>
       <path
-        d="M12 3l7 3v5.2c0 4.4-2.9 8.3-7 9.8-4.1-1.5-7-5.4-7-9.8V6l7-3z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
+        d="M20 4l12 5v9.2c0 7.4-4.8 14-12 16.6C12.8 32.2 8 25.6 8 18.2V9L20 4z"
+        fill="url(#gold-shield)"
       />
-      <path
-        d="M9.2 12.2h2.3c1.1 0 1.9-.7 1.9-1.7S12.6 8.8 11.5 8.8H9.2v6.4h1.35V13.4h.9L13.4 15.2h1.55l-2.1-2.1c.9-.3 1.5-1.1 1.5-2.1 0-1.5-1.1-2.5-2.85-2.5H7.85v6.7H9.2v-3z"
-        fill="currentColor"
-        opacity="0.9"
-      />
+      <text
+        x="20"
+        y="23"
+        textAnchor="middle"
+        fill="#1C1917"
+        fontSize="11"
+        fontWeight="800"
+        fontFamily="ui-sans-serif, system-ui"
+      >
+        21+
+      </text>
     </svg>
   );
 }
 
-function SafeRideIcon({ className }: { className?: string }) {
+function SteeringPulseIcon() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      className={cn("shrink-0 text-cyan-300", className)}
-      aria-hidden
-    >
-      <path
-        d="M4 15.5h16M5.5 15.5l1.2-4.2A2 2 0 0 1 8.6 10h6.8a2 2 0 0 1 1.9 1.3l1.2 4.2"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="7.5" cy="17.2" r="1.4" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="16.5" cy="17.2" r="1.4" stroke="currentColor" strokeWidth="1.5" />
-      <path
-        d="M9.2 10.2V8.6A1.6 1.6 0 0 1 10.8 7h2.4a1.6 1.6 0 0 1 1.6 1.6v1.6"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-    </svg>
+    <span className="relative grid h-9 w-9 place-items-center">
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400/20" />
+      <svg viewBox="0 0 40 40" className="relative h-9 w-9" aria-hidden>
+        <defs>
+          <linearGradient id="cyan-wheel" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#A5F3FC" />
+            <stop offset="55%" stopColor="#22D3EE" />
+            <stop offset="100%" stopColor="#0891B2" />
+          </linearGradient>
+        </defs>
+        <circle cx="20" cy="20" r="13" fill="none" stroke="url(#cyan-wheel)" strokeWidth="2.4" />
+        <circle cx="20" cy="20" r="4" fill="url(#cyan-wheel)" />
+        <path
+          d="M20 7.5v8.2M11.2 24.8l6.2-3.4M28.8 24.8l-6.2-3.4"
+          stroke="url(#cyan-wheel)"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+        />
+      </svg>
+    </span>
   );
 }
 

@@ -12,7 +12,7 @@ export function GuestHeaderMenu() {
         {MENU_ITEMS.map((item) => (
           <Link
             key={item.name}
-            href="/tab"
+            href="/menu"
             className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5"
           >
             <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">

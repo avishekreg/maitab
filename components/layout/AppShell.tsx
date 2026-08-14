@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Gamepad2, QrCode, Receipt, Sparkles, Ticket } from "lucide-react";
+import { Gamepad2, QrCode, Receipt, Sparkles, Ticket, Wine } from "lucide-react";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 import { GuestHeaderMenu } from "@/components/layout/GuestHeaderMenu";
+import { ResponsibleBadges } from "@/components/branding/responsible-badges";
+import { SaarthiProvider } from "@/components/saarthi/SaarthiProvider";
 import { TierBadge } from "@/components/theme/TierChrome";
 import { TierThemeProvider } from "@/components/theme/TierThemeProvider";
 import { useSessionStore } from "@/lib/store/session-store";
@@ -14,6 +16,7 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { href: "/home", label: "Home", icon: Sparkles },
   { href: "/tab", label: "Tab", icon: Receipt },
+  { href: "/menu", label: "Menu", icon: Wine },
   { href: "/game", label: "Game", icon: Gamepad2 },
   { href: "/pass", label: "Pass", icon: Ticket },
 ];
@@ -22,15 +25,22 @@ interface AppShellProps {
   children: React.ReactNode;
   showNav?: boolean;
   title?: string;
+  showComplianceStrip?: boolean;
 }
 
-export function AppShell({ children, showNav = true, title }: AppShellProps) {
+export function AppShell({
+  children,
+  showNav = true,
+  title,
+  showComplianceStrip = true,
+}: AppShellProps) {
   const pathname = usePathname();
   const tier = useSessionStore((s) => s.user.global_spend_tier);
   const theme = getTierTheme(tier);
 
   return (
     <TierThemeProvider tier={tier}>
+      <SaarthiProvider>
       <div className="relative min-h-[100dvh] bg-background text-foreground">
         <div className={cn("pointer-events-none absolute inset-0", theme.ambient)} />
 
@@ -61,13 +71,13 @@ export function AppShell({ children, showNav = true, title }: AppShellProps) {
           <GuestHeaderMenu />
         </header>
 
-        <main className="relative mx-auto w-full max-w-6xl px-4 pb-28 pt-6">
+        <main className="relative mx-auto w-full max-w-6xl px-4 pb-40 pt-6">
           {children}
         </main>
 
         {showNav ? (
           <nav className="optimus-glass fixed inset-x-0 bottom-0 z-40 rounded-none border-x-0 border-b-0">
-            <div className="mx-auto grid max-w-lg grid-cols-4 px-2 py-2">
+            <div className="mx-auto grid max-w-lg grid-cols-5 px-2 py-2">
               {NAV.map((item) => {
                 const active = pathname.startsWith(item.href);
                 const Icon = item.icon;
@@ -90,7 +100,16 @@ export function AppShell({ children, showNav = true, title }: AppShellProps) {
             </div>
           </nav>
         ) : null}
+
+        {showComplianceStrip ? (
+          <div className="pointer-events-none fixed inset-x-0 bottom-[4.75rem] z-30 flex justify-center px-3 sm:bottom-[5.25rem]">
+            <div className="pointer-events-auto max-w-full overflow-x-auto">
+              <ResponsibleBadges density="micro" />
+            </div>
+          </div>
+        ) : null}
       </div>
+      </SaarthiProvider>
     </TierThemeProvider>
   );
 }
