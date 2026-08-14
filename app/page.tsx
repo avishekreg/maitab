@@ -211,6 +211,37 @@ const COMPARE = [
   },
 ];
 
+const SAFETY_SHOWCASE = [
+  {
+    emoji: "🍸",
+    badge: "PROPRIETARY SAFETY TECH",
+    badgeClass:
+      "border-cyan-400/40 bg-cyan-500/10 text-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.25)]",
+    title: "Predictive Transit Assistance",
+    kicker: "Smart Transit Concierge AI",
+    body: "Our proprietary telemetry engine dynamically gauges session pacing and alcohol units billed, proactively nudging guests at checkout with a dedicated Chauffeur Concierge before they step out.",
+    pills: [
+      "✓ Non-Intrusive Care",
+      "✓ Auto-Detected Venue Gate",
+      "✓ Zero Drink & Drive Risk",
+    ],
+  },
+  {
+    emoji: "🚗",
+    badge: "BUILT-IN MOBILITY LAYER",
+    badgeClass:
+      "border-amber-400/40 bg-amber-500/10 text-amber-300 shadow-[0_0_18px_rgba(245,158,11,0.28)]",
+    title: "Your Car, Our Verified Chauffeur",
+    kicker: "mAI Saarthi — On-Demand Valet Chauffeur Network",
+    body: "Guests never leave luxury wheels behind. With 1-tap dispatch, police-verified chauffeurs certified for premium AT/DCT/EV transmissions arrive at the valet to drive guests home in their own car.",
+    pills: [
+      "🛡️ Police Verified",
+      "📸 4-Angle Pre-Trip Scan",
+      "🔢 Handshake OTP Protected",
+    ],
+  },
+] as const;
+
 const FAQ = [
   {
     q: "Do we need to rip out our POS?",
@@ -271,6 +302,12 @@ export default function MarketingLandingPage() {
       <MarketingHeader />
 
       <HeroSection />
+
+      <div className="relative z-10 -mt-8 flex justify-center px-4 pb-6 sm:-mt-10">
+        <div className="inline-flex max-w-full overflow-x-auto rounded-full border border-white/10 bg-zinc-950/80 px-3 py-2 shadow-[0_12px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+          <ResponsibleBadges density="micro" />
+        </div>
+      </div>
 
       {/* PROBLEM */}
       <section
@@ -533,6 +570,62 @@ export default function MarketingLandingPage() {
         </div>
       </section>
 
+      {/* RESPONSIBLE HOSPITALITY & SAFETY */}
+      <section
+        id="safety"
+        className="scroll-mt-20 border-t border-white/10 bg-[#07080c]"
+      >
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+          <SectionEyebrow onDark>Responsible hospitality & safety</SectionEyebrow>
+          <SectionTitle onDark>
+            Social responsibility engineered into the night — not bolted on at
+            last call.
+          </SectionTitle>
+          <p className="type-body mt-5 max-w-3xl text-lg text-white/70">
+            Cognitive safety telemetry plus a verified chauffeur network keep
+            guests, venues, and vehicles protected when the tab is still open.
+          </p>
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-2">
+            {SAFETY_SHOWCASE.map((card, i) => (
+              <motion.article
+                key={card.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.35 }}
+                transition={{ delay: i * 0.08 }}
+                className="rounded-3xl border border-cyan-500/20 bg-zinc-950/80 p-6 shadow-[0_0_40px_rgba(6,182,212,0.08)] backdrop-blur-xl sm:p-8"
+              >
+                <span
+                  className={`inline-flex rounded-full border px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] ${card.badgeClass}`}
+                >
+                  {card.badge}
+                </span>
+                <p className="mt-5 text-sm text-white/55">
+                  {card.emoji} {card.kicker}
+                </p>
+                <h3 className="type-title mt-2 text-2xl text-white sm:text-3xl">
+                  {card.title}
+                </h3>
+                <p className="type-body mt-4 text-base leading-relaxed text-zinc-300 sm:text-lg">
+                  {card.body}
+                </p>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {card.pills.map((pill) => (
+                    <span
+                      key={pill}
+                      className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[11px] text-zinc-200"
+                    >
+                      {pill}
+                    </span>
+                  ))}
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* PRICING / GROWTH — forced light stone canvas */}
       <section
         id="pricing"
@@ -677,10 +770,12 @@ export default function MarketingLandingPage() {
       </section>
 
       <div className="border-t border-white/10 bg-[#0c0c0f] px-4 py-8 sm:px-6">
-        <ResponsibleBadges
-          density="strip"
-          className="mx-auto max-w-4xl justify-center"
-        />
+        <div className="mx-auto flex max-w-4xl justify-center rounded-full border border-white/10 bg-zinc-950/70 px-3 py-3 shadow-[0_0_30px_rgba(6,182,212,0.1)] backdrop-blur-xl">
+          <ResponsibleBadges
+            density="strip"
+            className="justify-center"
+          />
+        </div>
       </div>
 
       <MarketingFooter />
