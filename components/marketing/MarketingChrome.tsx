@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
-import { cn } from "@/lib/utils";
+import { FooterAndroidQr } from "@/components/marketing/FooterAndroidQr";
+import { FooterAppStoreBadges } from "@/components/marketing/FooterAppStoreBadges";
 
 const NAV = [
   { href: "#pricing", label: "Pricing" },
@@ -130,7 +131,7 @@ export function MarketingFooter() {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_420px_at_12%_-10%,rgba(139,92,246,0.14),transparent_55%),radial-gradient(700px_360px_at_90%_0%,rgba(6,182,212,0.10),transparent_50%)]"
       />
 
-      <div className="relative mx-auto grid max-w-6xl gap-12 px-4 py-14 sm:px-6 md:grid-cols-[1.35fr_1fr_1fr]">
+      <div className="relative mx-auto grid max-w-6xl gap-12 px-4 py-14 sm:px-6 md:grid-cols-[1.2fr_1.1fr_0.85fr_1fr]">
         <div>
           <MaiTabLogo
             variant="FullLogoWithText"
@@ -144,6 +145,16 @@ export function MarketingFooter() {
             Designed, Built & Operated by{" "}
             <span className="font-medium text-slate-200">Syncra Systems LLP</span>.
           </p>
+        </div>
+
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-300/60">
+            Get the app
+          </p>
+          <div className="mt-4 flex flex-wrap items-start gap-5">
+            <FooterAndroidQr size={112} />
+            <FooterAppStoreBadges stacked align="left" hideHeading />
+          </div>
         </div>
 
         <div>

@@ -37,3 +37,11 @@ next-env.d.ts
 .env.local
 .env*.local
 !.env.example
+
+# Capacitor / Android build outputs (keep android/ project + public APK)
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+*.keystore
+!public/downloads/maitab-latest.apk
