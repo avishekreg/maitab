@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { DEMO_CLUB } from "@/lib/demo/data";
@@ -20,18 +20,26 @@ import { cn, formatINR } from "@/lib/utils";
 export function SaarthiBookingDrawer({
   open,
   onClose,
+  prefill,
 }: {
   open: boolean;
   onClose: () => void;
+  prefill?: { carDetails?: string };
 }) {
   const user = useSessionStore((s) => s.user);
   const [segment, setSegment] = useState<VehicleSegment>("SEDAN_HATCH");
   const [transmission, setTransmission] = useState<TransmissionType>("AUTOMATIC");
-  const [carDetails, setCarDetails] = useState("");
+  const [carDetails, setCarDetails] = useState(prefill?.carDetails ?? "");
   const [drop, setDrop] = useState("");
   const [busy, setBusy] = useState(false);
   const [trip, setTrip] = useState<SaarthiTrip | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (open && prefill?.carDetails) {
+      setCarDetails(prefill.carDetails);
+    }
+  }, [open, prefill?.carDetails]);
 
   const segmentLabel = useMemo(
     () => VEHICLE_SEGMENTS.find((s) => s.id === segment)?.label ?? segment,

@@ -17,6 +17,8 @@ import { StatusPill } from "@/components/ui/StatusPill";
 import { TierGlassCard, TierProgressRing } from "@/components/theme/TierChrome";
 import { useTierTheme } from "@/components/theme/TierThemeProvider";
 import { DEMO_CLUB, MENU_ITEMS } from "@/lib/demo/data";
+import { sessionDrinkCount, shouldShowTransitNudge } from "@/lib/safety/nudge";
+import { TransitNudgeCard } from "@/components/saarthi/transit-nudge-card";
 import { fetchClubOrders } from "@/lib/data/orders";
 import {
   discountedUnitPrice,
@@ -57,6 +59,7 @@ function TabBody() {
   const [geoNote, setGeoNote] = useState("Geo fence idle");
   const [luckyNote, setLuckyNote] = useState<string | null>(null);
   const [dealModal, setDealModal] = useState(false);
+  const [settleRequested, setSettleRequested] = useState(false);
   const samplesRef = useRef<ExitTrackerSample[]>([]);
   const alertedTokens = useRef<Set<number>>(new Set());
 
@@ -94,6 +97,12 @@ function TabBody() {
     (sum, item) => sum + item.unit_price * item.quantity,
     0
   );
+
+  const drinkCount = sessionDrinkCount(orders, session.id);
+  const showNudge = shouldShowTransitNudge({
+    drinkCount,
+    settleRequested,
+  });
 
   useEffect(() => {
     void fetchClubOrders(NEON_CLUB_ID).then((live) => {
@@ -281,6 +290,12 @@ function TabBody() {
 
       <ExternalDealCard />
 
+      {showNudge ? (
+        <div className="mb-5">
+          <TransitNudgeCard venueName={DEMO_CLUB.name} />
+        </div>
+      ) : null}
+
       <TierGlassCard className="mb-5 p-4" showAura>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -308,6 +323,13 @@ function TabBody() {
               >
                 {formatINR(session.total_session_spend)}
               </p>
+              <button
+                type="button"
+                onClick={() => setSettleRequested(true)}
+                className="mt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-cyan-300 hover:text-cyan-200"
+              >
+                Settle tab
+              </button>
             </div>
           </div>
         </div>

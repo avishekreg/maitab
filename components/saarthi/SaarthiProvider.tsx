@@ -10,8 +10,12 @@ import {
 } from "react";
 import { SaarthiBookingDrawer } from "@/components/saarthi/booking-drawer";
 
+export type SaarthiBookingPrefill = {
+  carDetails?: string;
+};
+
 type SaarthiContextValue = {
-  openBooking: () => void;
+  openBooking: (prefill?: SaarthiBookingPrefill) => void;
   closeBooking: () => void;
 };
 
@@ -19,7 +23,11 @@ const SaarthiContext = createContext<SaarthiContextValue | null>(null);
 
 export function SaarthiProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
-  const openBooking = useCallback(() => setOpen(true), []);
+  const [prefill, setPrefill] = useState<SaarthiBookingPrefill>({});
+  const openBooking = useCallback((next?: SaarthiBookingPrefill) => {
+    setPrefill(next ?? {});
+    setOpen(true);
+  }, []);
   const closeBooking = useCallback(() => setOpen(false), []);
   const value = useMemo(
     () => ({ openBooking, closeBooking }),
@@ -29,7 +37,11 @@ export function SaarthiProvider({ children }: { children: ReactNode }) {
   return (
     <SaarthiContext.Provider value={value}>
       {children}
-      <SaarthiBookingDrawer open={open} onClose={closeBooking} />
+      <SaarthiBookingDrawer
+        open={open}
+        onClose={closeBooking}
+        prefill={prefill}
+      />
     </SaarthiContext.Provider>
   );
 }

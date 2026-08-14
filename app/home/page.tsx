@@ -9,6 +9,8 @@ import { StatusPill } from "@/components/ui/StatusPill";
 import { TierGlassCard, TierProgressRing } from "@/components/theme/TierChrome";
 import { useTierTheme } from "@/components/theme/TierThemeProvider";
 import { DEMO_CLUB, DEMO_TABLES } from "@/lib/demo/data";
+import { sessionDrinkCount, shouldShowTransitNudge } from "@/lib/safety/nudge";
+import { TransitNudgeCard } from "@/components/saarthi/transit-nudge-card";
 import { useSessionStore } from "@/lib/store/session-store";
 import { formatINR } from "@/lib/utils";
 import { cn } from "@/lib/utils";
@@ -24,6 +26,8 @@ function HomeBody() {
   const orders = useSessionStore((s) => s.orders);
   const primary = DEMO_TABLES.find((t) => t.id === session.primary_table_id);
   const guestFirst = firstName(user.full_name);
+  const drinkCount = sessionDrinkCount(orders, session.id);
+  const showNudge = shouldShowTransitNudge({ drinkCount });
 
   return (
     <>
@@ -73,6 +77,12 @@ function HomeBody() {
           </div>
         </motion.div>
       </section>
+
+      {showNudge ? (
+        <div className="mb-8">
+          <TransitNudgeCard venueName={DEMO_CLUB.name} />
+        </div>
+      ) : null}
 
       <div className="grid gap-4 md:grid-cols-[1.2fr_0.8fr]">
         <TierGlassCard className="p-5" showAura>
