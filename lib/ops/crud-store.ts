@@ -1,3 +1,4 @@
+import { MENU_ITEMS } from "@/lib/demo/data";
 import { NEON_CLUB_ID } from "@/lib/supabase/env";
 
 export interface StaffProfile {
@@ -52,24 +53,15 @@ let staff: StaffProfile[] = [
   },
 ];
 
-let menu: MenuItemRow[] = [
-  {
-    id: "mi-1",
-    venue_id: NEON_CLUB_ID,
-    name: "Heineken",
-    category: "BEER",
-    unit_price: 350,
-    active_status: true,
-  },
-  {
-    id: "mi-2",
-    venue_id: NEON_CLUB_ID,
-    name: "Espresso Martini",
-    category: "COCKTAIL",
-    unit_price: 650,
-    active_status: true,
-  },
-];
+/** Single source of truth: seeded from demo MENU_ITEMS (no duplicate catalog). */
+let menu: MenuItemRow[] = MENU_ITEMS.map((item, index) => ({
+  id: `mi-${index + 1}`,
+  venue_id: NEON_CLUB_ID,
+  name: item.name,
+  category: item.category,
+  unit_price: item.unit_price,
+  active_status: true,
+}));
 
 let zones: ClubZoneRow[] = [
   {

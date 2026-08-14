@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import {
   MAITAB_ANDROID_APK_FILENAME,
-  MAITAB_ANDROID_APK_URL,
+  resolveAndroidDownloadHref,
+  resolveAndroidQrHref,
 } from "@/lib/android-app";
 
 type FooterAndroidQrProps = {
@@ -12,25 +13,33 @@ type FooterAndroidQrProps = {
 };
 
 /**
- * QR encoding the direct APK URL (Content-Disposition: attachment).
- * Scanning on Android opens/downloads the installer with no intermediate page.
+ * QR opens the Android landing page with autostart=1 so camera scanners
+ * reliably kick off the APK download (raw APK URLs often stall in WebViews).
  */
 export function FooterAndroidQr({
   size = 120,
   className = "",
 }: FooterAndroidQrProps) {
   const [dataUrl, setDataUrl] = useState<string | null>(null);
+  const [qrHref, setQrHref] = useState(resolveAndroidQrHref());
+  const [downloadHref, setDownloadHref] = useState(MAITAB_ANDROID_APK_PATH);
+
+  useEffect(() => {
+    const origin = window.location.origin;
+    setQrHref(resolveAndroidQrHref(origin));
+    setDownloadHref(resolveAndroidDownloadHref(origin));
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
 
     void import("qrcode").then(({ default: QRCode }) =>
-      QRCode.toDataURL(MAITAB_ANDROID_APK_URL, {
+      QRCode.toDataURL(qrHref, {
         errorCorrectionLevel: "M",
         margin: 1,
         width: size * 2,
         color: {
-          dark: "#8B5CF6",
+          dark: "#12151A",
           light: "#FFFFFFFF",
         },
       })
@@ -45,13 +54,15 @@ export function FooterAndroidQr({
     return () => {
       cancelled = true;
     };
-  }, [size]);
+  }, [size, qrHref]);
 
   return (
     <div className={`flex flex-col items-start gap-2 ${className}`}>
-      <div
-        className="rounded-xl border border-white/15 bg-white p-2 shadow-sm"
+      <a
+        href={qrHref}
+        className="rounded-xl border border-white/15 bg-white p-2 shadow-sm transition hover:opacity-95"
         style={{ width: size + 16, height: size + 16 }}
+        aria-label="Open Android download page"
       >
         {dataUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -70,12 +81,12 @@ export function FooterAndroidQr({
             Loading QR…
           </div>
         )}
-      </div>
+      </a>
       <p className="max-w-[9.5rem] text-xs leading-snug text-slate-300/70">
         Scan to download the Android APK instantly
       </p>
       <a
-        href={MAITAB_ANDROID_APK_URL}
+        href={downloadHref}
         download={MAITAB_ANDROID_APK_FILENAME}
         className="text-[11px] font-semibold text-[#A855F7] underline-offset-2 hover:underline"
       >

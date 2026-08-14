@@ -151,7 +151,7 @@
           <a
             id="apk-download"
             class="btn btn-primary"
-            href="/downloads/maitab-latest.apk"
+            href="/api/android-download"
             download="maitab-latest.apk"
           >
             Download APK
@@ -180,15 +180,15 @@
         var status = document.getElementById('apk-status')
 
         function normalizeApkUrl(url) {
-          if (!url || typeof url !== 'string') return LATEST_APK
+          if (!url || typeof url !== 'string') return API_APK
           if (url.indexOf('http://') === 0 || url.indexOf('https://') === 0) {
             try {
-              return new URL(url).pathname || LATEST_APK
+              return new URL(url).pathname || API_APK
             } catch (e) {
-              return LATEST_APK
+              return API_APK
             }
           }
-          return url.indexOf('/') === 0 ? url : LATEST_APK
+          return url.indexOf('/') === 0 ? url : API_APK
         }
 
         function applyApkUrl(url) {
@@ -198,7 +198,10 @@
             apkDownload.setAttribute('download', 'maitab-latest.apk')
           }
           if (apkChrome) {
-            var absoluteUrl = window.location.origin + apkPath
+            var absoluteUrl =
+              apkPath.indexOf('http') === 0
+                ? apkPath
+                : window.location.origin + apkPath
             var fallbackUrl = encodeURIComponent(absoluteUrl)
             var hostPath = absoluteUrl.replace(/^https?:\/\//, '')
             var intentUrl =
@@ -211,7 +214,7 @@
           }
         }
 
-        applyApkUrl(LATEST_APK)
+        applyApkUrl(API_APK)
 
         fetch('/downloads/android-update.json?t=' + Date.now())
           .then(function (res) {
@@ -226,27 +229,27 @@
             }
           })
           .catch(function () {
-            applyApkUrl(LATEST_APK)
+            applyApkUrl(API_APK)
           })
 
         if (apkDownload) {
-          apkDownload.addEventListener('click', function (event) {
-            var href = apkDownload.getAttribute('href') || LATEST_APK
-            if (href.indexOf(LATEST_APK) === 0 || href.indexOf('/downloads/') === 0) {
-              return
+          apkDownload.addEventListener('click', function () {
+            if (status) {
+              status.textContent = 'Starting Android installer download…'
             }
-            event.preventDefault()
-            window.location.href = API_APK + '?t=' + Date.now()
           })
         }
 
         var params = new URLSearchParams(window.location.search)
         if (params.get('autostart') === '1') {
           setTimeout(function () {
-            if (apkDownload) apkDownload.click()
+            if (apkDownload) {
+              // Programmatic navigation is more reliable than .click() for APK downloads.
+              window.location.href = apkDownload.getAttribute('href') || API_APK
+            }
             if (status) {
               status.textContent =
-                'If download did not start, tap "Open in Chrome" and then "Download APK".'
+                'If download did not start, tap "Download APK" or "Open in Chrome".'
             }
           }, 250)
         }

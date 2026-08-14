@@ -1,5 +1,5 @@
 {
   "appVersion": "0.1.0",
-  "apkUrl": "/downloads/maitab-latest.apk",
+  "apkUrl": "/api/android-download",
   "updatedAt": "2026-08-14"
 }

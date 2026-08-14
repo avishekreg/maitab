@@ -77,6 +77,16 @@ function TabBody() {
     })).filter((item) => item.quantity > 0);
   }, [qty, priceFor]);
 
+  const menuByCategory = useMemo(() => {
+    const groups = new Map<string, (typeof MENU_ITEMS)[number][]>();
+    for (const item of MENU_ITEMS) {
+      const list = groups.get(item.category) ?? [];
+      list.push(item);
+      groups.set(item.category, list);
+    }
+    return Array.from(groups.entries());
+  }, []);
+
   const cartTotal = cart.reduce(
     (sum, item) => sum + item.charge_price * item.quantity,
     0
@@ -311,51 +321,59 @@ function TabBody() {
           <p className="mb-3 text-xs uppercase tracking-[0.18em] text-muted-foreground">
             Menu
           </p>
-          <div className="space-y-3">
-            {MENU_ITEMS.map((item) => (
-              <div
-                key={item.name}
-                className="flex items-center justify-between gap-3 border-b border-border pb-3 last:border-0"
-              >
-                <div>
-                  <p className="font-medium text-foreground">{item.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {item.category} ·{" "}
-                    {externalActive ? (
-                      <>
-                        <span className="mr-1.5 text-muted-foreground/70 line-through decoration-white/30">
-                          {formatINR(item.unit_price)}
+          <div className="space-y-6">
+            {menuByCategory.map(([category, items]) => (
+              <div key={category}>
+                <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  {category}
+                </p>
+                <div className="space-y-3">
+                  {items.map((item) => (
+                    <div
+                      key={item.name}
+                      className="flex items-center justify-between gap-3 border-b border-border pb-3 last:border-0"
+                    >
+                      <div>
+                        <p className="font-medium text-foreground">{item.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {externalActive ? (
+                            <>
+                              <span className="mr-1.5 text-muted-foreground/70 line-through decoration-white/30">
+                                {formatINR(item.unit_price)}
+                              </span>
+                              <span className="font-semibold text-accent-emerald">
+                                {formatINR(priceFor(item.unit_price))}
+                              </span>
+                            </>
+                          ) : (
+                            formatINR(item.unit_price)
+                          )}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => bump(item.name, -1)}
+                          className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-secondary"
+                        >
+                          <Minus className="h-4 w-4" />
+                        </button>
+                        <span className="w-6 text-center tabular-nums text-foreground">
+                          {qty[item.name] ?? 0}
                         </span>
-                        <span className="font-semibold text-accent-emerald">
-                          {formatINR(priceFor(item.unit_price))}
-                        </span>
-                      </>
-                    ) : (
-                      formatINR(item.unit_price)
-                    )}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => bump(item.name, -1)}
-                    className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-secondary"
-                  >
-                    <Minus className="h-4 w-4" />
-                  </button>
-                  <span className="w-6 text-center tabular-nums text-foreground">
-                    {qty[item.name] ?? 0}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => bump(item.name, 1)}
-                    className={cn(
-                      "grid h-9 w-9 place-items-center rounded-lg border",
-                      theme.headerBadge
-                    )}
-                  >
-                    <Plus className="h-4 w-4" />
-                  </button>
+                        <button
+                          type="button"
+                          onClick={() => bump(item.name, 1)}
+                          className={cn(
+                            "grid h-9 w-9 place-items-center rounded-lg border",
+                            theme.headerBadge
+                          )}
+                        >
+                          <Plus className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}

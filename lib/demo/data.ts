@@ -203,10 +203,26 @@ export const DEMO_METRICS: PlatformMetrics = {
 };
 
 export const MENU_ITEMS = [
+  // Beers — landing promo + KDS ticket examples
   { name: "Heineken", category: "BEER", unit_price: 350 },
   { name: "Corona", category: "BEER", unit_price: 380 },
+  { name: "Kingfisher Ultra", category: "BEER", unit_price: 320 },
+  { name: "Bira Blonde", category: "BEER", unit_price: 300 },
+  // Cocktails — guest journey + game penalty catalog
   { name: "Espresso Martini", category: "COCKTAIL", unit_price: 650 },
   { name: "Old Fashioned", category: "COCKTAIL", unit_price: 720 },
+  { name: "Gin & Tonic", category: "COCKTAIL", unit_price: 520 },
+  { name: "Whiskey Sour", category: "COCKTAIL", unit_price: 680 },
+  { name: "Classic Mojito", category: "COCKTAIL", unit_price: 550 },
+  { name: "Negroni", category: "COCKTAIL", unit_price: 700 },
+  // Shots — Surprise Games / Pay Penalty CTAs
   { name: "Tequila Shot", category: "SHOT", unit_price: 280 },
-  { name: "Jägerbomb", category: "SHOT", unit_price: 320 },
+  { name: "Vodka Shot", category: "SHOT", unit_price: 260 },
+  { name: "Jägerbomb", category: "SHOT", unit_price: 450 },
+  { name: "Kamikaze", category: "SHOT", unit_price: 300 },
+  // Soft + bites — responsible nightlife / longer dwell
+  { name: "Fresh Lime Soda", category: "SOFT", unit_price: 180 },
+  { name: "Red Bull", category: "SOFT", unit_price: 250 },
+  { name: "Truffle Fries", category: "BITES", unit_price: 420 },
+  { name: "Loaded Nachos", category: "BITES", unit_price: 480 },
 ] as const;

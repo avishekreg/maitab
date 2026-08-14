@@ -94,7 +94,10 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/auth/") ||
     pathname === "/onboard" ||
     pathname.startsWith("/onboard/") ||
-    pathname === "/favicon.ico"
+    pathname === "/favicon.ico" ||
+    pathname.startsWith("/downloads/") ||
+    pathname.startsWith("/badges/") ||
+    pathname === "/api/android-download"
   ) {
     return response;
   }
@@ -238,6 +241,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|.*\\.(?:svg|png|jpg|jpeg|gif|webp|apk)$).*)",
   ],
 };

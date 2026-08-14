@@ -126,11 +126,12 @@ export const PROTECTED_API_ROUTES: { prefix: string; roles: UserRole[] }[] = [
   { prefix: "/api/payments/settle", roles: ["CUSTOMER", "SUPER_ADMIN"] },
 ];
 
-/** Public API prefixes (auth / inbound webhooks / SaaS onboard). */
+/** Public API prefixes (auth / inbound webhooks / SaaS onboard / Android APK). */
 export const PUBLIC_API_PREFIXES = [
   "/api/auth/",
   "/api/payments/webhooks/",
   "/api/onboard",
+  "/api/android-download",
 ];
 
 export type ApiGuardResult =

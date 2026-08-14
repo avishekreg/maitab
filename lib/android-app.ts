@@ -10,15 +10,30 @@ export const MAITAB_ANDROID_APK_URL = `${MAITAB_PRODUCTION_ORIGIN}${MAITAB_ANDRO
 
 export const MAITAB_ANDROID_LANDING_PATH = "/downloads/android.html";
 
+/** Landing with auto-start — camera QR scanners handle HTML reliably; raw APK often stalls in WebView. */
+export const MAITAB_ANDROID_QR_PATH = `${MAITAB_ANDROID_LANDING_PATH}?autostart=1`;
+
+export const MAITAB_ANDROID_QR_URL = `${MAITAB_PRODUCTION_ORIGIN}${MAITAB_ANDROID_QR_PATH}`;
+
+export const MAITAB_ANDROID_DOWNLOAD_API = "/api/android-download";
+
 export const MAITAB_CAPACITOR_APP_ID = "in.syncrasystems.maitab";
 
 export const MAITAB_CAPACITOR_APP_NAME = "mAITab";
 
-export function resolveAndroidDownloadHref(origin?: string) {
-  const base =
+export function resolveAndroidOrigin(origin?: string) {
+  return (
     origin ||
     (typeof window !== "undefined"
       ? window.location.origin
-      : MAITAB_PRODUCTION_ORIGIN);
-  return `${base}${MAITAB_ANDROID_APK_PATH}`;
+      : MAITAB_PRODUCTION_ORIGIN)
+  );
+}
+
+export function resolveAndroidDownloadHref(origin?: string) {
+  return `${resolveAndroidOrigin(origin)}${MAITAB_ANDROID_APK_PATH}`;
+}
+
+export function resolveAndroidQrHref(origin?: string) {
+  return `${resolveAndroidOrigin(origin)}${MAITAB_ANDROID_QR_PATH}`;
 }
