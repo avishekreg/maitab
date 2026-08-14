@@ -26,7 +26,7 @@ const FRAUD_LOGS = [
   {
     id: "f3",
     event: "QR reject",
-    detail: "HMAC signature mismatch on a table token",
+    detail: "Cryptographic seal mismatch on a table token",
     tone: "ruby" as const,
   },
   {
@@ -137,7 +137,7 @@ export default function SuperAdminPage() {
         >
           <label className="block">
             <div className="flex items-center justify-between gap-3 text-sm">
-              <span className="text-muted-foreground">PostGIS lockout radius</span>
+              <span className="text-muted-foreground">Geo lockout radius</span>
               <span className="type-title text-foreground">
                 {radiusKm} km
               </span>
@@ -282,7 +282,7 @@ export default function SuperAdminPage() {
             </div>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
-            Razorpay, Cashfree, WhatsApp, Maps, and AI providers live in the
+            Settlement gateways, messaging, maps, and AI providers live in the
             no-code hub — encrypted at rest before write.
           </p>
         </AdminSection>

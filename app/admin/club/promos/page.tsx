@@ -225,7 +225,7 @@ export default function FlashPromosPage() {
 
         <AdminSection
           title="Top up Platform Promo Credits"
-          description="Razorpay / Cashfree top-ups create Syncra Systems SaaS revenue."
+          description="Settlement gateway top-ups create Syncra Systems SaaS revenue."
         >
           <div className="flex flex-wrap gap-2">
             <NeonButton
@@ -234,7 +234,7 @@ export default function FlashPromosPage() {
               disabled={busy}
               onClick={() => void topUp(1000, "RAZORPAY")}
             >
-              +₹1,000 Razorpay
+              +₹1,000 Primary Gateway
             </NeonButton>
             <NeonButton
               type="button"
@@ -242,7 +242,7 @@ export default function FlashPromosPage() {
               disabled={busy}
               onClick={() => void topUp(2500, "CASHFREE")}
             >
-              +₹2,500 Cashfree
+              +₹2,500 Secondary Gateway
             </NeonButton>
           </div>
         </AdminSection>

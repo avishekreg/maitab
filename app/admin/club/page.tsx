@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { AdminSection, AdminShell, KpiStrip } from "@/components/admin/AdminShell";
+import { ClubCrudPanels } from "@/components/admin/ClubCrudPanels";
+import { ComplianceBanner } from "@/components/compliance/ComplianceBanner";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
 import {
@@ -220,6 +222,10 @@ export default function ClubAdminPage() {
           },
         ]}
       />
+
+      <ComplianceBanner venueId={activeVenueId} className="mt-4" />
+
+      <ClubCrudPanels venueId={activeVenueId} />
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
         <AdminSection

@@ -38,7 +38,7 @@ const GUEST_STEPS = [
   {
     n: "02",
     title: "Join a table with a signed QR",
-    copy: "Each table token is HMAC-signed, so guests can’t spoof URLs. If tables are merged, child scans silently route to the host session. Ordering unlocks without re-entering a PIN every round.",
+    copy: "Each table token is cryptographically sealed, so guests can’t spoof URLs. If tables are merged, child scans silently route to the host session. Ordering unlocks without re-entering a PIN every round.",
   },
   {
     n: "03",
@@ -71,7 +71,7 @@ const STAFF_STEPS = [
   },
   {
     role: "Club Admin",
-    copy: "Menu, merges, display toggles, lucky draw, and PostGIS-aware flash promos from one venue console.",
+    copy: "Menu, merges, display toggles, lucky draw, and geo-aware flash promos from one venue console.",
   },
 ];
 
@@ -132,7 +132,7 @@ const FEATURES = [
       "Social dwell time that converts directly into incremental drink revenue.",
   },
   {
-    title: "PostGIS anti-cannibalization",
+    title: "Geo anti-cannibalization lockouts",
     body: "Flash promos check live geography. If a competitor within ~1.5km already holds the same category lockout, mAITab blocks the duplicate deal instead of burning margin for nothing.",
     outcome: "Smarter promotions. Less race-to-the-bottom on your own street.",
   },
@@ -195,7 +195,7 @@ const COMPARE = [
   },
   {
     old: "Blind flash deals vs neighbors",
-    next: "PostGIS-aware category lockouts",
+    next: "Geo-aware category lockouts",
   },
   {
     old: "Hardware lock-in & slow change",
@@ -210,7 +210,7 @@ const FAQ = [
   },
   {
     q: "How do guests pay?",
-    a: "Through an AutoPay mandate (Razorpay / Cashfree hooks are built in). Gate can run a micro-hold to verify the mandate. Exit geofencing settles the remaining session balance.",
+    a: "Through an AutoPay mandate via our Automated Direct-Settlement Gateway. Gate can run a micro-hold to verify the mandate. Exit geofencing settles the remaining session balance.",
   },
   {
     q: "Is this only for guests, or for staff too?",
@@ -218,7 +218,7 @@ const FAQ = [
   },
   {
     q: "How fast can a venue try it?",
-    a: "Immediately via the public demo roles on this deployment. For production, we map your clubs, tables, and staff into Supabase, wire payment keys, and walk the floor team through a live night.",
+    a: "Immediately via the public demo roles on this deployment. For production, Syncra maps your clubs, tables, and staff into the Proprietary Real-Time Nightlife Engine, wires settlement credentials, and walks the floor team through a live night.",
   },
 ];
 
@@ -346,10 +346,11 @@ export default function MarketingLandingPage() {
           </div>
 
           <p className="mt-10 max-w-3xl font-sans text-base leading-relaxed tracking-normal text-slate-800 sm:text-lg">
-            Under the hood: Next.js surfaces, Supabase Postgres with RLS,
-            Realtime channels, PostGIS for promo lockouts, HMAC QR security,
-            and payment provider hooks for Razorpay / Cashfree AutoPay. You sell
-            the night — mAITab runs the machinery.
+            Under the hood: a Proprietary Real-Time Nightlife Engine, High-Throughput
+            Cryptographic Ledger for sealed QR joins, Fault-Tolerant Floor
+            Orchestration Architecture for role-locked ops, and an Automated
+            Direct-Settlement Gateway for AutoPay. You sell the night — mAITab
+            runs the machinery.
           </p>
 
           <div className="mt-16">

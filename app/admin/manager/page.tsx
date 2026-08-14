@@ -6,6 +6,8 @@ import {
   AdminShell,
   KpiStrip,
 } from "@/components/admin/AdminShell";
+import { StaffCrudAndCaptainPanel } from "@/components/admin/StaffCrudAndCaptainPanel";
+import { ComplianceBanner } from "@/components/compliance/ComplianceBanner";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { DEMO_BAR_COUNTERS } from "@/lib/kds/routing";
@@ -24,6 +26,9 @@ export default function FloorManagerPage() {
   const venue = useVenueStore(selectActiveVenue);
   const [tick, setTick] = useState(0);
   const [note, setNote] = useState<string | null>(null);
+  // Captain vs manager: cookie role isn't available client-side here;
+  // both get staff CRUD; captain-style override panel always shown for rush.
+  const panelMode = "captain" as const;
 
   const zones = useMemo(
     () => DEMO_CLUB_ZONES.filter((z) => z.venue_id === activeVenueId),
@@ -125,6 +130,10 @@ export default function FloorManagerPage() {
             {note}
           </p>
         ) : null}
+
+        <ComplianceBanner venueId={activeVenueId} />
+
+        <StaffCrudAndCaptainPanel venueId={activeVenueId} mode={panelMode} />
 
         <AdminSection
           title="Waiter → Floor Zone"

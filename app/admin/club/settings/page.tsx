@@ -5,9 +5,11 @@ import {
   AdminSection,
   AdminShell,
 } from "@/components/admin/AdminShell";
+import { ComplianceBanner } from "@/components/compliance/ComplianceBanner";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
 import type { AggregatorSettingsPublic } from "@/lib/aggregators/settings";
+import type { VenueCompliance } from "@/lib/compliance/watchdog";
 import { selectActiveVenue, useVenueStore } from "@/lib/store/venue-store";
 import { cn } from "@/lib/utils";
 
@@ -21,6 +23,7 @@ export default function ClubSettingsPage() {
   const [settings, setSettings] = useState<AggregatorSettingsPublic | null>(
     null
   );
+  const [compliance, setCompliance] = useState<VenueCompliance | null>(null);
   const [note, setNote] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -41,7 +44,34 @@ export default function ClubSettingsPage() {
         }
       )
       .catch(() => null);
+    void fetch(`/api/ops/compliance?venueId=${venueId}`)
+      .then((r) => r.json())
+      .then((d: { compliance?: VenueCompliance }) => {
+        if (d.compliance) setCompliance(d.compliance);
+      })
+      .catch(() => null);
   }, [venueId]);
+
+  async function saveCompliance() {
+    if (!compliance) return;
+    setBusy(true);
+    const res = await fetch("/api/ops/compliance", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(compliance),
+    });
+    const data = (await res.json()) as {
+      ok: boolean;
+      compliance?: VenueCompliance;
+    };
+    setBusy(false);
+    if (data.compliance) setCompliance(data.compliance);
+    setNote(
+      data.ok
+        ? `Compliance ${data.compliance?.compliance_status ?? "updated"}`
+        : "Compliance save failed"
+    );
+  }
 
   async function save(opts?: { clearZomato?: boolean; clearSwiggy?: boolean }) {
     setBusy(true);
@@ -91,6 +121,8 @@ export default function ClubSettingsPage() {
       subtitle={`${venue.short_name} — optional aggregator keys. Empty keys keep sync workers off.`}
     >
       <div className="space-y-6">
+        <ComplianceBanner venueId={venueId} />
+
         {note ? (
           <p className="rounded-lg border border-border bg-secondary/40 px-4 py-2 text-sm">
             {note}
@@ -98,8 +130,106 @@ export default function ClubSettingsPage() {
         ) : null}
 
         <AdminSection
+          title="License & compliance"
+          description="Liquor / FSSAI expiries auto-suspend guest ordering. Admin login stays open."
+          action={
+            <StatusPill
+              label={compliance?.compliance_status ?? "…"}
+              tone={
+                compliance?.compliance_status === "SUSPENDED"
+                  ? "ruby"
+                  : compliance?.compliance_status === "WARNING"
+                    ? "gold"
+                    : "emerald"
+              }
+            />
+          }
+        >
+          {compliance ? (
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="block text-sm">
+                Liquor license URL
+                <input
+                  className="mt-1 h-10 w-full rounded-lg border border-border bg-background px-3 text-sm"
+                  value={compliance.liquor_license_url ?? ""}
+                  onChange={(e) =>
+                    setCompliance({
+                      ...compliance,
+                      liquor_license_url: e.target.value || null,
+                    })
+                  }
+                />
+              </label>
+              <label className="block text-sm">
+                Liquor expiry
+                <input
+                  type="date"
+                  className="mt-1 h-10 w-full rounded-lg border border-border bg-background px-3 text-sm"
+                  value={compliance.liquor_license_expiry ?? ""}
+                  onChange={(e) =>
+                    setCompliance({
+                      ...compliance,
+                      liquor_license_expiry: e.target.value || null,
+                    })
+                  }
+                />
+              </label>
+              <label className="block text-sm">
+                FSSAI license URL
+                <input
+                  className="mt-1 h-10 w-full rounded-lg border border-border bg-background px-3 text-sm"
+                  value={compliance.fssai_license_url ?? ""}
+                  onChange={(e) =>
+                    setCompliance({
+                      ...compliance,
+                      fssai_license_url: e.target.value || null,
+                    })
+                  }
+                />
+              </label>
+              <label className="block text-sm">
+                FSSAI expiry
+                <input
+                  type="date"
+                  className="mt-1 h-10 w-full rounded-lg border border-border bg-background px-3 text-sm"
+                  value={compliance.fssai_license_expiry ?? ""}
+                  onChange={(e) =>
+                    setCompliance({
+                      ...compliance,
+                      fssai_license_expiry: e.target.value || null,
+                    })
+                  }
+                />
+              </label>
+              <label className="block text-sm sm:col-span-2">
+                GSTIN
+                <input
+                  className="mt-1 h-10 w-full rounded-lg border border-border bg-background px-3 text-sm"
+                  value={compliance.gstin ?? ""}
+                  onChange={(e) =>
+                    setCompliance({
+                      ...compliance,
+                      gstin: e.target.value || null,
+                    })
+                  }
+                />
+              </label>
+              <NeonButton
+                size="sm"
+                disabled={busy}
+                onClick={() => void saveCompliance()}
+              >
+                Save licenses
+              </NeonButton>
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">Loading…</p>
+          )}
+        </AdminSection>
+
+        <AdminSection
           title="Aggregator Integrations (Optional)"
-          description="Connect Zomato District or Swiggy SteppinOut only if you have merchant credentials. Secrets are AES-encrypted at rest on the venue (clubs) record."
+          description="Connect optional delivery partners only if you have merchant credentials. Secrets are encrypted at rest on the venue record."
           action={
             <StatusPill
               label={syncActive ? "SYNC ARMED" : "SYNC OFF"}

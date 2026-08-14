@@ -15,11 +15,11 @@ export default function TableScanPage({ params }: PageProps) {
       <Shell>
         <GlassPanel className="p-6">
           <h1 className="font-display text-2xl font-bold text-accent-ruby">
-            HMAC secret required
+            Table seal key required
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Set TABLE_QR_HMAC_SECRET in `.env.local`, then mint tokens via{" "}
-            <code className="text-accent-gold">POST /api/qr/table</code>.
+            Configure the table seal secret in the environment, then mint
+            tokens via the venue QR console.
           </p>
         </GlassPanel>
       </Shell>
@@ -38,8 +38,8 @@ export default function TableScanPage({ params }: PageProps) {
             URL tampering blocked
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            HMAC verification failed. Manual edits to table slugs are rejected
-            and flagged. Ask staff for a fresh signed QR.
+            Cryptographic verification failed. Manual edits to table slugs are
+            rejected and flagged. Ask staff for a fresh signed QR.
           </p>
         </GlassPanel>
       </Shell>

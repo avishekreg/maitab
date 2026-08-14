@@ -9,9 +9,10 @@ export default function SecurityDisclaimerPage() {
   return (
     <LegalDoc title="Security Disclaimer" updated="August 2026">
       <p>
-        mAITab uses cryptographic table tokens, HMAC-signed Member Passes, role
-        isolation, and geo-fenced AutoPay controls. No system is perfectly
-        secure; this disclaimer sets expectations for operators and guests.
+        mAITab uses sealed cryptographic table tokens, High-Throughput
+        Cryptographic Ledger Member Passes, role isolation, and geo-fenced
+        AutoPay controls. No system is perfectly secure; this disclaimer sets
+        expectations for operators and guests.
       </p>
       <h2>1. Shared responsibility</h2>
       <p>

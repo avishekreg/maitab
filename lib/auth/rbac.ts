@@ -2,6 +2,7 @@ import type { UserRole } from "@/lib/types";
 
 export const PROTECTED_ROUTES: Record<string, UserRole[]> = {
   "/admin/super": ["SUPER_ADMIN"],
+  "/super-admin-vault": ["SUPER_ADMIN"],
   "/admin/club": ["CLUB_ADMIN", "FLOOR_MANAGER", "CAPTAIN", "SUPER_ADMIN"],
   "/admin/manager": [
     "FLOOR_MANAGER",
@@ -51,6 +52,22 @@ export const PROTECTED_API_ROUTES: { prefix: string; roles: UserRole[] }[] = [
   {
     prefix: "/api/club/aggregator",
     roles: ["CLUB_ADMIN", "SUPER_ADMIN"],
+  },
+  {
+    prefix: "/api/ops/crud",
+    roles: ["CLUB_ADMIN", "FLOOR_MANAGER", "CAPTAIN", "SUPER_ADMIN"],
+  },
+  {
+    prefix: "/api/ops/compliance",
+    roles: [
+      "CUSTOMER",
+      "CLUB_ADMIN",
+      "FLOOR_MANAGER",
+      "CAPTAIN",
+      "SUPER_ADMIN",
+      "GATE_STAFF",
+      "BARTENDER",
+    ],
   },
   {
     prefix: "/api/staff/shifts",
@@ -109,10 +126,11 @@ export const PROTECTED_API_ROUTES: { prefix: string; roles: UserRole[] }[] = [
   { prefix: "/api/payments/settle", roles: ["CUSTOMER", "SUPER_ADMIN"] },
 ];
 
-/** Public API prefixes (auth / inbound webhooks). */
+/** Public API prefixes (auth / inbound webhooks / SaaS onboard). */
 export const PUBLIC_API_PREFIXES = [
   "/api/auth/",
   "/api/payments/webhooks/",
+  "/api/onboard",
 ];
 
 export type ApiGuardResult =

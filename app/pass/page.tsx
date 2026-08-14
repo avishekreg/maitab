@@ -118,7 +118,7 @@ function PassBody() {
             )}
           </div>
           <p className="mt-2 text-center text-[11px] text-muted-foreground">
-            HMAC-signed Member Pass · gate-scannable QR
+            Cryptographically sealed Member Pass · gate-scannable QR
           </p>
 
           <div className="mt-6">

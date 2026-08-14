@@ -63,7 +63,7 @@ export function createFlashCampaignDemo(input: {
   if (balance < cost) {
     return {
       ok: false,
-      reason: `Insufficient Platform Promo Credits (have ₹${balance}, need ₹${cost}). Top up via Razorpay/Cashfree.`,
+      reason: `Insufficient Platform Promo Credits (have ₹${balance}, need ₹${cost}). Top up via Automated Direct-Settlement Gateway.`,
     };
   }
 

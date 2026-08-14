@@ -11,7 +11,7 @@ const NAV = [
   { href: "#journey", label: "How it works" },
   { href: "#features", label: "Features" },
   { href: "#growth", label: "Growth" },
-  { href: "#onboard", label: "Onboard" },
+  { href: "/onboard", label: "Onboard" },
 ];
 
 /**
@@ -37,15 +37,25 @@ export function MarketingHeader() {
         </Link>
 
         <nav className="hidden items-center gap-0.5 lg:flex">
-          {NAV.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="rounded-lg px-2.5 py-2 font-sans text-sm font-medium tracking-normal text-[#FFFFFF]/85 transition hover:bg-white/10 hover:text-[#FFFFFF]"
-            >
-              {item.label}
-            </a>
-          ))}
+          {NAV.map((item) =>
+            item.href.startsWith("/") ? (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-lg px-2.5 py-2 font-sans text-sm font-medium tracking-normal text-[#FFFFFF]/85 transition hover:bg-white/10 hover:text-[#FFFFFF]"
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <a
+                key={item.href}
+                href={item.href}
+                className="rounded-lg px-2.5 py-2 font-sans text-sm font-medium tracking-normal text-[#FFFFFF]/85 transition hover:bg-white/10 hover:text-[#FFFFFF]"
+              >
+                {item.label}
+              </a>
+            )
+          )}
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
@@ -55,12 +65,12 @@ export function MarketingHeader() {
           >
             Demo login
           </Link>
-          <a
-            href="#onboard"
+          <Link
+            href="/onboard"
             className="inline-flex h-10 items-center rounded-lg bg-gradient-to-r from-[#8B5CF6] via-[#A855F7] to-[#06B6D4] px-4 font-sans text-sm font-semibold tracking-normal text-white shadow-lg shadow-purple-500/20 transition hover:opacity-90"
           >
-            Book a walkthrough
-          </a>
+            Start onboarding
+          </Link>
         </div>
 
         <button
@@ -94,13 +104,13 @@ export function MarketingHeader() {
             >
               Demo login
             </Link>
-            <a
-              href="#onboard"
+            <Link
+              href="/onboard"
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#8B5CF6] via-[#A855F7] to-[#06B6D4] text-sm font-semibold text-white shadow-lg shadow-purple-500/20 transition hover:opacity-90"
             >
-              Book a walkthrough
-            </a>
+              Start onboarding
+            </Link>
           </div>
         </div>
       ) : null}

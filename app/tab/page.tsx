@@ -7,6 +7,10 @@ import {
   ExternalDealApprovedModal,
   ExternalDealCard,
 } from "@/components/discounts/ExternalDealCard";
+import {
+  ComplianceBanner,
+  useOrderingFrozen,
+} from "@/components/compliance/ComplianceBanner";
 import { AppShell } from "@/components/layout/AppShell";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -38,6 +42,7 @@ function TabBody() {
   const user = useSessionStore((s) => s.user);
   const orders = useSessionStore((s) => s.orders);
   const settleLockRef = useRef(false);
+  const orderingFrozen = useOrderingFrozen(session.club_id || NEON_CLUB_ID);
   const addOrderItems = useSessionStore((s) => s.addOrderItems);
   const markOrderDelivered = useSessionStore((s) => s.markOrderDelivered);
   const lastReadyToken = useSessionStore((s) => s.lastReadyToken);
@@ -208,6 +213,7 @@ function TabBody() {
   }
 
   async function placeOrder() {
+    if (orderingFrozen) return;
     if (!cart.length) return;
     const items: OrderItem[] = cart.map((item) => ({
       name: item.name,
@@ -243,6 +249,11 @@ function TabBody() {
           </motion.div>
         ) : null}
       </AnimatePresence>
+
+      <ComplianceBanner
+        venueId={session.club_id || NEON_CLUB_ID}
+        className="mb-4"
+      />
 
       {luckyNote ? (
         <div className="mb-4 rounded-2xl border border-accent-gold/40 bg-accent-gold/10 px-4 py-3 text-sm text-accent-gold">
@@ -368,14 +379,14 @@ function TabBody() {
             </p>
             <button
               type="button"
-              disabled={!cart.length}
+              disabled={!cart.length || orderingFrozen}
               onClick={() => void placeOrder()}
               className={cn(
                 "inline-flex h-11 items-center rounded-xl px-4 text-sm font-semibold disabled:opacity-40",
                 theme.button
               )}
             >
-              Add to Tab
+              {orderingFrozen ? "Ordering frozen" : "Add to Tab"}
             </button>
           </div>
         </TierGlassCard>

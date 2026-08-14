@@ -2,8 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import {
+  ComplianceBanner,
+  useOrderingFrozen,
+} from "@/components/compliance/ComplianceBanner";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import type { AttachSessionResult } from "@/lib/data/sessions";
+import { NEON_CLUB_ID } from "@/lib/supabase/env";
 
 export function TableJoinClient({
   token,
@@ -14,9 +19,11 @@ export function TableJoinClient({
 }) {
   const [result, setResult] = useState<AttachSessionResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const frozen = useOrderingFrozen(NEON_CLUB_ID);
 
   useEffect(() => {
     let cancelled = false;
+    if (frozen) return;
     void fetch("/api/sessions/attach", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -40,7 +47,22 @@ export function TableJoinClient({
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [token, frozen]);
+
+  if (frozen) {
+    return (
+      <GlassPanel className="p-6">
+        <ComplianceBanner venueId={NEON_CLUB_ID} />
+        <h1 className="mt-4 font-display text-2xl font-bold text-accent-ruby">
+          Check-in frozen
+        </h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Guest table check-ins are locked until licenses are renewed. Admin
+          login remains available.
+        </p>
+      </GlassPanel>
+    );
+  }
 
   if (error && !result?.ok) {
     return (
@@ -60,13 +82,13 @@ export function TableJoinClient({
     return (
       <GlassPanel className="p-6">
         <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-          HMAC verified
+          Cryptographic seal verified
         </p>
         <h1 className="mt-2 font-display text-2xl font-bold text-foreground">
           Attaching {tableCodeHint}…
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Resolving parent table and upserting active_sessions.
+          Resolving parent table and opening the live floor session.
         </p>
       </GlassPanel>
     );
@@ -75,7 +97,7 @@ export function TableJoinClient({
   return (
     <GlassPanel className="p-6" glow="violet">
       <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-        HMAC verified · {result.mode} session
+        Cryptographic seal verified · {result.mode} session
       </p>
       <h1 className="mt-2 font-display text-3xl font-bold text-foreground">
         Scanned {result.scannedTableCode}
@@ -83,7 +105,7 @@ export function TableJoinClient({
       <p className="mt-2 text-sm text-muted-foreground">
         {result.scannedTableCode === result.primaryTableCode
           ? result.created
-            ? "Opened primary host session on active_sessions."
+            ? "Opened primary host session."
             : "Joined primary host session."
           : `Child table routed to primary host session ${result.primaryTableCode}.`}
       </p>
