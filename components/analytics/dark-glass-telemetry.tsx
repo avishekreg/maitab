@@ -216,10 +216,10 @@ export function DarkGlassTelemetry({
     <div className="relative isolate space-y-5 text-zinc-100">
       <div className="no-print flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="font-display text-4xl font-black uppercase tracking-tight text-white">
+          <h1 className="font-display text-4xl font-extrabold uppercase tracking-tight text-white">
             {heading}
           </h1>
-          <p className="mt-1 max-w-2xl text-sm text-zinc-400">
+          <p className="mt-1 max-w-2xl font-medium text-zinc-400">
             Network-wide pour velocity, share of throat, and leakage radar
           </p>
         </div>

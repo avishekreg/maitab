@@ -138,8 +138,8 @@ export default function SuperAdminPage() {
         >
           <label className="block">
             <div className="flex items-center justify-between gap-3 text-sm">
-              <span className="text-muted-foreground">Geo lockout radius</span>
-              <span className="type-title text-foreground">
+              <span className="text-zinc-400">Geo lockout radius</span>
+              <span className="type-title text-white">
                 {radiusKm} km
               </span>
             </div>
@@ -152,13 +152,13 @@ export default function SuperAdminPage() {
               onChange={(e) => void persistRadius(Number(e.target.value))}
               className="mt-3 w-full accent-[#7C3AED]"
             />
-            <div className="mt-1 flex justify-between text-[11px] text-muted-foreground">
+            <div className="mt-1 flex justify-between text-[11px] text-zinc-400">
               <span>0.5 km</span>
               <span>3.0 km</span>
             </div>
           </label>
 
-          <div className="mt-6 divide-y divide-white/10 rounded-xl border border-border">
+          <div className="mt-6 divide-y divide-white/10 rounded-xl border border-zinc-800">
             {FLAGS.map((flag) => {
               const enabled = getFlag(flag.key);
               return (
@@ -167,8 +167,8 @@ export default function SuperAdminPage() {
                   className="flex items-center justify-between gap-4 px-4 py-3.5"
                 >
                   <div>
-                    <p className="text-sm font-medium text-foreground">{flag.label}</p>
-                    <p className="text-[11px] text-muted-foreground">
+                    <p className="text-sm font-medium text-white">{flag.label}</p>
+                    <p className="text-[11px] text-zinc-400">
                       {saving === flag.key ? "Saving…" : flag.key}
                     </p>
                   </div>
@@ -202,7 +202,7 @@ export default function SuperAdminPage() {
           title="Fraud & health"
           description="Latest platform signals that need attention."
         >
-          <ul className="space-y-0 divide-y divide-white/10 rounded-xl border border-border">
+          <ul className="space-y-0 divide-y divide-white/10 rounded-xl border border-zinc-800">
             {FRAUD_LOGS.map((log) => (
               <li key={log.id} className="px-4 py-3.5">
                 <div className="flex items-center justify-between gap-3">
@@ -217,7 +217,7 @@ export default function SuperAdminPage() {
                     {log.event}
                   </p>
                 </div>
-                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-1 text-sm leading-relaxed text-zinc-400">
                   {log.detail}
                 </p>
               </li>
@@ -238,7 +238,7 @@ export default function SuperAdminPage() {
               return (
                 <div key={tier}>
                   <div className="mb-1.5 flex items-center justify-between text-sm">
-                    <span className="text-foreground/90">{tier}</span>
+                    <span className="text-white/90">{tier}</span>
                     <span className="tabular-nums text-accent-gold">{count}</span>
                   </div>
                   <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
@@ -265,24 +265,24 @@ export default function SuperAdminPage() {
           }
         >
           <div className="grid grid-cols-2 gap-4">
-            <div className="rounded-xl border border-border bg-white/[0.02] px-4 py-4">
-              <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+            <div className="rounded-xl border border-zinc-800 bg-white/[0.02] px-4 py-4">
+              <p className="text-[11px] uppercase tracking-[0.16em] text-zinc-400">
                 Secrets
               </p>
-              <p className="mt-2 font-display text-3xl font-bold text-foreground">
+              <p className="mt-2 overflow-hidden text-ellipsis whitespace-nowrap font-display text-2xl font-extrabold tracking-tight text-amber-400 xl:text-3xl">
                 {secretCount}
               </p>
             </div>
-            <div className="rounded-xl border border-border bg-white/[0.02] px-4 py-4">
-              <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+            <div className="rounded-xl border border-zinc-800 bg-white/[0.02] px-4 py-4">
+              <p className="text-[11px] uppercase tracking-[0.16em] text-zinc-400">
                 Runtime keys
               </p>
-              <p className="mt-2 font-display text-3xl font-bold text-foreground">
+              <p className="mt-2 overflow-hidden text-ellipsis whitespace-nowrap font-display text-2xl font-extrabold tracking-tight text-amber-400 xl:text-3xl">
                 {configs.filter((c) => !c.is_secret).length}
               </p>
             </div>
           </div>
-          <p className="mt-4 text-sm text-muted-foreground">
+          <p className="mt-4 text-sm text-zinc-400">
             Settlement gateways, messaging, maps, and AI providers live in the
             no-code hub — encrypted at rest before write.
           </p>
