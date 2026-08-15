@@ -16,6 +16,8 @@ export type AdminNavRole = Extract<
 const CLUB_NAV = [
   { href: "/admin/club", label: "Venue" },
   { href: "/admin/club/analytics", label: "Telemetry" },
+  { href: "/admin/club/assets", label: "Assets" },
+  { href: "/admin/club/menu/scan", label: "Menu AI" },
   { href: "/admin/club/promos", label: "Flash" },
   { href: "/admin/club/settings", label: "Settings" },
   { href: "/admin/manager", label: "Floor" },
@@ -28,6 +30,8 @@ const CLUB_NAV = [
 const MANAGER_NAV = [
   { href: "/admin/manager", label: "Shifts" },
   { href: "/admin/club", label: "Venue" },
+  { href: "/admin/club/assets", label: "Assets" },
+  { href: "/admin/club/menu/scan", label: "Menu AI" },
   { href: "/admin/club/promos", label: "Flash" },
   { href: "/admin/club/settings", label: "Settings" },
   { href: "/kds", label: "KDS" },
