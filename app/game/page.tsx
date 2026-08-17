@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { RefreshCw, Search, Sparkles, Trophy, Wine } from "lucide-react";
+import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
 import {
   AvPollEngine,
@@ -19,6 +20,7 @@ import {
 } from "@/components/games/arcade-engines";
 import { GameFlipCard, PromptRevealCard } from "@/components/games/GameFlipCard";
 import { LuckyWheel } from "@/components/games/lucky-wheel";
+import { GameRulesModal, HowToPlayTrigger } from "@/components/games/GameRulesModal";
 import { MostLikelyPanel } from "@/components/games/MostLikelyPanel";
 import { NhieVotePanel } from "@/components/games/NhieVotePanel";
 import { NeonButton } from "@/components/ui/NeonButton";
@@ -29,6 +31,7 @@ import {
   type ArcadeWallet,
 } from "@/lib/games/arcade-wallet";
 import { catalogStats } from "@/lib/games/100_games_catalog";
+import { ruleForGame } from "@/lib/games/rules-registry";
 import { castGameVote } from "@/lib/data/games";
 import { useGameVotesRealtime } from "@/lib/hooks/use-game-votes-realtime";
 import { useSurpriseGame } from "@/lib/hooks/use-surprise-game";
@@ -63,6 +66,7 @@ export default function GamePage() {
   const [filter, setFilter] = useState<HubFilter>("all");
   const [query, setQuery] = useState("");
   const [wallet, setWallet] = useState<ArcadeWallet>({ points: 120, coupons: [] });
+  const [rulesOpen, setRulesOpen] = useState(false);
 
   const {
     pool,
@@ -192,11 +196,19 @@ export default function GamePage() {
                 Inertia wheels, dares, reflex arcade, and live table clash.
               </p>
             </div>
-            <div className="flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900 px-4 py-2 text-xs text-zinc-200 shadow-lg">
-              <Trophy className="h-3.5 w-3.5 text-amber-300" />
-              <span className="font-mono font-bold">{wallet.points} pts</span>
-              <span className="text-zinc-500">·</span>
-              <span>{wallet.coupons.length} coupons</span>
+            <div className="flex flex-wrap items-center gap-2">
+              <Link
+                href="/games/rules"
+                className="rounded-full border border-zinc-700 bg-zinc-900 px-3 py-2 font-mono text-xs font-semibold text-zinc-300 hover:border-violet-500 hover:text-white"
+              >
+                Rulebook
+              </Link>
+              <div className="flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900 px-4 py-2 text-xs text-zinc-200 shadow-lg">
+                <Trophy className="h-3.5 w-3.5 text-amber-300" />
+                <span className="font-mono font-bold">{wallet.points} pts</span>
+                <span className="text-zinc-500">·</span>
+                <span>{wallet.coupons.length} coupons</span>
+              </div>
             </div>
           </div>
 
@@ -249,8 +261,8 @@ export default function GamePage() {
           <div className="mt-6">
             <GameFlipCard flipKey={game?.id ?? "empty"}>
               <div className="rounded-3xl border border-zinc-800 bg-zinc-950/80 p-5 shadow-[0_0_40px_rgba(124,58,237,0.12)]">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="min-w-0">
                     <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-500">
                       {loading ? "Loading pool…" : "Now playing"}
                     </p>
@@ -258,11 +270,14 @@ export default function GamePage() {
                       {game?.title ?? "Shuffling the night…"}
                     </h2>
                   </div>
-                  {game ? (
-                    <span className="rounded-full border border-violet-500/40 bg-violet-500/10 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-violet-200">
-                      {game.game_type.replaceAll("_", " ")}
-                    </span>
-                  ) : null}
+                  <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
+                    {game ? (
+                      <span className="rounded-full border border-violet-500/40 bg-violet-500/10 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-violet-200">
+                        {game.game_type.replaceAll("_", " ")}
+                      </span>
+                    ) : null}
+                    <HowToPlayTrigger onClick={() => setRulesOpen(true)} />
+                  </div>
                 </div>
 
                 <div className="mt-6">
@@ -478,6 +493,15 @@ export default function GamePage() {
           </div>
         </div>
       </div>
+      <GameRulesModal
+        open={rulesOpen}
+        rule={
+          game
+            ? ruleForGame(game.game_type, game.title)
+            : ruleForGame("DARE_WHEEL", "House Arcade")
+        }
+        onClose={() => setRulesOpen(false)}
+      />
     </AppShell>
   );
 }

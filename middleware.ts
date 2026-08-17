@@ -15,7 +15,7 @@ import {
   verifyDeviceBind,
 } from "@/lib/security/session-cookies";
 
-const GUEST_APP_PREFIXES = ["/home", "/tab", "/pass", "/game", "/menu"] as const;
+const GUEST_APP_PREFIXES = ["/home", "/tab", "/pass", "/game", "/games", "/menu"] as const;
 
 function isGuestAppPath(pathname: string): boolean {
   return GUEST_APP_PREFIXES.some(

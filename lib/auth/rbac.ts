@@ -37,6 +37,7 @@ export const PROTECTED_ROUTES: Record<string, UserRole[]> = {
   "/tab": ["CUSTOMER", "SUPER_ADMIN"],
   "/pass": ["CUSTOMER", "SUPER_ADMIN"],
   "/game": ["CUSTOMER", "SUPER_ADMIN"],
+  "/games": ["CUSTOMER", "SUPER_ADMIN"],
   "/home": ["CUSTOMER", "SUPER_ADMIN"],
   "/menu": ["CUSTOMER", "SUPER_ADMIN"],
   "/saarthi": ["SAARTHI_DRIVER", "SUPER_ADMIN"],
