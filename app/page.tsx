@@ -298,7 +298,7 @@ function SectionTitle({
 export default function MarketingLandingPage() {
   return (
     <SaarthiProvider>
-    <div className="min-h-[100dvh] bg-[#FAF9F5] text-[#080503]">
+    <div className="min-h-[100dvh] bg-zinc-950 text-zinc-100">
       <MarketingHeader />
 
       <HeroSection />
@@ -320,7 +320,7 @@ export default function MarketingLandingPage() {
             Nightlife still runs on trust, paper, and panic — and it costs you
             more than you think.
           </SectionTitle>
-          <p className="type-body mt-5 max-w-2xl text-lg text-slate-800">
+          <p className="type-body mt-5 max-w-2xl text-lg text-zinc-300">
             Your best nights are also your messiest: open tabs, slow bars,
             forgotten settlements, VIP confusion, and promo wars with the venue
             down the street. Guests feel the friction. Staff absorb the chaos.
@@ -340,7 +340,7 @@ export default function MarketingLandingPage() {
                 <h3 className="type-title text-xl text-foreground sm:text-2xl">
                   {pain.title}
                 </h3>
-                <p className="type-body mt-3 text-base text-slate-800 sm:text-lg">
+                <p className="type-body mt-3 text-base text-zinc-300 sm:text-lg">
                   {pain.copy}
                 </p>
               </motion.div>
@@ -356,7 +356,7 @@ export default function MarketingLandingPage() {
           <SectionTitle>
             One operating layer above the floor — not another terminal on it.
           </SectionTitle>
-          <p className="mt-5 max-w-3xl font-sans text-lg leading-relaxed tracking-normal text-slate-800">
+          <p className="mt-5 max-w-3xl font-sans text-lg leading-relaxed tracking-normal text-zinc-300">
             mAITab connects the guest phone, the door, the bar, the LED wall,
             and the manager console into a single session pipeline. A guest
             enters with a verified mandate, spends against a live prepaid tab,
@@ -384,14 +384,14 @@ export default function MarketingLandingPage() {
                 <p className="font-sans text-lg font-semibold tracking-normal text-foreground">
                   {item.k}
                 </p>
-                <p className="mt-3 font-sans text-base leading-relaxed tracking-normal text-slate-800 sm:text-lg">
+                <p className="mt-3 font-sans text-base leading-relaxed tracking-normal text-zinc-300 sm:text-lg">
                   {item.v}
                 </p>
               </div>
             ))}
           </div>
 
-          <p className="mt-10 max-w-3xl font-sans text-base leading-relaxed tracking-normal text-slate-800 sm:text-lg">
+          <p className="mt-10 max-w-3xl font-sans text-base leading-relaxed tracking-normal text-zinc-300 sm:text-lg">
             Under the hood: a Proprietary Real-Time Nightlife Engine, High-Throughput
             Cryptographic Ledger for sealed QR joins, Fault-Tolerant Floor
             Orchestration Architecture for role-locked ops, and an Automated
@@ -404,7 +404,7 @@ export default function MarketingLandingPage() {
             <SectionTitle>
               Operations modules built for multi-bar floors and group owners.
             </SectionTitle>
-            <p className="type-body mt-5 max-w-2xl text-lg text-slate-800">
+            <p className="type-body mt-5 max-w-2xl text-lg text-zinc-300">
               Floor routing, flash monetization, multi-property control, and
               license lockout — the layer that turns a single venue stack into
               an enterprise nightlife OS.
@@ -442,10 +442,10 @@ export default function MarketingLandingPage() {
                         style={{ background: item.accent }}
                       />
                     </div>
-                    <h3 className="type-title mt-4 text-xl text-slate-950 sm:text-2xl">
+                    <h3 className="type-title mt-4 text-xl text-zinc-100 sm:text-2xl">
                       {item.title}
                     </h3>
-                    <p className="type-body mt-3 text-base leading-relaxed text-slate-800 sm:text-lg">
+                    <p className="type-body mt-3 text-base leading-relaxed text-zinc-300 sm:text-lg">
                       {item.body}
                     </p>
                     <p
@@ -533,7 +533,7 @@ export default function MarketingLandingPage() {
           <SectionTitle>
             Everything that makes a night run — engineered as one product.
           </SectionTitle>
-          <p className="type-body mt-5 max-w-2xl text-lg text-slate-800">
+          <p className="type-body mt-5 max-w-2xl text-lg text-zinc-300">
             These aren’t bolted-on widgets. Each capability feeds the same
             session, the same spend ledger, and the same hospitality memory.
           </p>
@@ -557,7 +557,7 @@ export default function MarketingLandingPage() {
                   </h3>
                 </div>
                 <div>
-                  <p className="type-body text-base text-slate-800 sm:text-lg">
+                  <p className="type-body text-base text-zinc-300 sm:text-lg">
                     {feature.body}
                   </p>
                   <p className="type-body mt-4 text-base text-[#A38B5E] sm:text-lg">
@@ -629,7 +629,7 @@ export default function MarketingLandingPage() {
       {/* PRICING / GROWTH — forced light stone canvas */}
       <section
         id="pricing"
-        className="scroll-mt-20 border-t border-[#DAD7D0] bg-[#FAF9F5]"
+        className="scroll-mt-20 border-t border-zinc-800 bg-zinc-950"
       >
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>Why it grows the business</SectionEyebrow>
@@ -637,7 +637,7 @@ export default function MarketingLandingPage() {
             Not just “digitized ops” — measurable traction on spend, return
             visits, and night integrity.
           </SectionTitle>
-          <p className="type-body mt-5 max-w-3xl text-lg text-slate-800">
+          <p className="type-body mt-5 max-w-3xl text-lg text-zinc-300">
             Venue owners don’t buy software for novelty. They buy it when it
             moves money, reduces leakage, and makes regulars choose their room
             again. mAITab is designed around those three outcomes.
@@ -651,25 +651,25 @@ export default function MarketingLandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="rounded-xl border border-[#DAD7D0] bg-white/80 p-5 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.08)] backdrop-blur-xl"
+                className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-5 shadow-xl backdrop-blur-xl"
               >
                 <div className="mb-4 h-px w-10 bg-[#A38B5E]" />
-                <h3 className="type-title text-lg text-[#080503]">
+                <h3 className="type-title text-lg text-zinc-100">
                   {item.title}
                 </h3>
-                <p className="type-body mt-3 text-base text-slate-800 sm:text-lg">
+                <p className="type-body mt-3 text-base text-zinc-300 sm:text-lg">
                   {item.copy}
                 </p>
               </motion.div>
             ))}
           </div>
 
-          <div className="mt-16 max-w-3xl rounded-xl border border-[#DAD7D0] border-l-4 border-l-[#A38B5E] bg-white/70 p-6">
-            <p className="type-title text-xl text-[#080503] sm:text-2xl">
+          <div className="mt-16 max-w-3xl rounded-xl border border-zinc-800 border-l-4 border-l-amber-400 bg-zinc-900/70 p-6">
+            <p className="type-title text-xl text-zinc-100 sm:text-2xl">
               Repeat visitors aren’t luck. They’re recognition, status, and a
               night that never punished them with checkout friction.
             </p>
-            <p className="type-body mt-4 text-base text-slate-800 sm:text-lg">
+            <p className="type-body mt-4 text-base text-zinc-300 sm:text-lg">
               Spend tiers, Member Pass history, AV celebration, and lucky-draw
               near-misses create a loop: show up → get recognized → spend
               easily → leave cleanly → come back for the next drop. That’s how
@@ -697,10 +697,10 @@ export default function MarketingLandingPage() {
                 key={row.old}
                 className="grid grid-cols-1 gap-2 border-t border-border px-4 py-5 sm:grid-cols-2 sm:gap-8 sm:px-6"
               >
-                <p className="type-body text-base text-slate-800/70 line-through decoration-slate-400">
+                <p className="type-body text-base text-zinc-300/70 line-through decoration-slate-400">
                   {row.old}
                 </p>
-                <p className="type-body text-base font-medium text-slate-800 sm:text-lg">
+                <p className="type-body text-base font-medium text-zinc-300 sm:text-lg">
                   {row.next}
                 </p>
               </div>
@@ -710,17 +710,17 @@ export default function MarketingLandingPage() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="scroll-mt-20 border-t border-border bg-pastel-mint/30">
+      <section id="faq" className="scroll-mt-20 border-t border-zinc-800 bg-zinc-900/40">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>FAQ</SectionEyebrow>
           <SectionTitle>Straight answers for operators evaluating us.</SectionTitle>
-          <div className="mt-12 divide-y divide-black/10 border-y border-border">
+          <div className="mt-12 divide-y divide-zinc-800 border-y border-zinc-800">
             {FAQ.map((item) => (
               <div key={item.q} className="grid gap-3 py-7 md:grid-cols-[0.9fr_1.1fr] md:gap-10">
                 <h3 className="type-title text-lg text-foreground">
                   {item.q}
                 </h3>
-                <p className="type-body text-base text-slate-800 sm:text-lg">
+                <p className="type-body text-base text-zinc-300 sm:text-lg">
                   {item.a}
                 </p>
               </div>
@@ -740,7 +740,7 @@ export default function MarketingLandingPage() {
             Put mAITab on your next busy night — then decide with real floor
             evidence.
           </h2>
-          <p className="type-body mt-5 max-w-2xl text-lg text-slate-800">
+          <p className="type-body mt-5 max-w-2xl text-lg text-zinc-300">
             We’ll walk gate, bar, AV, admin, and guest flows with your team,
             map your rooms and tables, and connect AutoPay when you’re ready
             for production. Start with the live demo roles today; onboard the

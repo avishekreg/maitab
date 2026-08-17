@@ -45,3 +45,4 @@ android/build/
 android/local.properties
 *.keystore
 !public/downloads/maitab-latest.apk
+.env*

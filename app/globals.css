@@ -8,33 +8,33 @@
   Mapped into mAITab nightlife aliases so existing routes inherit automatically.
 */
 :root {
-  /* Optimus core */
-  --background: #faf9f5;
-  --foreground: #080503;
+  /* Dark-glass core — zinc nightlife OS */
+  --background: #09090b;
+  --foreground: #fafafa;
   /* HSL channels so hsl(var(--card) / a) works with @apply-adjacent CSS */
-  --card: 0 0% 100%;
-  --card-foreground: #080503;
-  --popover: #ffffff;
-  --popover-foreground: #080503;
-  --primary: #080503;
-  --primary-foreground: #fafaf9;
-  --secondary: #f3f2ee;
-  --secondary-foreground: #080503;
-  --muted: #ecebe7;
-  --muted-foreground: #5e534a;
-  --accent: #e7e4dd;
-  --accent-foreground: #080503;
-  --destructive: #e40014;
-  --destructive-foreground: #e40014;
-  --border: #dad7d0;
-  --input: #e7e4dd;
-  --ring: #080503;
-  --radius: 0.5rem;
-  --chart-1: #080503;
-  --chart-2: #433830;
-  --chart-3: #7b6f66;
-  --chart-4: #a89c92;
-  --chart-5: #d3ccc7;
+  --card: 240 6% 10%;
+  --card-foreground: #fafafa;
+  --popover: #18181b;
+  --popover-foreground: #fafafa;
+  --primary: #7c3aed;
+  --primary-foreground: #fafafa;
+  --secondary: #18181b;
+  --secondary-foreground: #f4f4f5;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
+  --accent: #27272a;
+  --accent-foreground: #fafafa;
+  --destructive: #e11d48;
+  --destructive-foreground: #fda4af;
+  --border: #3f3f46;
+  --input: #18181b;
+  --ring: #8b5cf6;
+  --radius: 0.75rem;
+  --chart-1: #8b5cf6;
+  --chart-2: #06b6d4;
+  --chart-3: #d97706;
+  --chart-4: #059669;
+  --chart-5: #e11d48;
 
   /* mAITab brand accents (kept for product semantics) */
   --brand-violet: #7c3aed;
@@ -45,10 +45,10 @@
 
   /* Legacy aliases used across the app */
   --nightlife-bg: var(--background);
-  --nightlife-elevated: #ffffff;
+  --nightlife-elevated: #18181b;
   --nightlife-panel: var(--secondary);
   --nightlife-ink: var(--foreground);
-  --type-gold: #a38b5e;
+  --type-gold: #fbbf24;
   --accent-violet: var(--brand-violet);
   --accent-gold: var(--type-gold);
   --accent-emerald: var(--brand-mint);
@@ -56,7 +56,7 @@
   --text-muted: var(--muted-foreground);
   --champagne: var(--type-gold);
 
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 html,
@@ -64,6 +64,80 @@ body {
   min-height: 100%;
   background: var(--background);
   color: var(--foreground);
+}
+
+/*
+  Unlayered (beats Tailwind utilities) — no bleached inputs anywhere.
+  Excludes checkbox/radio/range/file so native controls stay usable.
+*/
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="hidden"]):not([type="color"]):not([type="button"]):not([type="submit"]):not([type="reset"]),
+select,
+textarea {
+  background-color: rgba(24, 24, 27, 0.95) !important;
+  color: #ffffff !important;
+  font-weight: 500;
+  font-size: 0.875rem;
+  border: 1px solid rgb(63 63 70 / 0.8) !important;
+  border-radius: 0.75rem;
+  padding: 0.625rem 1rem;
+  outline: none !important;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  color-scheme: dark;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #71717a !important;
+  opacity: 1;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
+select:focus,
+textarea:focus {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 1px #8b5cf6;
+}
+
+select option,
+select optgroup {
+  background-color: #18181b;
+  color: #ffffff;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: #ffffff;
+  caret-color: #ffffff;
+  box-shadow: 0 0 0 1000px #18181b inset;
+  transition: background-color 9999s ease-out;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: #7c3aed;
+}
+
+input[type="range"] {
+  accent-color: #7c3aed;
+}
+
+h1,
+h2 {
+  font-family: var(--font-display), var(--font-display-wide), Syne,
+    "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.04em;
+}
+
+label {
+  color: #e4e4e7;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.025em;
 }
 
 /*
@@ -82,9 +156,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Body/UI copy stays Plus Jakarta. Display titles opt in via .font-display */
-h1:not(.font-display),
-h2:not(.font-display),
+/* Body/UI copy stays Plus Jakarta. Display titles opt in via h1/h2 and .font-display */
 h3:not(.font-display),
 h4:not(.font-display),
 p,
@@ -162,14 +234,14 @@ nav {
 @layer components {
   .optimus-glass {
     @apply border backdrop-blur-xl;
-    background-color: hsl(var(--card) / 0.75);
-    border-color: color-mix(in oklab, var(--border) 85%, transparent);
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(9, 9, 11, 0.82);
+    border-color: rgb(39 39 42 / 0.85);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
   }
 
   .optimus-panel {
-    border: 1px solid var(--border);
-    background: color-mix(in oklab, var(--secondary) 80%, transparent);
+    border: 1px solid rgb(39 39 42 / 0.85);
+    background: rgba(24, 24, 27, 0.8);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
@@ -200,9 +272,9 @@ nav {
 
   .surface-frost {
     @apply border backdrop-blur-xl;
-    background-color: hsl(var(--card) / 0.75);
-    border-color: color-mix(in oklab, var(--border) 85%, transparent);
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(24, 24, 27, 0.75);
+    border-color: rgb(39 39 42 / 0.85);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
   }
 
   .glow-border {
@@ -221,9 +293,9 @@ nav {
 
   .pastel-card {
     @apply border backdrop-blur-xl rounded-xl;
-    background-color: hsl(var(--card) / 0.75);
-    border-color: color-mix(in oklab, var(--border) 85%, transparent);
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(24, 24, 27, 0.75);
+    border-color: rgb(39 39 42 / 0.85);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
   }
 }
 
@@ -237,6 +309,15 @@ nav {
   body {
     background: #fff !important;
     color: #111 !important;
+  }
+
+  input,
+  select,
+  textarea {
+    background: #fff !important;
+    color: #111 !important;
+    border-color: #d4d4d8 !important;
+    box-shadow: none !important;
   }
 
   .no-print {

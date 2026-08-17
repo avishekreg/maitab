@@ -57,7 +57,7 @@ export default function SuperAdminPortalPage() {
           value={key}
           onChange={(e) => setKey(e.target.value)}
           placeholder="Portal key"
-          className="mt-6 h-12 w-full rounded-xl border border-border bg-white px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent-violet focus:outline-none"
+          className="mt-6 h-12 w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 text-sm font-medium text-white placeholder:text-zinc-500 focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
         />
         {error ? (
           <p className="mt-3 text-sm text-accent-ruby">{error}</p>

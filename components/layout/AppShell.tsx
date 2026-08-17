@@ -41,7 +41,7 @@ export function AppShell({
   return (
     <TierThemeProvider tier={tier}>
       <SaarthiProvider>
-      <div className="relative min-h-[100dvh] bg-background text-foreground">
+      <div className="relative min-h-[100dvh] bg-zinc-950 text-zinc-100">
         <div className={cn("pointer-events-none absolute inset-0", theme.ambient)} />
 
         <header className="optimus-glass sticky top-0 z-40 rounded-none border-x-0 border-t-0">

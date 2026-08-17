@@ -125,10 +125,10 @@ export default function SuperAdminConfigPage() {
             type="button"
             onClick={() => setActive(category)}
             className={cn(
-              "shrink-0 rounded-lg px-3 py-2 text-xs font-medium uppercase tracking-[0.12em] transition",
+              "shrink-0 rounded-xl px-4 py-2 text-xs uppercase tracking-[0.12em] transition-all",
               active === category
-                ? "bg-pastel-lavender text-accent-violet ring-1 ring-accent-violet/40"
-                : "bg-secondary text-muted-foreground ring-1 ring-white/10 hover:text-foreground"
+                ? "bg-violet-600 border border-violet-400 text-white font-bold shadow-lg shadow-violet-600/30"
+                : "bg-zinc-900/80 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700"
             )}
           >
             {category.replaceAll("_", " ")}
@@ -147,17 +147,19 @@ export default function SuperAdminConfigPage() {
             return (
               <div
                 key={item.config_key}
-                className="rounded-xl border border-border bg-white/[0.02] px-4 py-4"
+                className="rounded-2xl border border-zinc-800/80 bg-zinc-950/80 p-5 shadow-xl backdrop-blur-xl"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="font-medium text-foreground">{item.label}</p>
-                    <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                    <p className="text-sm font-semibold tracking-wide text-zinc-200">
+                      {item.label}
+                    </p>
+                    <p className="mt-0.5 truncate font-mono text-xs text-zinc-400">
                       {item.config_key}
                     </p>
                   </div>
                   <StatusPill
-                    label={item.is_secret ? "Secret" : "Runtime"}
+                    label={item.is_secret ? "SECRET" : "RUNTIME"}
                     tone={item.is_secret ? "gold" : "muted"}
                   />
                 </div>
@@ -172,7 +174,7 @@ export default function SuperAdminConfigPage() {
                           [item.config_key]: e.target.value,
                         }))
                       }
-                      className="min-w-[200px] flex-1 rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:border-accent-violet/50"
+                      className="min-w-[200px] flex-1 bg-zinc-900 border border-zinc-700/80 text-white font-medium text-sm px-4 py-2.5 rounded-xl outline-none transition-all focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
                     >
                       <option value="true">Enabled</option>
                       <option value="false">Disabled</option>
@@ -190,14 +192,14 @@ export default function SuperAdminConfigPage() {
                           [item.config_key]: e.target.value,
                         }))
                       }
-                      className="min-w-[200px] flex-1 rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:border-accent-violet/50"
+                      className="min-w-[200px] flex-1 bg-zinc-900 border border-zinc-700/80 text-white font-medium text-sm placeholder:text-zinc-500 px-4 py-2.5 rounded-xl outline-none transition-all focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
                     />
                   )}
 
                   {item.is_secret ? (
                     <button
                       type="button"
-                      className="grid h-10 w-10 place-items-center rounded-xl border border-border text-muted-foreground transition hover:border-border hover:text-foreground"
+                      className="grid h-10 w-10 place-items-center rounded-xl bg-violet-600 text-white shadow-md transition-all hover:bg-violet-500"
                       onClick={() =>
                         setRevealed((prev) => ({
                           ...prev,
@@ -214,14 +216,18 @@ export default function SuperAdminConfigPage() {
                     </button>
                   ) : null}
 
-                  <NeonButton size="sm" onClick={() => void saveItem(item)}>
+                  <NeonButton
+                    size="sm"
+                    className="rounded-xl bg-violet-600 px-4 py-2 font-medium text-white shadow-md transition-all hover:bg-violet-500"
+                    onClick={() => void saveItem(item)}
+                  >
                     <Save className="h-4 w-4" />
                     Save
                   </NeonButton>
                 </div>
 
                 {item.is_secret && item.value_encrypted ? (
-                  <p className="mt-2 text-xs text-muted-foreground">
+                  <p className="mt-2 font-mono text-xs text-zinc-400">
                     Stored · {maskSecret(item.value_encrypted)}
                   </p>
                 ) : null}
@@ -230,7 +236,7 @@ export default function SuperAdminConfigPage() {
           })}
         </div>
         {status ? (
-          <p className="mt-4 text-sm text-accent-emerald">{status}</p>
+          <p className="mt-4 text-sm text-emerald-400">{status}</p>
         ) : null}
       </AdminSection>
     </AdminShell>

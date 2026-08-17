@@ -84,7 +84,7 @@ export function AdminSection({
     <section className={cn("overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/80 shadow-xl backdrop-blur-xl", className)}>
       <div className="flex flex-wrap items-start justify-between gap-3 border-b border-zinc-800 px-5 py-4">
         <div>
-          <h2 className="font-display text-2xl font-extrabold tracking-tight text-white">{title}</h2>
+          <h2 className="font-display font-bold tracking-wide text-zinc-100 text-2xl">{title}</h2>
           {description ? (
             <p className="mt-1 font-medium text-zinc-400">{description}</p>
           ) : null}
