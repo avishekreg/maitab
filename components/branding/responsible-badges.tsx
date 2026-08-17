@@ -17,41 +17,53 @@ export function ResponsibleBadges({
   return (
     <div
       className={cn(
-        "inline-flex items-center gap-2 overflow-hidden rounded-full border border-zinc-800/80 bg-zinc-950/90 p-1.5 shadow-2xl backdrop-blur-xl [contain:paint] select-none",
-        className,
+        "inline-flex items-center gap-4 overflow-hidden rounded-full border border-zinc-800 bg-zinc-950/95 px-6 py-3 shadow-2xl backdrop-blur-2xl select-none md:gap-6",
+        className
       )}
     >
-      <div className="flex items-center gap-2.5 overflow-hidden rounded-full border border-amber-500/20 bg-zinc-900/60 px-3.5 py-1.5">
-        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10 text-[10px] font-bold text-amber-400">
+      <div className="flex items-center gap-3 text-left">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10 text-xs font-bold text-amber-400">
           21+
         </div>
-        <div className="text-left leading-tight">
-          <div className="font-mono text-[10px] font-bold uppercase tracking-wider text-amber-400">
+        <div className="leading-tight">
+          <div className="text-xs font-mono font-bold uppercase leading-snug tracking-wider text-amber-400">
             Drink Responsibly
           </div>
-          <div className="text-[9px] text-zinc-400">
+          <div className="text-[11px] font-medium leading-snug text-zinc-400">
             Know Your Limits • Zero Underage Service
           </div>
         </div>
       </div>
 
+      <div className="h-7 w-px shrink-0 bg-zinc-800" />
+
       <button
         type="button"
         onClick={open}
-        className="group flex cursor-pointer items-center gap-2.5 overflow-hidden rounded-full border border-cyan-500/20 bg-zinc-900/60 px-3.5 py-1.5 text-left transition-colors hover:border-cyan-500/50 hover:bg-cyan-950/20"
+        className="group flex cursor-pointer items-center gap-3 text-left outline-none transition-all"
       >
-        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400">
-          <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" strokeWidth="2" />
-            <circle cx="12" cy="12" r="2" fill="currentColor" />
-            <path strokeWidth="2" d="M12 2v8M12 14v8M2 12h8M14 12h8" />
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 transition-colors group-hover:bg-cyan-500/20">
+          <svg
+            className="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <circle cx="12" cy="12" r="2" />
+            <path d="M12 14v8" />
+            <path d="m4.93 7.93 5.66 3.47" />
+            <path d="m19.07 7.93-5.66 3.47" />
           </svg>
         </div>
         <div className="leading-tight">
-          <div className="font-mono text-[10px] font-bold uppercase tracking-wider text-cyan-400">
+          <div className="text-xs font-mono font-bold uppercase leading-snug tracking-wider text-cyan-400">
             Don&apos;t Drink &amp; Drive
           </div>
-          <div className="text-[9px] text-zinc-300 transition-colors group-hover:text-cyan-300">
+          <div className="text-[11px] font-medium leading-snug text-zinc-300 transition-colors group-hover:text-cyan-300">
             Book a Verified mAI Saarthi Chauffeur ➔
           </div>
         </div>
