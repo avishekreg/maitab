@@ -1,6 +1,7 @@
 import type { GameType, OrderItem } from "@/lib/types";
 import { PENALTIES, type PenaltyKey } from "@/lib/games/penalties";
 import rawCatalog from "@/lib/games/100_games_catalog.raw.json";
+import { ARCADE_EXPANSION } from "@/lib/games/arcade-expansion";
 
 export type GameCategory =
   | "SHOT_ROULETTE"
@@ -8,7 +9,13 @@ export type GameCategory =
   | "DARE_WHEEL"
   | "NHIE"
   | "SPIN_BOTTLE"
-  | "MOST_LIKELY_TO";
+  | "MOST_LIKELY_TO"
+  | "LUCKY_WHEEL"
+  | "TABLE_DARES"
+  | "REFLEX_ARCADE"
+  | "MULTIPLAYER_CLASH"
+  | "MYSTERY_VAULT"
+  | "SAARTHI_SAFE";
 
 export interface CatalogGameDefinition {
   id: string;
@@ -63,10 +70,11 @@ function hydrate(def: CatalogGameDefinition): HydratedCatalogGame {
   };
 }
 
-/** Full curated nightlife catalog — 105 interactive variants. */
-export const GAMES_CATALOG: HydratedCatalogGame[] = (
-  rawCatalog as CatalogGameDefinition[]
-).map(hydrate);
+/** Full curated nightlife catalog — 110+ interactive variants. */
+export const GAMES_CATALOG: HydratedCatalogGame[] = [
+  ...(rawCatalog as CatalogGameDefinition[]),
+  ...ARCADE_EXPANSION,
+].map(hydrate);
 
 export const GAMES_CATALOG_COUNT = GAMES_CATALOG.length;
 

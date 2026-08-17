@@ -43,12 +43,20 @@ export function useSurpriseGame(options?: { groupSize?: number }) {
       fetchSessionPlayedGames(session.id),
     ]).then(([games, remotePlayed]) => {
       if (cancelled) return;
-      setPool(games.length ? games : LOCAL_GAMES_POOL);
+      const mergedPool = games.length
+        ? [
+            ...games,
+            ...LOCAL_GAMES_POOL.filter(
+              (local) => !games.some((remote) => remote.id === local.id)
+            ),
+          ]
+        : LOCAL_GAMES_POOL;
+      setPool(mergedPool);
       const merged = mergePlayedIds(playedGameIds, remotePlayed);
       hydratePlayedGames(merged);
       setGame((current) =>
         current ??
-          pickSurpriseGame(games.length ? games : LOCAL_GAMES_POOL, {
+          pickSurpriseGame(mergedPool, {
             playedIds: merged,
             groupSize,
             sessionSpend: session.total_session_spend,
@@ -96,6 +104,13 @@ export function useSurpriseGame(options?: { groupSize?: number }) {
     session.started_at,
   ]);
 
+  const playGame = useCallback((item: GamePoolItem) => {
+    setResult(null);
+    setFlash(false);
+    setSpinning(false);
+    setGame(item);
+  }, []);
+
   const completeRound = useCallback(
     (outcome: string) => {
       if (!game) return;
@@ -135,6 +150,7 @@ export function useSurpriseGame(options?: { groupSize?: number }) {
     playedCount: playedGameIds.length,
     catalogSize: pool.length,
     surpriseMe,
+    playGame,
     completeRound,
     fulfillPenalty,
     playedGameIds,

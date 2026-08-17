@@ -35,7 +35,19 @@ export type GameType =
   | "DARE_WHEEL"
   | "NEVER_HAVE_I_EVER"
   | "SPIN_THE_BOTTLE"
-  | "MOST_LIKELY_TO";
+  | "MOST_LIKELY_TO"
+  | "LUCKY_WHEEL"
+  | "TRUTH_OR_TAB"
+  | "KINGS_CUP"
+  | "REACTION_POUR"
+  | "NEON_RUNNER"
+  | "COCKTAIL_SHAKER"
+  | "WHO_PAYS"
+  | "TABLE_TRIVIA"
+  | "AV_POLL"
+  | "SCRATCH_WIN"
+  | "MYSTERY_VAULT"
+  | "SOBRIETY_REFLEX";
 
 export type ExternalProvider =
   | "ZOMATO_DISTRICT"
