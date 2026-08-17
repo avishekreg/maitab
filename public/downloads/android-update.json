@@ -1,5 +1,5 @@
 {
   "appVersion": "0.1.0",
-  "apkUrl": "/api/android-download",
+  "apkUrl": "/api/download/apk",
   "updatedAt": "2026-08-14"
 }

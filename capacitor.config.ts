@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: "mAITab",
   webDir: "native/www",
   server: {
-    url: "https://mai-tab.vercel.app",
+    url: "https://mai-tab.vercel.app/login",
     cleartext: false,
     androidScheme: "https",
     allowNavigation: [

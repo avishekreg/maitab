@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import {
-  MAITAB_ANDROID_APK_FILENAME,
-  resolveAndroidDownloadHref,
+  MAITAB_ANDROID_DOWNLOAD_FILENAME,
+  resolveAndroidQrHref,
 } from "@/lib/android-app";
 
 type FooterAndroidQrProps = {
@@ -20,11 +20,7 @@ export function FooterAndroidQr({
   className = "",
 }: FooterAndroidQrProps) {
   const [dataUrl, setDataUrl] = useState<string | null>(null);
-  const [downloadHref, setDownloadHref] = useState(resolveAndroidDownloadHref());
-
-  useEffect(() => {
-    setDownloadHref(resolveAndroidDownloadHref(window.location.origin));
-  }, []);
+  const downloadHref = resolveAndroidQrHref();
 
   useEffect(() => {
     let cancelled = false;
@@ -56,7 +52,7 @@ export function FooterAndroidQr({
     <div className={`flex flex-col items-start gap-2 ${className}`}>
       <a
         href={downloadHref}
-        download={MAITAB_ANDROID_APK_FILENAME}
+        download={MAITAB_ANDROID_DOWNLOAD_FILENAME}
         className="rounded-xl border border-white/15 bg-white p-2 shadow-sm transition hover:opacity-95"
         style={{ width: size + 16, height: size + 16 }}
         aria-label="Download the mAITab Android APK"
@@ -84,7 +80,7 @@ export function FooterAndroidQr({
       </p>
       <a
         href={downloadHref}
-        download={MAITAB_ANDROID_APK_FILENAME}
+        download={MAITAB_ANDROID_DOWNLOAD_FILENAME}
         className="text-[11px] font-semibold text-[#A855F7] underline-offset-2 hover:underline"
       >
         Or tap to download

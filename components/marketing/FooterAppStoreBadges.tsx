@@ -2,8 +2,8 @@
 
 import { useEffect, useState, type CSSProperties } from "react";
 import {
-  MAITAB_ANDROID_APK_FILENAME,
   MAITAB_ANDROID_DOWNLOAD_API,
+  MAITAB_ANDROID_DOWNLOAD_FILENAME,
 } from "@/lib/android-app";
 
 const BADGE_IMG_STYLE: CSSProperties = { borderRadius: "8px" };
@@ -57,7 +57,7 @@ export function FooterAppStoreBadges({
         >
           <a
             href={MAITAB_ANDROID_DOWNLOAD_API}
-            download={MAITAB_ANDROID_APK_FILENAME}
+            download={MAITAB_ANDROID_DOWNLOAD_FILENAME}
             className="inline-block"
             aria-label="Download the mAITab Android APK"
           >
@@ -115,7 +115,7 @@ export function FooterAppStoreBadges({
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <a
                 href={MAITAB_ANDROID_DOWNLOAD_API}
-                download={MAITAB_ANDROID_APK_FILENAME}
+                download={MAITAB_ANDROID_DOWNLOAD_FILENAME}
                 className="inline-flex h-11 flex-1 items-center justify-center rounded-xl bg-gradient-to-r from-[#8B5CF6] via-[#A855F7] to-[#06B6D4] px-4 text-sm font-semibold text-white"
               >
                 Download Android APK

@@ -11,6 +11,7 @@ import { ResponsibleBadges } from "@/components/branding/responsible-badges";
 import { SaarthiProvider } from "@/components/saarthi/SaarthiProvider";
 import { HeroSection } from "@/components/marketing/HeroSection";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
+import { CapacitorLoginRedirect } from "@/components/native/CapacitorLoginRedirect";
 
 const PAINS = [
   {
@@ -299,6 +300,7 @@ export default function MarketingLandingPage() {
   return (
     <SaarthiProvider>
     <div className="min-h-[100dvh] bg-[#FAF9F5] text-[#080503]">
+      <CapacitorLoginRedirect />
       <MarketingHeader />
 
       <HeroSection />
@@ -594,27 +596,27 @@ export default function MarketingLandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.35 }}
                 transition={{ delay: i * 0.08 }}
-                className="rounded-3xl border border-cyan-500/20 bg-zinc-950/80 p-6 shadow-[0_0_40px_rgba(6,182,212,0.08)] backdrop-blur-xl sm:p-8"
+                className="rounded-3xl border border-zinc-800 bg-zinc-950/90 p-8 shadow-xl backdrop-blur-2xl"
               >
                 <span
                   className={`inline-flex rounded-full border px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] ${card.badgeClass}`}
                 >
                   {card.badge}
                 </span>
-                <p className="mt-5 text-sm text-white/55">
+                <p className="mt-5 text-xs font-mono font-semibold tracking-wider text-zinc-400">
                   {card.emoji} {card.kicker}
                 </p>
-                <h3 className="type-title mt-2 text-2xl text-white sm:text-3xl">
+                <h3 className="mt-2 font-display text-2xl font-black leading-snug tracking-tight text-white">
                   {card.title}
                 </h3>
-                <p className="type-body mt-4 text-base leading-relaxed text-slate-800 sm:text-lg">
+                <p className="mt-4 text-sm font-normal leading-relaxed text-zinc-200 md:text-base">
                   {card.body}
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
                   {card.pills.map((pill) => (
                     <span
                       key={pill}
-                      className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[11px] text-zinc-200"
+                      className="rounded-full border border-zinc-700/80 bg-zinc-900 px-3.5 py-1.5 font-mono text-xs text-zinc-200"
                     >
                       {pill}
                     </span>

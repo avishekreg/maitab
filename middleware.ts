@@ -77,8 +77,25 @@ function forbidSuperAdmin(request: NextRequest) {
   return NextResponse.redirect(url);
 }
 
+function isNativeAndroidWrapper(request: NextRequest) {
+  const requestedWith = (request.headers.get("x-requested-with") ?? "").toLowerCase();
+  const ua = (request.headers.get("user-agent") ?? "").toLowerCase();
+  return (
+    requestedWith === "in.syncrasystems.maitab" ||
+    ua.includes("in.syncrasystems.maitab") ||
+    ua.includes("capacitor")
+  );
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  if (pathname === "/" && isNativeAndroidWrapper(request)) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
   const {
     response,
     role: jwtRole,
@@ -98,6 +115,8 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/downloads/") ||
     pathname.startsWith("/badges/") ||
     pathname === "/api/android-download" ||
+    pathname === "/api/download/apk" ||
+    pathname.startsWith("/api/download/") ||
     pathname.startsWith("/api/saarthi")
   ) {
     return response;

@@ -141,6 +141,8 @@ export const PUBLIC_API_PREFIXES = [
   "/api/payments/webhooks/",
   "/api/onboard",
   "/api/android-download",
+  "/api/download/apk",
+  "/api/download/",
   "/api/saarthi",
 ];
 

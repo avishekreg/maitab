@@ -7,7 +7,9 @@ export const MAITAB_ANDROID_APK_FILENAME = "maitab-latest.apk";
 export const MAITAB_ANDROID_APK_PATH = `/downloads/${MAITAB_ANDROID_APK_FILENAME}`;
 
 /** Public streaming endpoint with Content-Disposition: attachment. */
-export const MAITAB_ANDROID_DOWNLOAD_API = "/api/android-download";
+export const MAITAB_ANDROID_DOWNLOAD_API = "/api/download/apk";
+
+export const MAITAB_ANDROID_DOWNLOAD_FILENAME = "maitab-app.apk";
 
 export const MAITAB_ANDROID_APK_URL = `${MAITAB_PRODUCTION_ORIGIN}${MAITAB_ANDROID_DOWNLOAD_API}`;
 
@@ -31,6 +33,7 @@ export function resolveAndroidDownloadHref(origin?: string) {
   return `${resolveAndroidOrigin(origin)}${MAITAB_ANDROID_DOWNLOAD_API}`;
 }
 
-export function resolveAndroidQrHref(origin?: string) {
-  return resolveAndroidDownloadHref(origin);
+/** Camera QR always encodes the canonical production attachment URL. */
+export function resolveAndroidQrHref(_origin?: string) {
+  return `${MAITAB_PRODUCTION_ORIGIN}${MAITAB_ANDROID_DOWNLOAD_API}`;
 }
