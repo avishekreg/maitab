@@ -147,7 +147,7 @@ export default function GateScannerPage() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-nightlife-radial px-4 py-6 text-foreground">
+    <div className="min-h-[100dvh] bg-zinc-950 px-4 py-6 text-zinc-100 theme-dark-capsule">
       <div className="mx-auto max-w-5xl">
         <div className="optimus-glass mb-6 flex items-center justify-between gap-3 rounded-xl px-4 py-3">
           <div className="flex min-w-0 items-center gap-3">

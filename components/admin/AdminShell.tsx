@@ -37,7 +37,7 @@ export function AdminShell({
   hideTitle = false,
 }: AdminShellProps) {
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
+    <div className="min-h-screen bg-[#faf9f5] text-zinc-900">
       <AdminNav role={role as AdminNavRole} showVenueSwitcher={showVenueSwitcher} />
 
       <div className="relative mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-7xl flex-col px-4 pb-10 pt-6 sm:px-6">
@@ -47,14 +47,14 @@ export function AdminShell({
             <h1
               className={
                 heroTitle
-                  ? "font-display text-4xl font-extrabold uppercase tracking-tight text-white md:text-5xl"
-                  : "font-display text-2xl font-extrabold tracking-tight text-white sm:text-3xl"
+                  ? "font-display text-4xl font-extrabold uppercase tracking-tight text-zinc-950 md:text-5xl"
+                  : "font-display text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl"
               }
             >
               {title}
             </h1>
             {subtitle ? (
-              <p className="mt-1 max-w-2xl font-medium text-zinc-400">{subtitle}</p>
+              <p className="mt-1 max-w-2xl text-sm font-semibold tracking-wide text-zinc-600">{subtitle}</p>
             ) : null}
           </div>
           {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
@@ -81,12 +81,12 @@ export function AdminSection({
   className?: string;
 }) {
   return (
-    <section className={cn("overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/80 shadow-xl backdrop-blur-xl", className)}>
-      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-zinc-800 px-5 py-4">
+    <section className={cn("overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm", className)}>
+      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-zinc-200 px-5 py-4">
         <div>
-          <h2 className="font-display font-bold tracking-wide text-zinc-100 text-2xl">{title}</h2>
+          <h2 className="font-display text-2xl font-bold tracking-wide text-zinc-900">{title}</h2>
           {description ? (
-            <p className="mt-1 font-medium text-zinc-400">{description}</p>
+            <p className="mt-1 text-sm font-semibold tracking-wide text-zinc-600">{description}</p>
           ) : null}
         </div>
         {action}
@@ -136,17 +136,16 @@ export function KpiStrip({
           return (
             <div
               key={item.label}
-              className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/80 p-5 shadow-xl backdrop-blur-xl"
+              className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm hover:border-zinc-300"
             >
-              <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-400">
+              <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-500">
                 {item.label}
               </p>
               <p
                 className={cn(
-                  "mt-2 font-display font-extrabold tracking-tight text-2xl xl:text-3xl whitespace-nowrap",
-                  item.tone === "gold" && "text-amber-400",
-                  item.tone === "ruby" && "text-rose-400",
-                  (!item.tone || item.tone === "default") && "text-white"
+                  "mt-2 font-display font-extrabold tracking-tight text-2xl xl:text-3xl whitespace-nowrap text-zinc-950",
+                  item.tone === "gold" && "text-amber-600",
+                  item.tone === "ruby" && "text-rose-600"
                 )}
               >
                 {item.value}

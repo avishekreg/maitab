@@ -66,7 +66,7 @@ export function AdminNav({
     role === "CAPTAIN";
 
   return (
-    <header className="print:hidden sticky top-0 z-30 w-full border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur-xl">
+    <header className="print:hidden sticky top-0 z-30 w-full border-b border-zinc-200/80 bg-white/90 backdrop-blur-xl">
       <div className="flex items-center justify-between px-6 py-3.5">
         <BrandLockup />
 
@@ -84,8 +84,8 @@ export function AdminNav({
                 className={cn(
                   "whitespace-nowrap rounded-lg px-3 py-1.5 text-sm transition",
                   active
-                    ? "bg-zinc-800 text-zinc-100"
-                    : "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100"
+                    ? "bg-violet-600 font-semibold text-white shadow-sm"
+                    : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
                 )}
               >
                 {item.label}
@@ -103,7 +103,7 @@ export function AdminNav({
           />
           <Link
             href="/login"
-            className="rounded-lg border border-zinc-700 px-2.5 py-1.5 text-xs text-zinc-400 transition hover:bg-zinc-900 hover:text-zinc-100"
+            className="rounded-lg border border-zinc-300 px-2.5 py-1.5 text-xs text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900"
           >
             Logout
           </Link>
@@ -118,7 +118,7 @@ export function AdminNav({
               href={item.href}
               className={cn(
                 "whitespace-nowrap rounded-lg px-3 py-1.5 text-sm transition",
-                active ? "bg-zinc-800 text-zinc-100" : "text-zinc-400"
+                active ? "bg-violet-600 text-white" : "text-zinc-600"
               )}
             >
               {item.label}

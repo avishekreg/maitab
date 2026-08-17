@@ -17,7 +17,7 @@ const TONE: Record<NonNullable<NeonButtonProps["tone"]>, string> = {
   emerald:
     "bg-accent-emerald text-white shadow-glow-mint hover:brightness-110",
   ghost:
-    "border border-zinc-700 bg-zinc-900/80 text-zinc-100 hover:bg-zinc-800 hover:border-zinc-600",
+    "border border-border bg-card/80 text-foreground hover:bg-secondary",
   cyan: "bg-accent-violet text-white shadow-glow-violet hover:brightness-110",
   purple:
     "bg-accent-violet text-white shadow-glow-violet hover:brightness-110",

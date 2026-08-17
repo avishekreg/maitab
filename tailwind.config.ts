@@ -151,7 +151,7 @@ const config: Config = {
       },
       backgroundImage: {
         "nightlife-radial":
-          "radial-gradient(900px 480px at 12% -8%, rgba(124,58,237,0.18), transparent 55%), radial-gradient(780px 420px at 92% 0%, rgba(6,182,212,0.12), transparent 50%), linear-gradient(180deg, #09090b 0%, #18181b 100%)",
+          "radial-gradient(900px 480px at 12% -8%, rgba(124,58,237,0.08), transparent 55%), radial-gradient(780px 420px at 92% 0%, rgba(6,182,212,0.07), transparent 50%), linear-gradient(180deg, #faf9f5 0%, #f3f2ee 100%)",
         "luxury-gradient":
           "linear-gradient(135deg, #7c3aed 0%, #06b6d4 55%, #d97706 100%)",
         "ai-neon": "linear-gradient(90deg, #8b5cf6 0%, #06b6d4 100%)",

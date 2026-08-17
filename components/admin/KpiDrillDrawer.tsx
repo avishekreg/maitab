@@ -34,7 +34,7 @@ export type KpiDrillContent = {
 };
 
 export const KPI_HOVER_CLASS =
-  "cursor-pointer transition-all hover:scale-[1.02] hover:border-zinc-600 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] active:scale-[0.99] group";
+  "cursor-pointer transition-all hover:scale-[1.02] hover:border-zinc-300 hover:shadow-md active:scale-[0.99] group";
 
 export function InteractiveKpiCard({
   label,
@@ -58,27 +58,26 @@ export function InteractiveKpiCard({
       type="button"
       onClick={onClick}
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/80 p-5 text-left shadow-xl backdrop-blur-xl",
+        "relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 text-left shadow-sm",
         KPI_HOVER_CLASS,
         className
       )}
     >
-      <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-400">
+      <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-500">
         {label}
       </p>
       <p
         className={cn(
-          "mt-2 font-display font-extrabold tracking-tight whitespace-nowrap",
+          "mt-2 font-display font-extrabold tracking-tight whitespace-nowrap text-zinc-950",
           valueClassName || "text-2xl xl:text-3xl",
-          !valueClassName && tone === "gold" && "text-amber-400",
-          !valueClassName && tone === "ruby" && "text-rose-400",
-          !valueClassName && tone === "default" && "text-white"
+          !valueClassName && tone === "gold" && "text-amber-600",
+          !valueClassName && tone === "ruby" && "text-rose-600"
         )}
       >
         {value}
       </p>
-      {hint ? <p className="mt-1 text-sm text-zinc-400">{hint}</p> : null}
-      <span className="mt-3 inline-flex rounded-full border border-zinc-700 bg-zinc-950/80 px-2 py-0.5 text-[10px] font-medium text-zinc-400 opacity-0 transition-opacity group-hover:opacity-100">
+      {hint ? <p className="mt-1 text-sm text-zinc-600">{hint}</p> : null}
+      <span className="mt-3 inline-flex rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium text-zinc-500 opacity-0 transition-opacity group-hover:opacity-100">
         View Details ➔
       </span>
     </button>

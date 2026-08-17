@@ -47,8 +47,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#09090b",
-  colorScheme: "dark",
+  themeColor: "#faf9f5",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -58,7 +58,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${display.variable} ${displayWide.variable} ${sans.variable}`}>
-      <body className="min-h-[100dvh] bg-zinc-950 font-sans text-zinc-100 antialiased tracking-normal">
+      <body className="min-h-[100dvh] bg-background font-sans text-foreground antialiased tracking-normal">
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

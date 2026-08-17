@@ -128,7 +128,7 @@ export default function SuperAdminConfigPage() {
               "shrink-0 rounded-xl px-4 py-2 text-xs uppercase tracking-[0.12em] transition-all",
               active === category
                 ? "bg-violet-600 border border-violet-400 text-white font-bold shadow-lg shadow-violet-600/30"
-                : "bg-zinc-900/80 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700"
+                : "bg-white border border-zinc-200 text-zinc-600 hover:text-zinc-900 hover:border-zinc-300"
             )}
           >
             {category.replaceAll("_", " ")}
@@ -147,14 +147,14 @@ export default function SuperAdminConfigPage() {
             return (
               <div
                 key={item.config_key}
-                className="rounded-2xl border border-zinc-800/80 bg-zinc-950/80 p-5 shadow-xl backdrop-blur-xl"
+                className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold tracking-wide text-zinc-200">
+                    <p className="text-sm font-semibold tracking-wide text-zinc-900">
                       {item.label}
                     </p>
-                    <p className="mt-0.5 truncate font-mono text-xs text-zinc-400">
+                    <p className="mt-0.5 truncate font-mono text-xs text-zinc-500">
                       {item.config_key}
                     </p>
                   </div>
@@ -174,7 +174,7 @@ export default function SuperAdminConfigPage() {
                           [item.config_key]: e.target.value,
                         }))
                       }
-                      className="min-w-[200px] flex-1 bg-zinc-900 border border-zinc-700/80 text-white font-medium text-sm px-4 py-2.5 rounded-xl outline-none transition-all focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                      className="min-w-[200px] flex-1"
                     >
                       <option value="true">Enabled</option>
                       <option value="false">Disabled</option>
@@ -192,14 +192,14 @@ export default function SuperAdminConfigPage() {
                           [item.config_key]: e.target.value,
                         }))
                       }
-                      className="min-w-[200px] flex-1 bg-zinc-900 border border-zinc-700/80 text-white font-medium text-sm placeholder:text-zinc-500 px-4 py-2.5 rounded-xl outline-none transition-all focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+                      className="min-w-[200px] flex-1"
                     />
                   )}
 
                   {item.is_secret ? (
                     <button
                       type="button"
-                      className="grid h-10 w-10 place-items-center rounded-xl bg-violet-600 text-white shadow-md transition-all hover:bg-violet-500"
+                      className="grid h-10 w-10 place-items-center rounded-xl border border-zinc-300 bg-white text-zinc-600 shadow-sm transition-all hover:border-violet-400 hover:text-violet-600"
                       onClick={() =>
                         setRevealed((prev) => ({
                           ...prev,
@@ -227,7 +227,7 @@ export default function SuperAdminConfigPage() {
                 </div>
 
                 {item.is_secret && item.value_encrypted ? (
-                  <p className="mt-2 font-mono text-xs text-zinc-400">
+                  <p className="mt-2 font-mono text-xs text-zinc-500">
                     Stored · {maskSecret(item.value_encrypted)}
                   </p>
                 ) : null}
@@ -236,7 +236,7 @@ export default function SuperAdminConfigPage() {
           })}
         </div>
         {status ? (
-          <p className="mt-4 text-sm text-emerald-400">{status}</p>
+          <p className="mt-4 text-sm text-emerald-700">{status}</p>
         ) : null}
       </AdminSection>
     </AdminShell>

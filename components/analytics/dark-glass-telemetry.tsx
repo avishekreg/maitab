@@ -39,7 +39,7 @@ import {
 import { formatINR } from "@/lib/utils";
 
 const CARD =
-  "overflow-hidden bg-zinc-900/70 border border-zinc-800/80 backdrop-blur-2xl rounded-2xl p-6 shadow-2xl";
+  "overflow-hidden bg-white border border-zinc-200 shadow-sm rounded-2xl p-6 text-zinc-900";
 
 const KPI_CARD = KPI_HOVER_CLASS;
 
@@ -89,7 +89,7 @@ function DarkTooltip({
           {p.name}: {p.value} pours · {formatINR(Number(p.value) * (POUR_RATE[String(p.dataKey)] ?? 450))}
         </p>
       ))}
-      <p className="mt-1 border-t border-zinc-800 pt-1 text-zinc-400">
+      <p className="mt-1 border-t border-zinc-800 pt-1 text-zinc-500">
         Total {totalPours} pours · {formatINR(totalRev)}
       </p>
     </div>
@@ -97,7 +97,10 @@ function DarkTooltip({
 }
 
 const selectClass =
-  "h-10 min-w-[180px] rounded-xl border border-zinc-800 bg-zinc-950 px-3 text-xs text-zinc-100 outline-none focus:border-cyan-500/50";
+  "h-10 min-w-[180px] rounded-xl border border-zinc-300 bg-white px-3 text-xs text-zinc-900 outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500";
+
+const GRID_STROKE = "#e4e4e7";
+const TICK_FILL = "#52525b";
 
 export function DarkGlassTelemetry({
   scope = "network",
@@ -218,20 +221,20 @@ export function DarkGlassTelemetry({
   const heading = title || "LIQUOR TELEMETRY";
 
   return (
-    <div className="relative isolate space-y-5 text-zinc-100">
+    <div className="relative isolate space-y-5 text-zinc-900">
       <div className="no-print flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="font-display text-4xl font-extrabold uppercase tracking-tight text-white">
+          <h1 className="font-display text-4xl font-extrabold uppercase tracking-tight text-zinc-950">
             {heading}
           </h1>
-          <p className="mt-1 max-w-2xl font-medium text-zinc-400">
+          <p className="mt-1 max-w-2xl text-sm font-semibold tracking-wide text-zinc-600">
             Network-wide pour velocity, share of throat, and leakage radar
           </p>
         </div>
         <button
           type="button"
           onClick={exportPdf}
-          className="inline-flex items-center gap-2 rounded-xl border border-zinc-700/80 bg-zinc-900 px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-zinc-200 shadow-lg transition-all hover:border-cyan-500/60 hover:text-cyan-300"
+          className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 bg-white px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-zinc-800 shadow-sm transition-all hover:border-violet-400 hover:text-violet-600"
         >
           <FileText className="h-4 w-4" />
           Export Executive Liquor Telemetry PDF
@@ -327,12 +330,12 @@ export function DarkGlassTelemetry({
 
       <div className="no-print space-y-5">
         <div className={`${CARD} p-4`}>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-500">
             Contextual scope
           </p>
           <div className="mt-3 flex flex-wrap gap-3">
             <label className="flex flex-col gap-1">
-              <span className="text-[10px] uppercase tracking-wider text-zinc-400">Network scope</span>
+              <span className="text-[10px] uppercase tracking-wider text-zinc-500">Network scope</span>
               <select className={selectClass} value={venue} onChange={(e) => setVenue(e.target.value as NetworkVenueKey)}>
                 {SCOPE_VENUES.map((v) => (
                   <option key={v.key} value={v.key}>{v.label}</option>
@@ -340,7 +343,7 @@ export function DarkGlassTelemetry({
               </select>
             </label>
             <label className="flex flex-col gap-1">
-              <span className="text-[10px] uppercase tracking-wider text-zinc-400">Brand partner scope</span>
+              <span className="text-[10px] uppercase tracking-wider text-zinc-500">Brand partner scope</span>
               <select className={selectClass} value={partner} onChange={(e) => setPartner(e.target.value as BrandPartnerKey)}>
                 {BRAND_PARTNER_SCOPES.map((v) => (
                   <option key={v.key} value={v.key}>{v.label}</option>
@@ -348,7 +351,7 @@ export function DarkGlassTelemetry({
               </select>
             </label>
             <label className="flex flex-col gap-1">
-              <span className="text-[10px] uppercase tracking-wider text-zinc-400">Timeframe</span>
+              <span className="text-[10px] uppercase tracking-wider text-zinc-500">Timeframe</span>
               <select className={selectClass} value={timeframe} onChange={(e) => setTimeframe(e.target.value as TimeframeKey)}>
                 {TIMEFRAMES.map((v) => (
                   <option key={v.key} value={v.key}>{v.label}</option>
@@ -364,7 +367,7 @@ export function DarkGlassTelemetry({
             onClick={() => setDrillId("alcohol-gmv")}
             className={`${CARD} ${KPI_CARD}`}
           >
-            <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
+            <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-500">
               <Activity className="h-3.5 w-3.5 text-cyan-400" /> Total alcohol GMV
             </p>
             <p className="mt-3 font-display text-3xl font-extrabold tracking-tight text-cyan-400">
@@ -373,7 +376,7 @@ export function DarkGlassTelemetry({
             <span className="mt-2 inline-flex rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-300">
               +18.4% MTD
             </span>
-            <span className="mt-3 inline-flex rounded-full border border-zinc-700 bg-zinc-950/80 px-2 py-0.5 text-[10px] font-medium text-zinc-400 opacity-0 transition-opacity group-hover:opacity-100">
+            <span className="mt-3 inline-flex rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium text-zinc-500 opacity-0 transition-opacity group-hover:opacity-100">
               View Details ➔
             </span>
           </button>
@@ -382,16 +385,16 @@ export function DarkGlassTelemetry({
             onClick={() => setDrillId("live-pours")}
             className={`${CARD} ${KPI_CARD}`}
           >
-            <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
+            <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-500">
               <Droplets className="h-3.5 w-3.5 text-violet-400" /> Live pours &amp; bottles depleted
             </p>
-            <p className="mt-3 font-display text-3xl font-extrabold tracking-tight text-white">
+            <p className="mt-3 font-display text-3xl font-extrabold tracking-tight text-zinc-950">
               {kpis.pours} pours
             </p>
-            <p className="mt-2 text-sm text-zinc-400">
+            <p className="mt-2 text-sm text-zinc-500">
               {kpis.bottles.toFixed(1)} bottles depleted tonight
             </p>
-            <span className="mt-3 inline-flex rounded-full border border-zinc-700 bg-zinc-950/80 px-2 py-0.5 text-[10px] font-medium text-zinc-400 opacity-0 transition-opacity group-hover:opacity-100">
+            <span className="mt-3 inline-flex rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium text-zinc-500 opacity-0 transition-opacity group-hover:opacity-100">
               View Details ➔
             </span>
           </button>
@@ -400,7 +403,7 @@ export function DarkGlassTelemetry({
             onClick={() => setDrillId("pour-cost")}
             className={`${CARD} ${KPI_CARD}`}
           >
-            <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
+            <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-500">
               <Gauge className="h-3.5 w-3.5 text-amber-400" /> Average pour-cost ratio
             </p>
             <p className="mt-3 font-display text-3xl font-extrabold tracking-tight text-amber-400">
@@ -409,7 +412,7 @@ export function DarkGlassTelemetry({
             <span className="mt-2 inline-flex rounded-full border border-amber-400/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-200">
               Target &lt; 22%
             </span>
-            <span className="mt-3 inline-flex rounded-full border border-zinc-700 bg-zinc-950/80 px-2 py-0.5 text-[10px] font-medium text-zinc-400 opacity-0 transition-opacity group-hover:opacity-100">
+            <span className="mt-3 inline-flex rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium text-zinc-500 opacity-0 transition-opacity group-hover:opacity-100">
               View Details ➔
             </span>
           </button>
@@ -418,12 +421,12 @@ export function DarkGlassTelemetry({
             onClick={() => setDrillId("saarthi-conversion")}
             className={`${CARD} ${KPI_CARD}`}
           >
-            <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
+            <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-500">
               <Shield className="h-3.5 w-3.5 text-cyan-400" /> mAI Saarthi transit conversion
             </p>
             <p className="mt-3 font-display text-3xl font-extrabold tracking-tight text-emerald-400">14.6%</p>
-            <p className="mt-2 text-sm text-zinc-400">High-pour sessions transitioning to chauffeurs</p>
-            <span className="mt-3 inline-flex rounded-full border border-zinc-700 bg-zinc-950/80 px-2 py-0.5 text-[10px] font-medium text-zinc-400 opacity-0 transition-opacity group-hover:opacity-100">
+            <p className="mt-2 text-sm text-zinc-500">High-pour sessions transitioning to chauffeurs</p>
+            <span className="mt-3 inline-flex rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium text-zinc-500 opacity-0 transition-opacity group-hover:opacity-100">
               View Details ➔
             </span>
           </button>
@@ -436,10 +439,10 @@ export function DarkGlassTelemetry({
         />
 
         <div className={`${CARD} min-h-[340px]`}>
-          <h2 className="font-display text-lg font-black uppercase tracking-tight text-white md:text-xl">
+          <h2 className="font-display text-lg font-black uppercase tracking-tight text-zinc-950 md:text-xl">
             Hourly consumption velocity
           </h2>
-          <p className="mt-1 text-xs text-zinc-400">
+          <p className="mt-1 text-xs text-zinc-500">
             Volume throughput in Standard Pours (30ml units) across operational hours.
           </p>
           <div className="mt-4 h-72">
@@ -463,9 +466,9 @@ export function DarkGlassTelemetry({
                     <stop offset="95%" stopColor={EMERALD} stopOpacity={0.05} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid stroke="#27272a" strokeDasharray="3 3" />
-                <XAxis dataKey="hour" stroke="#a1a1aa" tick={{ fontSize: 11, fill: "#a1a1aa" }} />
-                <YAxis stroke="#a1a1aa" tick={{ fontSize: 11, fill: "#a1a1aa" }} />
+                <CartesianGrid stroke={GRID_STROKE} strokeDasharray="3 3" />
+                <XAxis dataKey="hour" stroke={TICK_FILL} tick={{ fontSize: 11, fill: TICK_FILL }} />
+                <YAxis stroke={TICK_FILL} tick={{ fontSize: 11, fill: TICK_FILL }} />
                 <Tooltip content={<DarkTooltip />} />
                 <Legend wrapperStyle={{ color: "#e4e4e7" }} />
                 <Area type="monotone" dataKey="beerCocktails" name="Beer / Cocktails" stackId="1" stroke={CYAN} fill="url(#gBeerC)" />
@@ -479,7 +482,7 @@ export function DarkGlassTelemetry({
 
         <div className="grid gap-5 lg:grid-cols-2">
           <div className={CARD}>
-            <h2 className="font-display text-lg font-black uppercase tracking-tight text-white md:text-xl">
+            <h2 className="font-display text-lg font-black uppercase tracking-tight text-zinc-950 md:text-xl">
               Strategic brand share of throat
             </h2>
             <div className="mt-3 flex flex-wrap gap-1.5">
@@ -490,8 +493,8 @@ export function DarkGlassTelemetry({
                   onClick={() => setCategory(f)}
                   className={`rounded-full border px-3 py-1 text-[11px] ${
                     category === f
-                      ? "border-cyan-400/60 bg-cyan-500/15 text-cyan-200"
-                      : "border-zinc-700 text-zinc-400"
+                      ? "border-violet-400 bg-violet-50 text-violet-700"
+                      : "border-zinc-300 bg-white text-zinc-600"
                   }`}
                 >
                   {f}
@@ -520,11 +523,11 @@ export function DarkGlassTelemetry({
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <ul className="mt-2 space-y-1 text-[11px] text-zinc-400">
+            <ul className="mt-2 space-y-1 text-[11px] text-zinc-500">
               {share.map((s) => (
                 <li key={s.name} className="flex justify-between gap-3">
                   <span>{s.name} · {s.sku}</span>
-                  <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-zinc-100">
+                  <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-zinc-800">
                     {s.value}% · {formatINR(s.revenue)}
                   </span>
                 </li>
@@ -533,10 +536,10 @@ export function DarkGlassTelemetry({
           </div>
 
           <div className={CARD}>
-            <h2 className="font-display text-lg font-black uppercase tracking-tight text-white md:text-xl">
+            <h2 className="font-display text-lg font-black uppercase tracking-tight text-zinc-950 md:text-xl">
               Inventory velocity &amp; bar leakage
             </h2>
-            <ul className="mt-2 space-y-1 text-[11px] text-zinc-400">
+            <ul className="mt-2 space-y-1 text-[11px] text-zinc-500">
               <li>
                 <span className="font-semibold text-emerald-400">Fast-Moving Velocity (Green):</span> Bottles poured in last 24h.
               </li>
@@ -550,9 +553,9 @@ export function DarkGlassTelemetry({
             <div className="mt-4 h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={INVENTORY_ROWS}>
-                  <CartesianGrid stroke="#27272a" strokeDasharray="3 3" />
-                  <XAxis dataKey="name" stroke="#a1a1aa" tick={{ fontSize: 9, fill: "#a1a1aa" }} />
-                  <YAxis stroke="#a1a1aa" tick={{ fontSize: 11, fill: "#a1a1aa" }} />
+                  <CartesianGrid stroke={GRID_STROKE} strokeDasharray="3 3" />
+                  <XAxis dataKey="name" stroke={TICK_FILL} tick={{ fontSize: 9, fill: TICK_FILL }} />
+                  <YAxis stroke={TICK_FILL} tick={{ fontSize: 11, fill: TICK_FILL }} />
                   <Tooltip content={<DarkTooltip />} />
                   <Legend />
                   <Bar dataKey="fast" name="Fast-moving" fill={EMERALD} radius={4} />

@@ -3,52 +3,47 @@
 @tailwind utilities;
 
 /*
-  Optimus (v0) design tokens — extracted from
-  https://v0-optimus-delta.vercel.app / Optimus template family.
+  Optimus (v0) design tokens — warm luxury cream + warm obsidian typography.
   Mapped into mAITab nightlife aliases so existing routes inherit automatically.
 */
 :root {
-  /* Dark-glass core — zinc nightlife OS */
-  --background: #09090b;
-  --foreground: #fafafa;
-  /* HSL channels so hsl(var(--card) / a) works with @apply-adjacent CSS */
-  --card: 240 6% 10%;
-  --card-foreground: #fafafa;
-  --popover: #18181b;
-  --popover-foreground: #fafafa;
-  --primary: #7c3aed;
-  --primary-foreground: #fafafa;
-  --secondary: #18181b;
-  --secondary-foreground: #f4f4f5;
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
-  --accent: #27272a;
-  --accent-foreground: #fafafa;
-  --destructive: #e11d48;
-  --destructive-foreground: #fda4af;
-  --border: #3f3f46;
-  --input: #18181b;
-  --ring: #8b5cf6;
+  --background: #faf9f5;
+  --foreground: #18181b;
+  --card: 0 0% 100%;
+  --card-foreground: #18181b;
+  --popover: #ffffff;
+  --popover-foreground: #18181b;
+  --primary: #18181b;
+  --primary-foreground: #fafaf9;
+  --secondary: #f4f3ee;
+  --secondary-foreground: #18181b;
+  --muted: #ecebe7;
+  --muted-foreground: #52525b;
+  --accent: #e7e4dd;
+  --accent-foreground: #18181b;
+  --destructive: #e40014;
+  --destructive-foreground: #e40014;
+  --border: #e2e1db;
+  --input: #ffffff;
+  --ring: #7c3aed;
   --radius: 0.75rem;
-  --chart-1: #8b5cf6;
-  --chart-2: #06b6d4;
-  --chart-3: #d97706;
-  --chart-4: #059669;
-  --chart-5: #e11d48;
+  --chart-1: #18181b;
+  --chart-2: #433830;
+  --chart-3: #7b6f66;
+  --chart-4: #a89c92;
+  --chart-5: #d3ccc7;
 
-  /* mAITab brand accents (kept for product semantics) */
   --brand-violet: #7c3aed;
   --brand-cyan: #06b6d4;
   --brand-gold: #d97706;
   --brand-mint: #059669;
   --brand-ruby: #e11d48;
 
-  /* Legacy aliases used across the app */
   --nightlife-bg: var(--background);
-  --nightlife-elevated: #18181b;
+  --nightlife-elevated: #ffffff;
   --nightlife-panel: var(--secondary);
   --nightlife-ink: var(--foreground);
-  --type-gold: #fbbf24;
+  --type-gold: #a38b5e;
   --accent-violet: var(--brand-violet);
   --accent-gold: var(--type-gold);
   --accent-emerald: var(--brand-mint);
@@ -56,7 +51,7 @@
   --text-muted: var(--muted-foreground);
   --champagne: var(--type-gold);
 
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html,
@@ -66,86 +61,6 @@ body {
   color: var(--foreground);
 }
 
-/*
-  Unlayered (beats Tailwind utilities) — no bleached inputs anywhere.
-  Excludes checkbox/radio/range/file so native controls stay usable.
-*/
-input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="hidden"]):not([type="color"]):not([type="button"]):not([type="submit"]):not([type="reset"]),
-select,
-textarea {
-  background-color: rgba(24, 24, 27, 0.95) !important;
-  color: #ffffff !important;
-  font-weight: 500;
-  font-size: 0.875rem;
-  border: 1px solid rgb(63 63 70 / 0.8) !important;
-  border-radius: 0.75rem;
-  padding: 0.625rem 1rem;
-  outline: none !important;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
-  color-scheme: dark;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: #71717a !important;
-  opacity: 1;
-}
-
-input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
-select:focus,
-textarea:focus {
-  border-color: #8b5cf6 !important;
-  box-shadow: 0 0 0 1px #8b5cf6;
-}
-
-select option,
-select optgroup {
-  background-color: #18181b;
-  color: #ffffff;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-select:-webkit-autofill {
-  -webkit-text-fill-color: #ffffff;
-  caret-color: #ffffff;
-  box-shadow: 0 0 0 1000px #18181b inset;
-  transition: background-color 9999s ease-out;
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-  accent-color: #7c3aed;
-}
-
-input[type="range"] {
-  accent-color: #7c3aed;
-}
-
-h1,
-h2 {
-  font-family: var(--font-display), var(--font-display-wide), Syne,
-    "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.04em;
-}
-
-label {
-  color: #e4e4e7;
-  font-weight: 600;
-  font-size: 0.875rem;
-  letter-spacing: 0.025em;
-}
-
-/*
-  Site typography (from How-it-works reference) — hero may override locally:
-  - Eyebrow: sans, uppercase, champagne gold, wide tracking
-  - Section display titles: Syne via .font-display only
-  - Step/card titles + body: Plus Jakarta Sans, tracking-normal, leading-relaxed
-*/
 body {
   font-family: var(--font-sans), "Plus Jakarta Sans", Inter, ui-sans-serif,
     system-ui, sans-serif;
@@ -156,7 +71,8 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Body/UI copy stays Plus Jakarta. Display titles opt in via h1/h2 and .font-display */
+h1:not(.font-display),
+h2:not(.font-display),
 h3:not(.font-display),
 h4:not(.font-display),
 p,
@@ -175,7 +91,6 @@ nav {
   letter-spacing: normal;
 }
 
-/* Gold-standard hero face — same DNA as “Turn every night into…” */
 .font-display {
   font-family: var(--font-display), var(--font-display-wide), Syne,
     "Space Grotesk", ui-sans-serif, system-ui, sans-serif !important;
@@ -229,19 +144,92 @@ nav {
   :root {
     --tw-ring-color: color-mix(in oklab, var(--ring) 20%, transparent);
   }
+
+  h1,
+  h2 {
+    font-family: var(--font-display), var(--font-display-wide), Syne,
+      "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #09090b;
+  }
+
+  label {
+    color: #52525b;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.025em;
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="hidden"]):not([type="color"]):not([type="button"]):not([type="submit"]):not([type="reset"]),
+  select,
+  textarea {
+    border-radius: 0.75rem;
+    border: 1px solid #d4d4d8;
+    background-color: #ffffff;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #18181b;
+    outline: none;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #a1a1aa;
+    opacity: 1;
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
+  select:focus,
+  textarea:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 2px rgb(124 58 237 / 0.25);
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    accent-color: #7c3aed;
+  }
+
+  input[type="range"] {
+    accent-color: #7c3aed;
+  }
+}
+
+/* Dark operator capsules (KDS, Gate, Login) — scoped dark form theme */
+.theme-dark-capsule input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="hidden"]):not([type="color"]):not([type="button"]):not([type="submit"]):not([type="reset"]),
+.theme-dark-capsule select,
+.theme-dark-capsule textarea {
+  background-color: rgb(24 24 27) !important;
+  border-color: rgb(63 63 70) !important;
+  color: #ffffff !important;
+  color-scheme: dark;
+}
+
+.theme-dark-capsule input::placeholder,
+.theme-dark-capsule textarea::placeholder {
+  color: #71717a !important;
+}
+
+.theme-dark-capsule select option,
+.theme-dark-capsule select optgroup {
+  background-color: #18181b;
+  color: #ffffff;
 }
 
 @layer components {
   .optimus-glass {
     @apply border backdrop-blur-xl;
-    background-color: rgba(9, 9, 11, 0.82);
-    border-color: rgb(39 39 42 / 0.85);
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
+    background-color: hsl(var(--card) / 0.85);
+    border-color: color-mix(in oklab, var(--border) 85%, transparent);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
   }
 
   .optimus-panel {
-    border: 1px solid rgb(39 39 42 / 0.85);
-    background: rgba(24, 24, 27, 0.8);
+    border: 1px solid var(--border);
+    background: color-mix(in oklab, var(--secondary) 80%, transparent);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
@@ -259,6 +247,14 @@ nav {
     background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
     box-shadow: 0 10px 28px rgba(124, 58, 237, 0.22);
   }
+
+  .v0-card {
+    @apply rounded-2xl border border-zinc-200/80 bg-white p-5 text-zinc-900 shadow-sm;
+  }
+
+  .v0-section {
+    @apply overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm;
+  }
 }
 
 @layer utilities {
@@ -272,9 +268,9 @@ nav {
 
   .surface-frost {
     @apply border backdrop-blur-xl;
-    background-color: rgba(24, 24, 27, 0.75);
-    border-color: rgb(39 39 42 / 0.85);
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
+    background-color: hsl(var(--card) / 0.85);
+    border-color: color-mix(in oklab, var(--border) 85%, transparent);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
   }
 
   .glow-border {
@@ -293,9 +289,9 @@ nav {
 
   .pastel-card {
     @apply border backdrop-blur-xl rounded-xl;
-    background-color: rgba(24, 24, 27, 0.75);
-    border-color: rgb(39 39 42 / 0.85);
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
+    background-color: hsl(var(--card) / 0.85);
+    border-color: color-mix(in oklab, var(--border) 85%, transparent);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
   }
 }
 
@@ -309,15 +305,6 @@ nav {
   body {
     background: #fff !important;
     color: #111 !important;
-  }
-
-  input,
-  select,
-  textarea {
-    background: #fff !important;
-    color: #111 !important;
-    border-color: #d4d4d8 !important;
-    box-shadow: none !important;
   }
 
   .no-print {
