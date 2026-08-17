@@ -49,13 +49,13 @@
         width: 44px;
         height: 44px;
         border-radius: 12px;
-        background: linear-gradient(135deg, #8b5cf6, #a855f7 45%, #06b6d4);
-        display: grid;
-        place-items: center;
-        font-weight: 800;
-        letter-spacing: -0.04em;
-        color: white;
-        box-shadow: 0 8px 24px rgba(139, 92, 246, 0.28);
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.28);
+      }
+      .brand-mark img {
+        display: block;
+        width: 100%;
+        height: 100%;
       }
       .brand strong {
         font-size: 18px;
@@ -95,6 +95,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        gap: 10px;
         min-height: 48px;
         padding: 14px 18px;
         border-radius: 14px;
@@ -104,8 +105,13 @@
         cursor: pointer;
       }
       .btn-primary {
-        background: linear-gradient(90deg, #8b5cf6, #a855f7 50%, #06b6d4);
+        background: linear-gradient(135deg, #7c3aed, #06b6d4);
         color: #fff;
+      }
+      .btn-primary img {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
       }
       .btn-secondary {
         background: rgba(6, 182, 212, 0.12);
@@ -134,7 +140,9 @@
   <body>
     <main class="wrap">
       <div class="brand">
-        <div class="brand-mark" aria-hidden="true">m</div>
+        <div class="brand-mark" aria-hidden="true">
+          <img src="/icons/icon-192.png" alt="" width="44" height="44" />
+        </div>
         <strong>mAITab</strong>
       </div>
 
@@ -154,6 +162,7 @@
             href="/api/download/apk"
             download="maitab-app.apk"
           >
+            <img src="/icons/icon-192.png" alt="" width="28" height="28" />
             Download APK
           </a>
           <a id="apk-chrome" class="btn btn-secondary" href="#">Open in Chrome</a>

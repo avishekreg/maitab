@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Space_Grotesk, Syne } from "next/font/google";
 import { AppProviders } from "@/components/providers/AppProviders";
-import { maitabFaviconDataUri } from "@/lib/branding/favicon";
 import "./globals.css";
 
 /** Display — ultra-wide geometric titles (hero DNA: Syne + Space Grotesk) */
@@ -25,20 +24,26 @@ const sans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "mAITab — Smart Bar Tab",
+  title: "mAITab — Zero-Wait Nightlife & Tab OS",
   description:
     "Zero-hardware nightlife OS for prepaid tabs, gate hospitality, KDS, and social gaming. Part of the mAI ecosystem.",
   applicationName: "mAITab",
+  manifest: "/manifest.json",
   icons: {
-    icon: [{ url: maitabFaviconDataUri(64), type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   appleWebApp: {
     capable: true,
     title: "mAITab",
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
   },
   openGraph: {
-    title: "mAITab — Smart Bar Tab",
+    title: "mAITab — Zero-Wait Nightlife & Tab OS",
     description:
       "Prepaid bar tabs, gate hospitality, KDS, AV takeovers, and social gaming — mAI ecosystem.",
     siteName: "mAITab",

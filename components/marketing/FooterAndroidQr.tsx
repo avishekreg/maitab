@@ -50,6 +50,15 @@ export function FooterAndroidQr({
 
   return (
     <div className={`flex flex-col items-start gap-2 ${className}`}>
+      <div className="flex items-center gap-2">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/icons/icon-192.png"
+          alt="mAITab"
+          className="h-9 w-9 rounded-xl shadow-[0_8px_20px_rgba(124,58,237,0.35)]"
+        />
+        <span className="font-display text-sm font-bold text-white">mAITab APK</span>
+      </div>
       <a
         href={downloadHref}
         download={MAITAB_ANDROID_DOWNLOAD_FILENAME}

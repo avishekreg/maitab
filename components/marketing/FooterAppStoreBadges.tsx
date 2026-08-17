@@ -58,9 +58,15 @@ export function FooterAppStoreBadges({
           <a
             href={MAITAB_ANDROID_DOWNLOAD_API}
             download={MAITAB_ANDROID_DOWNLOAD_FILENAME}
-            className="inline-block"
+            className="inline-flex items-center gap-2.5"
             aria-label="Download the mAITab Android APK"
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/icons/icon-192.png"
+              alt=""
+              className="h-10 w-10 rounded-xl shadow-[0_8px_20px_rgba(124,58,237,0.35)]"
+            />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/badges/google-play.svg"
@@ -116,8 +122,14 @@ export function FooterAppStoreBadges({
               <a
                 href={MAITAB_ANDROID_DOWNLOAD_API}
                 download={MAITAB_ANDROID_DOWNLOAD_FILENAME}
-                className="inline-flex h-11 flex-1 items-center justify-center rounded-xl bg-gradient-to-r from-[#8B5CF6] via-[#A855F7] to-[#06B6D4] px-4 text-sm font-semibold text-white"
+                className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-cyan-500 px-4 text-sm font-semibold text-white"
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/icons/icon-192.png"
+                  alt=""
+                  className="h-7 w-7 rounded-lg"
+                />
                 Download Android APK
               </a>
               <button
