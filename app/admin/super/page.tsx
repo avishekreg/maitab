@@ -6,6 +6,7 @@ import { KeyRound } from "lucide-react";
 import { AdminSection, AdminShell, KpiStrip } from "@/components/admin/AdminShell";
 import { BillingOverridePanel } from "@/components/admin/BillingOverridePanel";
 import { NeonButton } from "@/components/ui/NeonButton";
+import { commandCenterDrill } from "@/lib/admin/kpi-drills";
 import { DEMO_METRICS } from "@/lib/demo/data";
 import { useSystemConfigStore } from "@/lib/store/system-config-store";
 import type { SystemConfigItem } from "@/lib/admin/system-config";
@@ -117,17 +118,53 @@ export default function SuperAdminPage() {
       <KpiStrip
         items={[
           {
+            id: "platform-gmv",
             label: "Platform GMV",
             value: formatINR(metrics.total_gmv),
             tone: "gold",
+            valueClassName:
+              "text-xl xl:text-2xl font-display font-black text-amber-400 tracking-tight whitespace-nowrap",
+            drill: commandCenterDrill("platform-gmv", {
+              totalGmv: metrics.total_gmv,
+              activeClubs: metrics.active_clubs,
+              fraudCount: metrics.fraud_flags_24h + 1,
+              radiusKm,
+            })!,
           },
-          { label: "Active clubs", value: String(metrics.active_clubs) },
           {
+            id: "active-clubs",
+            label: "Active clubs",
+            value: String(metrics.active_clubs),
+            drill: commandCenterDrill("active-clubs", {
+              totalGmv: metrics.total_gmv,
+              activeClubs: metrics.active_clubs,
+              fraudCount: metrics.fraud_flags_24h + 1,
+              radiusKm,
+            })!,
+          },
+          {
+            id: "fraud-24h",
             label: "Fraud · 24h",
             value: String(metrics.fraud_flags_24h + 1),
             tone: "ruby",
+            drill: commandCenterDrill("fraud-24h", {
+              totalGmv: metrics.total_gmv,
+              activeClubs: metrics.active_clubs,
+              fraudCount: metrics.fraud_flags_24h + 1,
+              radiusKm,
+            })!,
           },
-          { label: "Lockout", value: `${radiusKm} km` },
+          {
+            id: "lockout",
+            label: "Lockout",
+            value: `${radiusKm} km`,
+            drill: commandCenterDrill("lockout", {
+              totalGmv: metrics.total_gmv,
+              activeClubs: metrics.active_clubs,
+              fraudCount: metrics.fraud_flags_24h + 1,
+              radiusKm,
+            })!,
+          },
         ]}
       />
 

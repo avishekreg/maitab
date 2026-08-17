@@ -17,6 +17,8 @@ import {
   YAxis,
 } from "recharts";
 import { Activity, Droplets, FileText, Gauge, Shield, Zap } from "lucide-react";
+import { KpiDrillDrawer } from "@/components/admin/KpiDrillDrawer";
+import { telemetryDrill } from "@/lib/admin/kpi-drills";
 import {
   BRAND_PARTNER_SCOPES,
   DEMO_TELEMETRY,
@@ -38,6 +40,9 @@ import { formatINR } from "@/lib/utils";
 
 const CARD =
   "overflow-hidden bg-zinc-900/70 border border-zinc-800/80 backdrop-blur-2xl rounded-2xl p-6 shadow-2xl";
+
+const KPI_CARD =
+  "group relative text-left cursor-pointer transition-all hover:scale-[1.02] hover:border-zinc-600 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] active:scale-[0.99]";
 
 const CYAN = "#06b6d4";
 const AMBER = "#f59e0b";
@@ -112,6 +117,7 @@ export function DarkGlassTelemetry({
   const [timeframe, setTimeframe] = useState<TimeframeKey>("tonight");
   const [category, setCategory] = useState<ShareTab>("All Spirits");
   const [draftNote, setDraftNote] = useState<string | null>(null);
+  const [drillId, setDrillId] = useState<string | null>(null);
 
   const rows = useMemo(
     () => filterTelemetry(DEMO_TELEMETRY, venue, partner),
@@ -354,7 +360,11 @@ export function DarkGlassTelemetry({
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <div className={CARD}>
+          <button
+            type="button"
+            onClick={() => setDrillId("alcohol-gmv")}
+            className={`${CARD} ${KPI_CARD}`}
+          >
             <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
               <Activity className="h-3.5 w-3.5 text-cyan-400" /> Total alcohol GMV
             </p>
@@ -364,8 +374,15 @@ export function DarkGlassTelemetry({
             <span className="mt-2 inline-flex rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-300">
               +18.4% MTD
             </span>
-          </div>
-          <div className={CARD}>
+            <span className="mt-3 inline-flex rounded-full border border-zinc-700 bg-zinc-950/80 px-2 py-0.5 text-[10px] font-medium text-zinc-400 opacity-0 transition-opacity group-hover:opacity-100">
+              View Details ➔
+            </span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setDrillId("live-pours")}
+            className={`${CARD} ${KPI_CARD}`}
+          >
             <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
               <Droplets className="h-3.5 w-3.5 text-violet-400" /> Live pours &amp; bottles depleted
             </p>
@@ -375,8 +392,15 @@ export function DarkGlassTelemetry({
             <p className="mt-2 text-sm text-zinc-400">
               {kpis.bottles.toFixed(1)} bottles depleted tonight
             </p>
-          </div>
-          <div className={CARD}>
+            <span className="mt-3 inline-flex rounded-full border border-zinc-700 bg-zinc-950/80 px-2 py-0.5 text-[10px] font-medium text-zinc-400 opacity-0 transition-opacity group-hover:opacity-100">
+              View Details ➔
+            </span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setDrillId("pour-cost")}
+            className={`${CARD} ${KPI_CARD}`}
+          >
             <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
               <Gauge className="h-3.5 w-3.5 text-amber-400" /> Average pour-cost ratio
             </p>
@@ -386,15 +410,31 @@ export function DarkGlassTelemetry({
             <span className="mt-2 inline-flex rounded-full border border-amber-400/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-200">
               Target &lt; 22%
             </span>
-          </div>
-          <div className={CARD}>
+            <span className="mt-3 inline-flex rounded-full border border-zinc-700 bg-zinc-950/80 px-2 py-0.5 text-[10px] font-medium text-zinc-400 opacity-0 transition-opacity group-hover:opacity-100">
+              View Details ➔
+            </span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setDrillId("saarthi-conversion")}
+            className={`${CARD} ${KPI_CARD}`}
+          >
             <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-400">
               <Shield className="h-3.5 w-3.5 text-cyan-400" /> mAI Saarthi transit conversion
             </p>
             <p className="mt-3 font-display text-3xl font-extrabold tracking-tight text-emerald-400">14.6%</p>
             <p className="mt-2 text-sm text-zinc-400">High-pour sessions transitioning to chauffeurs</p>
-          </div>
+            <span className="mt-3 inline-flex rounded-full border border-zinc-700 bg-zinc-950/80 px-2 py-0.5 text-[10px] font-medium text-zinc-400 opacity-0 transition-opacity group-hover:opacity-100">
+              View Details ➔
+            </span>
+          </button>
         </div>
+
+        <KpiDrillDrawer
+          open={Boolean(drillId)}
+          onClose={() => setDrillId(null)}
+          content={drillId ? telemetryDrill(drillId, { gmv: kpis.gmv, pours: kpis.pours, bottles: kpis.bottles, avgCost: kpis.avgCost }) : null}
+        />
 
         <div className={`${CARD} min-h-[340px]`}>
           <h2 className="font-display text-lg font-black uppercase tracking-tight text-white md:text-xl">
