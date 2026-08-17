@@ -41,7 +41,7 @@ export function PromptRevealCard({
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="relative overflow-hidden rounded-2xl border border-violet-200 bg-pastel-lavender/80 p-6 text-center shadow-soft backdrop-blur-md"
+      className="relative flex min-h-[140px] w-full flex-col justify-center overflow-hidden rounded-2xl border border-zinc-700/80 bg-zinc-900/90 p-6 shadow-lg md:p-8"
     >
       {flash ? (
         <motion.div
@@ -51,10 +51,10 @@ export function PromptRevealCard({
           transition={{ duration: 0.6 }}
         />
       ) : null}
-      <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+      <p className="mb-2 text-xs font-mono font-bold uppercase tracking-widest text-amber-400">
         {title}
       </p>
-      <p className="type-title mt-3 text-2xl text-foreground">
+      <p className="text-left font-display text-lg font-extrabold leading-relaxed text-white md:text-xl">
         {body}
       </p>
     </motion.div>

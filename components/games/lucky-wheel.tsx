@@ -10,11 +10,15 @@ import { cn, triggerHaptic } from "@/lib/utils";
 const DURATION_MS = 4500;
 const EXTRA_TURNS = 6;
 const SIZE = 288;
+const CX = SIZE / 2;
+const CY = SIZE / 2;
+const RIM = SIZE / 2 - 8;
+const TEXT_R = RIM * 0.58;
+const HUB_R = 22;
 
 const PALETTE = ["#1e1b4b", "#0f172a", "#4c1d95", "#164e63", "#3f2a14", "#111827"];
 
 function bezierEase(x: number) {
-  // CSS cubic-bezier(0.15, 0.9, 0.2, 1.0)
   const x1 = 0.15;
   const y1 = 0.9;
   const x2 = 0.2;
@@ -37,8 +41,30 @@ function bezierEase(x: number) {
 
 function pointerIndex(rotation: number, count: number) {
   const slice = 360 / count;
-  const deg = ((360 - (rotation % 360)) + 360) % 360;
+  const deg = (((360 - (rotation % 360)) % 360) + 360) % 360;
   return Math.min(count - 1, Math.floor(deg / slice));
+}
+
+function slicePath(index: number, count: number) {
+  const slice = (Math.PI * 2) / count;
+  const start = index * slice - Math.PI / 2;
+  const end = start + slice;
+  const x1 = CX + RIM * Math.cos(start);
+  const y1 = CY + RIM * Math.sin(start);
+  const x2 = CX + RIM * Math.cos(end);
+  const y2 = CY + RIM * Math.sin(end);
+  const large = slice > Math.PI ? 1 : 0;
+  return `M ${CX} ${CY} L ${x1} ${y1} A ${RIM} ${RIM} 0 ${large} 1 ${x2} ${y2} Z`;
+}
+
+function splitSliceLabel(raw: string): [string] | [string, string] {
+  const clipped = raw.length > 24 ? `${raw.slice(0, 21).trimEnd()}...` : raw;
+  if (clipped.length <= 12) return [clipped];
+  const cut = clipped.lastIndexOf(" ", 12);
+  const at = cut >= 5 ? cut : 12;
+  const a = clipped.slice(0, at).trim();
+  const b = clipped.slice(at).trim();
+  return b ? [a, b] : [a];
 }
 
 export function LuckyWheel({
@@ -58,7 +84,6 @@ export function LuckyWheel({
     () => (labels?.length ? labels : [...LUCKY_WHEEL_SEGMENTS]),
     [labels]
   );
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotationRef = useRef(0);
   const animatingRef = useRef(false);
   const onCompleteRef = useRef(onComplete);
@@ -66,51 +91,7 @@ export function LuckyWheel({
   const [rotation, setRotation] = useState(0);
   const [flap, setFlap] = useState(0);
   const [winner, setWinner] = useState<string | null>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = SIZE * dpr;
-    canvas.height = SIZE * dpr;
-    const cx = canvas.width / 2;
-    const cy = canvas.height / 2;
-    const radius = canvas.width / 2 - 10 * dpr;
-    const slice = (Math.PI * 2) / items.length;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    items.forEach((label, i) => {
-      const start = i * slice - Math.PI / 2;
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.arc(cx, cy, radius, start, start + slice);
-      ctx.closePath();
-      ctx.fillStyle = PALETTE[i % PALETTE.length]!;
-      ctx.fill();
-      ctx.strokeStyle = "rgba(253, 230, 138, 0.35)";
-      ctx.lineWidth = 2 * dpr;
-      ctx.stroke();
-
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(start + slice / 2);
-      ctx.fillStyle = "#F8FAFC";
-      ctx.font = `700 ${11 * dpr}px ui-sans-serif, system-ui`;
-      ctx.textAlign = "right";
-      ctx.fillText(label.slice(0, 22), radius - 16 * dpr, 4 * dpr);
-      ctx.restore();
-    });
-
-    ctx.beginPath();
-    ctx.arc(cx, cy, 18 * dpr, 0, Math.PI * 2);
-    ctx.fillStyle = "#09090b";
-    ctx.fill();
-    ctx.strokeStyle = accent;
-    ctx.lineWidth = 3 * dpr;
-    ctx.stroke();
-  }, [accent, items]);
+  const sliceDeg = 360 / items.length;
 
   useEffect(() => {
     if (!spinning || animatingRef.current) return;
@@ -168,7 +149,7 @@ export function LuckyWheel({
   }, [celebrate, items, spinning]);
 
   return (
-    <div className="relative mx-auto grid w-full max-w-sm place-items-center">
+    <div className="relative mx-auto grid w-full max-w-full place-items-center overflow-hidden px-2">
       <motion.div
         key={flap}
         className="absolute top-0 z-20 h-0 w-0 border-l-[11px] border-r-[11px] border-t-[20px] border-l-transparent border-r-transparent border-t-amber-300 drop-shadow-[0_0_12px_rgba(251,191,36,0.9)]"
@@ -177,24 +158,68 @@ export function LuckyWheel({
       />
 
       <div
-        className="relative rounded-full p-[10px] shadow-[0_0_40px_rgba(245,158,11,0.35)]"
+        className="relative w-full max-w-[min(18rem,calc(100vw-5.5rem))] rounded-full p-[10px] shadow-[0_0_40px_rgba(245,158,11,0.35)]"
         style={{
           background:
             "conic-gradient(from 0deg, #fde68a, #a78bfa, #22d3ee, #f59e0b, #fde68a)",
         }}
       >
-        <div className="rounded-full bg-zinc-950 p-1.5">
-          <canvas
-            ref={canvasRef}
-            width={SIZE}
-            height={SIZE}
-            className="block h-72 w-72 rounded-full"
+        <div className="overflow-hidden rounded-full bg-zinc-950 p-1.5">
+          <svg
+            viewBox={`0 0 ${SIZE} ${SIZE}`}
+            className="block h-auto w-full"
             style={{
               transform: `rotate(${rotation}deg)`,
               transition: "none",
               willChange: "transform",
             }}
-          />
+          >
+            {items.map((label, i) => {
+              const angle = (i + 0.5) * sliceDeg;
+              const lines = splitSliceLabel(label);
+              return (
+                <g key={`${label}-${i}`}>
+                  <path
+                    d={slicePath(i, items.length)}
+                    fill={PALETTE[i % PALETTE.length]}
+                    stroke="rgba(253, 230, 138, 0.35)"
+                    strokeWidth="1.5"
+                  />
+                  <text
+                    x={CX}
+                    y={CY - TEXT_R}
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fill="#ffffff"
+                    fontSize="10"
+                    fontWeight="700"
+                    transform={`rotate(${angle} ${CX} ${CY})`}
+                  >
+                    {lines.length === 1 ? (
+                      lines[0]
+                    ) : (
+                      <>
+                        <tspan x={CX} dy="-0.6em">
+                          {lines[0]}
+                        </tspan>
+                        <tspan x={CX} dy="1.2em">
+                          {lines[1]}
+                        </tspan>
+                      </>
+                    )}
+                  </text>
+                </g>
+              );
+            })}
+            <circle
+              cx={CX}
+              cy={CY}
+              r={HUB_R}
+              fill="#09090b"
+              stroke={accent}
+              strokeWidth="3"
+            />
+          </svg>
         </div>
       </div>
 

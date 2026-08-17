@@ -32,12 +32,14 @@ export function MostLikelyPanel({
         key={prompt}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="rounded-2xl border border-accent-gold/30 bg-accent-gold/10 p-4"
+        className="flex min-h-[140px] w-full flex-col justify-center rounded-2xl border border-zinc-700/80 bg-zinc-900/90 p-6 shadow-lg md:p-8"
       >
-        <p className="text-[11px] uppercase tracking-[0.2em] text-accent-gold">
+        <p className="mb-2 text-xs font-mono font-bold uppercase tracking-widest text-amber-400">
           Most Likely To…
         </p>
-        <p className="type-title mt-2 text-xl text-foreground">{prompt}</p>
+        <p className="text-left font-display text-lg font-extrabold leading-relaxed text-white md:text-xl">
+          {prompt}
+        </p>
       </motion.div>
 
       <div className="grid grid-cols-2 gap-3">

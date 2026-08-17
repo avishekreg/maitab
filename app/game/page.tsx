@@ -176,10 +176,10 @@ export default function GamePage() {
 
   return (
     <AppShell title="Arcade">
-      <div className="relative overflow-hidden rounded-[2rem] border border-zinc-800 bg-[#07080c] px-4 py-6 text-white sm:px-6">
+      <div className="relative w-full max-w-full overflow-x-hidden rounded-[2rem] border border-zinc-800 bg-[#07080c] px-4 py-6 text-white sm:px-6">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_420px_at_10%_-10%,rgba(124,58,237,0.22),transparent_55%),radial-gradient(700px_360px_at_90%_0%,rgba(6,182,212,0.14),transparent_50%)]" />
 
-        <div className="relative">
+        <div className="relative min-w-0 w-full max-w-full">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
               <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-violet-300">
@@ -200,7 +200,7 @@ export default function GamePage() {
             </div>
           </div>
 
-          <div className="mt-5 flex gap-2 overflow-x-auto pb-1">
+          <div className="no-scrollbar mt-5 flex w-full min-w-0 items-center gap-2 overflow-x-auto px-0 py-2 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {HUB_TABS.map((tab) => (
               <button
                 key={tab.id}
@@ -227,11 +227,11 @@ export default function GamePage() {
             />
           </label>
 
-          <div className="mt-3 flex flex-wrap gap-2 text-[11px] text-zinc-500">
-            <span className="rounded-full border border-zinc-800 px-2.5 py-1">
+          <div className="no-scrollbar mt-3 flex w-full min-w-0 items-center gap-2 overflow-x-auto px-0 py-2 text-[11px] text-zinc-500 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <span className="shrink-0 rounded-full border border-zinc-800 px-2.5 py-1">
               {remaining} unplayed
             </span>
-            <span className="rounded-full border border-zinc-800 px-2.5 py-1">
+            <span className="shrink-0 rounded-full border border-zinc-800 px-2.5 py-1">
               {playedCount} played
             </span>
             {Object.entries(stats)
@@ -239,7 +239,7 @@ export default function GamePage() {
               .map(([type, count]) => (
                 <span
                   key={type}
-                  className="rounded-full border border-zinc-800 px-2.5 py-1"
+                  className="shrink-0 rounded-full border border-zinc-800 px-2.5 py-1"
                 >
                   {type.replaceAll("_", " ")} · {count}
                 </span>
@@ -442,12 +442,12 @@ export default function GamePage() {
           </div>
 
           <div className="mt-8">
-            <div className="mb-3 flex items-center justify-between">
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-500">
+            <div className="mb-3 flex min-w-0 items-center justify-between gap-2">
+              <p className="min-w-0 truncate font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-500">
                 Instant play · {filteredPool.length} in view
               </p>
-              <p className="text-[11px] text-zinc-500">
-                Table {session.primary_table_id.slice(0, 6)} vs neighboring booths
+              <p className="shrink-0 text-[11px] text-zinc-500">
+                Table {session.primary_table_id.slice(0, 6)}
               </p>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

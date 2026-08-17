@@ -57,12 +57,14 @@ export function TruthOrTabEngine({
 
   return (
     <div className={CARD}>
-      <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-amber-300">
-        Truth or Tab · {left}s
-      </p>
-      <h3 className="mt-3 font-display text-2xl font-black leading-snug text-white">
-        {prompt}
-      </h3>
+      <div className="flex min-h-[140px] w-full flex-col justify-center rounded-2xl border border-zinc-700/80 bg-zinc-900/90 p-6 shadow-lg md:p-8">
+        <p className="mb-2 text-xs font-mono font-bold uppercase tracking-widest text-amber-400">
+          Truth or Tab · {left}s
+        </p>
+        <h3 className="text-left font-display text-lg font-extrabold leading-relaxed text-white md:text-xl">
+          {prompt}
+        </h3>
+      </div>
       <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-zinc-800">
         <div
           className="h-full bg-gradient-to-r from-amber-400 to-violet-500 transition-all duration-1000"
@@ -525,7 +527,7 @@ export function ScratchWinEngine({ onComplete }: { onComplete: (label: string) =
   return (
     <div className={CARD + " text-center"}>
       <p className="font-mono text-[11px] text-amber-300">Golden scratch card</p>
-      <div className="relative mx-auto mt-4 w-[320px] max-w-full">
+      <div className="relative mx-auto mt-4 w-full max-w-full">
         <div className="absolute inset-0 grid place-items-center font-display text-xl font-black text-amber-200">
           {prize}
         </div>

@@ -23,7 +23,7 @@ export function NhieVotePanel({
   const noPct = total === 0 ? 0 : 100 - yesPct;
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-border bg-secondary p-5 backdrop-blur-xl">
+    <div className="relative overflow-hidden rounded-2xl border border-zinc-700/80 bg-zinc-900/90 p-6 shadow-lg backdrop-blur-xl md:p-8">
       {burst
         ? Array.from({ length: 12 }).map((_, i) => (
             <motion.span
@@ -41,7 +41,12 @@ export function NhieVotePanel({
           ))
         : null}
 
-      <p className="text-center text-lg font-semibold text-foreground">{statement}</p>
+      <p className="mb-2 text-xs font-mono font-bold uppercase tracking-widest text-amber-400">
+        Never Have I Ever
+      </p>
+      <p className="text-left font-display text-lg font-extrabold leading-relaxed text-white md:text-xl">
+        {statement}
+      </p>
 
       <div className="mt-5 space-y-3">
         <div>
