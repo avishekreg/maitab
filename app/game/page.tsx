@@ -373,10 +373,8 @@ export default function GamePage() {
                       {game?.game_type === "MOST_LIKELY_TO" ? (
                         <MostLikelyPanel
                           prompt={mostLikelyPrompt}
-                          yes={yes}
-                          no={no}
-                          onVote={(v) => void vote(v)}
-                          burst={voteBurst}
+                          onComplete={onEngineComplete}
+                          onBillPenalty={() => void onPayPenalty()}
                         />
                       ) : null}
                     </motion.div>
@@ -403,10 +401,6 @@ export default function GamePage() {
                       }
                     >
                       Next Statement
-                    </NeonButton>
-                  ) : game?.game_type === "MOST_LIKELY_TO" ? (
-                    <NeonButton onClick={() => onEngineComplete(mostLikelyPrompt)}>
-                      Lock Votes / Reveal
                     </NeonButton>
                   ) : selfPlay ? null : (
                     <NeonButton onClick={startSpin} disabled={!game || spinning}>
