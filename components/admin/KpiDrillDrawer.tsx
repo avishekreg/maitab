@@ -250,6 +250,14 @@ export function KpiDrillDrawer({
     );
   }
 
+  const pillClass = (active: boolean) =>
+    cn(
+      "rounded-lg px-3.5 py-1.5 text-xs transition-all",
+      active
+        ? "bg-zinc-900 font-bold text-white shadow-sm"
+        : "border border-zinc-300 bg-white text-zinc-600 hover:text-zinc-900"
+    );
+
   return (
     <AnimatePresence>
       {open && content ? (
@@ -257,7 +265,7 @@ export function KpiDrillDrawer({
           <motion.button
             type="button"
             aria-label="Close drill-down"
-            className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm"
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md transition-opacity"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -267,27 +275,27 @@ export function KpiDrillDrawer({
             role="dialog"
             aria-modal="true"
             aria-labelledby="kpi-drill-title"
-            className="fixed right-0 top-0 z-50 flex h-full w-full max-w-2xl flex-col border-l border-zinc-800 bg-zinc-950/98 text-zinc-100 shadow-2xl"
+            className="fixed right-0 top-0 z-50 flex h-full w-full max-w-2xl flex-col overflow-hidden border-l border-zinc-300 bg-[#faf9f5] text-zinc-900 shadow-2xl"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.2, ease: "easeOut" }}
           >
-            <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-zinc-800 bg-zinc-950/90 p-6 backdrop-blur-md">
+            <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-zinc-200 bg-[#faf9f5] p-6">
               <div className="min-w-0">
                 {content.role ? (
-                  <p className="mb-1 font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-500">
+                  <p className="mb-1 text-[11px] font-mono font-bold uppercase tracking-widest text-violet-600">
                     {ROLE_PILL[content.role]} · Audit
                   </p>
                 ) : null}
                 <h2
                   id="kpi-drill-title"
-                  className="font-display text-xl font-bold tracking-tight text-white"
+                  className="font-display text-2xl font-black tracking-tight text-zinc-950"
                 >
                   {content.title}
                 </h2>
                 {content.subtitle ? (
-                  <p className="mt-0.5 text-xs font-medium text-zinc-400">
+                  <p className="mt-0.5 text-xs font-medium text-zinc-600">
                     {content.subtitle}
                   </p>
                 ) : null}
@@ -296,15 +304,15 @@ export function KpiDrillDrawer({
                 type="button"
                 onClick={onClose}
                 aria-label="Close"
-                className="cursor-pointer rounded-full border border-zinc-700 bg-zinc-900 p-2 text-zinc-400 transition-all hover:bg-zinc-800 hover:text-white"
+                className="cursor-pointer rounded-full border border-zinc-300 bg-white p-2 text-zinc-600 shadow-sm transition-all hover:bg-zinc-100 hover:text-zinc-950"
               >
                 <X className="h-4 w-4" />
               </button>
             </header>
 
-            <div className="space-y-3 border-b border-zinc-800 px-6 py-3">
+            <div className="space-y-3 border-b border-zinc-200 bg-[#faf9f5] px-6 py-3">
               <label className="relative block">
-                <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-500" />
+                <Search className="pointer-events-none absolute left-3.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
                 <input
                   type="search"
                   value={query}
@@ -313,7 +321,7 @@ export function KpiDrillDrawer({
                     setPage(0);
                   }}
                   placeholder="Search SKU, category, table, timestamp…"
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-900 py-2 pl-9 pr-3.5 text-xs text-white outline-none placeholder:text-zinc-500 focus:border-violet-500"
+                  className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-10 pr-4 text-xs text-zinc-900 shadow-sm outline-none placeholder:text-zinc-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-500"
                 />
               </label>
               <div className="flex flex-wrap gap-1.5">
@@ -323,12 +331,7 @@ export function KpiDrillDrawer({
                     setFilterId("all");
                     setPage(0);
                   }}
-                  className={cn(
-                    "rounded-full border px-3 py-1 text-[11px] font-semibold transition",
-                    filterId === "all"
-                      ? "border-violet-400 bg-violet-600 text-white"
-                      : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-white"
-                  )}
+                  className={pillClass(filterId === "all")}
                 >
                   All
                 </button>
@@ -340,12 +343,7 @@ export function KpiDrillDrawer({
                       setFilterId(pill.id);
                       setPage(0);
                     }}
-                    className={cn(
-                      "rounded-full border px-3 py-1 text-[11px] font-semibold transition",
-                      filterId === pill.id
-                        ? "border-violet-400 bg-violet-600 text-white"
-                        : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-white"
-                    )}
+                    className={pillClass(filterId === pill.id)}
                   >
                     {pill.label}
                   </button>
@@ -353,76 +351,74 @@ export function KpiDrillDrawer({
               </div>
             </div>
 
-            <div className="min-h-0 flex-1 space-y-4 divide-y divide-zinc-800/60 overflow-y-auto p-6">
+            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto p-6">
               {filteredSummary.length ? (
-                <dl className="space-y-3 pb-4">
+                <div className="space-y-3">
                   {filteredSummary.map((row) => (
                     <div
                       key={row.label}
-                      className="rounded-xl border border-zinc-800 bg-zinc-900/60 px-4 py-3"
+                      className="flex items-center justify-between rounded-xl border border-zinc-200 bg-white p-4 shadow-sm"
                     >
-                      <div className="flex items-start justify-between gap-3">
-                        <dt className="text-xs font-medium uppercase tracking-wider text-zinc-400">
+                      <div>
+                        <p className="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-500">
                           {row.label}
-                        </dt>
-                        <dd className="text-right text-sm font-semibold text-zinc-100">
-                          {row.value}
-                        </dd>
+                        </p>
+                        {row.hint ? (
+                          <p className="mt-0.5 text-xs text-zinc-500">{row.hint}</p>
+                        ) : null}
                       </div>
-                      {row.hint ? (
-                        <p className="mt-1 text-xs text-zinc-500">{row.hint}</p>
-                      ) : null}
+                      <p className="font-display text-base font-extrabold text-zinc-950">
+                        {row.value}
+                      </p>
                     </div>
                   ))}
-                </dl>
+                </div>
               ) : null}
 
               {content.table ? (
-                <div className="overflow-x-auto">
-                  <table className="w-full min-w-[480px] text-left text-sm">
-                    <thead className="sticky top-0 bg-zinc-950 text-[11px] font-mono uppercase tracking-wider text-zinc-400">
-                      <tr>
-                        {content.table.headers.map((h) => (
-                          <th
-                            key={h}
-                            className="border-b border-zinc-800 py-2 pr-3 font-medium"
-                          >
-                            {h}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {pagedRows.length ? (
-                        pagedRows.map((row, i) => (
-                          <tr
-                            key={`${safePage}-${i}`}
-                            className="border-b border-zinc-800/60 text-sm font-medium text-zinc-200 transition-colors hover:bg-zinc-900/50"
-                          >
-                            {row.map((cell, j) => (
-                              <td key={j} className="py-2.5 pr-3">
+                <div>
+                  <div className="sticky top-0 z-[1] grid gap-2 border-b border-zinc-200 bg-[#faf9f5] py-2 text-[11px] font-mono uppercase tracking-wider text-zinc-500"
+                    style={{
+                      gridTemplateColumns: `minmax(8rem,1.4fr) repeat(${Math.max(content.table.headers.length - 1, 1)}, minmax(4rem,1fr))`,
+                    }}
+                  >
+                    {content.table.headers.map((h) => (
+                      <span key={h}>{h}</span>
+                    ))}
+                  </div>
+                  <div className="mt-3 space-y-3">
+                    {pagedRows.length ? (
+                      pagedRows.map((row, i) => (
+                        <div
+                          key={`${safePage}-${i}`}
+                          className="flex items-center justify-between gap-3 rounded-xl border border-zinc-200 bg-white p-3.5 text-sm transition-all hover:border-zinc-300 hover:shadow-sm"
+                        >
+                          <p className="min-w-0 shrink font-semibold text-zinc-900">
+                            {row[0]}
+                          </p>
+                          <div className="flex min-w-0 flex-wrap items-center justify-end gap-x-4 gap-y-1">
+                            {row.slice(1).map((cell, j) => (
+                              <span
+                                key={j}
+                                className="font-mono text-xs font-bold text-zinc-800"
+                              >
                                 {cell}
-                              </td>
+                              </span>
                             ))}
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td
-                            colSpan={content.table.headers.length}
-                            className="py-8 text-center text-sm text-zinc-500"
-                          >
-                            No records match this search or filter.
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="py-8 text-center text-sm text-zinc-500">
+                        No records match this search or filter.
+                      </p>
+                    )}
+                  </div>
                 </div>
               ) : null}
             </div>
 
-            <footer className="flex items-center justify-between gap-3 border-t border-zinc-800 bg-zinc-950 p-4 text-xs text-zinc-400">
+            <footer className="flex items-center justify-between gap-3 border-t border-zinc-200 bg-[#faf9f5] p-4 text-xs text-zinc-600">
               <p>
                 Showing {showingFrom}–{showingTo} of {filteredTableRows.length}{" "}
                 records
@@ -436,19 +432,19 @@ export function KpiDrillDrawer({
                   type="button"
                   disabled={safePage <= 0}
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
-                  className="rounded-lg border border-zinc-800 p-1.5 hover:bg-zinc-900 disabled:opacity-30"
+                  className="rounded-lg border border-zinc-300 bg-white p-1.5 shadow-sm hover:border-zinc-400 disabled:opacity-30"
                   aria-label="Previous page"
                 >
                   <ChevronLeft className="h-3.5 w-3.5" />
                 </button>
-                <span>
+                <span className="font-medium text-zinc-700">
                   {safePage + 1}/{pageCount}
                 </span>
                 <button
                   type="button"
                   disabled={safePage >= pageCount - 1}
                   onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
-                  className="rounded-lg border border-zinc-800 p-1.5 hover:bg-zinc-900 disabled:opacity-30"
+                  className="rounded-lg border border-zinc-300 bg-white p-1.5 shadow-sm hover:border-zinc-400 disabled:opacity-30"
                   aria-label="Next page"
                 >
                   <ChevronRight className="h-3.5 w-3.5" />
@@ -457,20 +453,20 @@ export function KpiDrillDrawer({
                   <button
                     type="button"
                     onClick={() => setExportOpen((v) => !v)}
-                    className="inline-flex items-center gap-1 rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-[11px] font-semibold text-zinc-200 hover:border-zinc-500"
+                    className="inline-flex items-center gap-1 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 font-semibold text-zinc-800 shadow-sm transition-all hover:border-zinc-400"
                   >
                     <Download className="h-3 w-3" />
                     Export CSV / JSON
                   </button>
                   {exportOpen ? (
-                    <div className="absolute bottom-full right-0 mb-2 w-36 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950 shadow-xl">
+                    <div className="absolute bottom-full right-0 mb-2 w-36 overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl">
                       <button
                         type="button"
                         onClick={() => {
                           exportCsv();
                           setExportOpen(false);
                         }}
-                        className="block w-full px-3 py-2 text-left text-xs text-zinc-200 hover:bg-zinc-900"
+                        className="block w-full px-3 py-2 text-left text-xs font-medium text-zinc-800 hover:bg-zinc-50"
                       >
                         Export CSV
                       </button>
@@ -480,7 +476,7 @@ export function KpiDrillDrawer({
                           exportJson();
                           setExportOpen(false);
                         }}
-                        className="block w-full px-3 py-2 text-left text-xs text-zinc-200 hover:bg-zinc-900"
+                        className="block w-full px-3 py-2 text-left text-xs font-medium text-zinc-800 hover:bg-zinc-50"
                       >
                         Export JSON
                       </button>
