@@ -1,17 +1,89 @@
 "use client";
 
+import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export type DrillRow = { label: string; value: string; hint?: string };
 export type DrillTable = { headers: string[]; rows: string[][] };
 
+export type DrillOperatorRole =
+  | "SUPER_ADMIN"
+  | "CLUB_ADMIN"
+  | "FLOOR_MANAGER"
+  | "BARTENDER"
+  | "GATE_STAFF"
+  | "TELEMETRY";
+
+const ROLE_PILL: Record<DrillOperatorRole, string> = {
+  SUPER_ADMIN: "Super Admin",
+  CLUB_ADMIN: "Club Admin",
+  FLOOR_MANAGER: "Floor Manager",
+  BARTENDER: "Bartender KDS",
+  GATE_STAFF: "Gatekeeper",
+  TELEMETRY: "Liquor Telemetry",
+};
+
 export type KpiDrillContent = {
   title: string;
   subtitle?: string;
+  role?: DrillOperatorRole;
   rows?: DrillRow[];
   table?: DrillTable;
 };
+
+export const KPI_HOVER_CLASS =
+  "cursor-pointer transition-all hover:scale-[1.02] hover:border-zinc-600 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] active:scale-[0.99] group";
+
+export function InteractiveKpiCard({
+  label,
+  value,
+  hint,
+  tone = "default",
+  valueClassName,
+  onClick,
+  className,
+}: {
+  label: string;
+  value: string;
+  hint?: string;
+  tone?: "gold" | "ruby" | "default";
+  valueClassName?: string;
+  onClick: () => void;
+  className?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/80 p-5 text-left shadow-xl backdrop-blur-xl",
+        KPI_HOVER_CLASS,
+        className
+      )}
+    >
+      <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-400">
+        {label}
+      </p>
+      <p
+        className={cn(
+          "mt-2 font-display font-extrabold tracking-tight whitespace-nowrap",
+          valueClassName || "text-2xl xl:text-3xl",
+          !valueClassName && tone === "gold" && "text-amber-400",
+          !valueClassName && tone === "ruby" && "text-rose-400",
+          !valueClassName && tone === "default" && "text-white"
+        )}
+      >
+        {value}
+      </p>
+      {hint ? <p className="mt-1 text-sm text-zinc-400">{hint}</p> : null}
+      <span className="mt-3 inline-flex rounded-full border border-zinc-700 bg-zinc-950/80 px-2 py-0.5 text-[10px] font-medium text-zinc-400 opacity-0 transition-opacity group-hover:opacity-100">
+        View Details ➔
+      </span>
+    </button>
+  );
+}
 
 export function KpiDrillDrawer({
   open,
@@ -22,6 +94,15 @@ export function KpiDrillDrawer({
   onClose: () => void;
   content: KpiDrillContent | null;
 }) {
+  useEffect(() => {
+    if (!open) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
   return (
     <AnimatePresence>
       {open && content ? (
@@ -36,19 +117,26 @@ export function KpiDrillDrawer({
             onClick={onClose}
           />
           <motion.aside
-            className="fixed inset-x-0 bottom-0 z-50 max-h-[85vh] overflow-hidden rounded-t-3xl border border-zinc-800 bg-zinc-950 shadow-2xl"
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
+            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-xl flex-col overflow-hidden border-l border-zinc-800 bg-zinc-950/95 text-zinc-100 shadow-2xl backdrop-blur-2xl"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 28, stiffness: 320 }}
           >
             <div className="flex items-start justify-between gap-4 border-b border-zinc-800 px-6 py-4">
               <div>
+                {content.role ? (
+                  <p className="mb-1 font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-500">
+                    {ROLE_PILL[content.role]} · Audit
+                  </p>
+                ) : null}
                 <h2 className="font-display text-xl font-extrabold tracking-tight text-white">
                   {content.title}
                 </h2>
                 {content.subtitle ? (
-                  <p className="mt-1 text-sm font-medium text-zinc-400">{content.subtitle}</p>
+                  <p className="mt-1 text-sm font-medium text-zinc-400">
+                    {content.subtitle}
+                  </p>
                 ) : null}
               </div>
               <button
@@ -71,7 +159,9 @@ export function KpiDrillDrawer({
                         <dt className="text-xs font-medium uppercase tracking-wider text-zinc-400">
                           {row.label}
                         </dt>
-                        <dd className="text-right text-sm font-semibold text-white">{row.value}</dd>
+                        <dd className="text-right text-sm font-semibold text-zinc-100">
+                          {row.value}
+                        </dd>
                       </div>
                       {row.hint ? (
                         <p className="mt-1 text-xs text-zinc-500">{row.hint}</p>
@@ -81,7 +171,12 @@ export function KpiDrillDrawer({
                 </dl>
               ) : null}
               {content.table ? (
-                <div className="mt-4 overflow-x-auto rounded-xl border border-zinc-800">
+                <div
+                  className={cn(
+                    "overflow-x-auto rounded-xl border border-zinc-800",
+                    content.rows?.length ? "mt-4" : ""
+                  )}
+                >
                   <table className="w-full min-w-[480px] text-left text-sm">
                     <thead className="bg-zinc-900 text-[11px] uppercase tracking-widest text-zinc-400">
                       <tr>

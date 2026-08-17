@@ -7,6 +7,7 @@ import { ClubCrudPanels } from "@/components/admin/ClubCrudPanels";
 import { ComplianceBanner } from "@/components/compliance/ComplianceBanner";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
+import { clubAdminDrill } from "@/lib/admin/kpi-drills";
 import {
   DEMO_CLUB,
   DEMO_ORDERS,
@@ -203,22 +204,66 @@ export default function ClubAdminPage() {
     >
       <KpiStrip
         items={[
-          { label: "Live GMV", value: formatINR(sales), tone: "gold" },
           {
-            label: "Promo credits",
-            value: formatINR(venue.credit_balance),
+            id: "live-gmv",
+            label: "Live GMV",
+            value: formatINR(sales),
+            tone: "gold",
+            drill: clubAdminDrill("live-gmv", {
+              gmv: sales,
+              credits: venue.credit_balance,
+              openSession:
+                activeVenueId === DEMO_CLUB.id
+                  ? DEMO_SESSION.total_session_spend
+                  : 0,
+              floorLive: displayOn,
+            })!,
           },
           {
+            id: "promo-credits",
+            label: "Promo credits",
+            value: formatINR(venue.credit_balance),
+            drill: clubAdminDrill("promo-credits", {
+              gmv: sales,
+              credits: venue.credit_balance,
+              openSession:
+                activeVenueId === DEMO_CLUB.id
+                  ? DEMO_SESSION.total_session_spend
+                  : 0,
+              floorLive: displayOn,
+            })!,
+          },
+          {
+            id: "open-session",
             label: "Open session",
             value: formatINR(
               activeVenueId === DEMO_CLUB.id
                 ? DEMO_SESSION.total_session_spend
                 : 0
             ),
+            drill: clubAdminDrill("open-session", {
+              gmv: sales,
+              credits: venue.credit_balance,
+              openSession:
+                activeVenueId === DEMO_CLUB.id
+                  ? DEMO_SESSION.total_session_spend
+                  : 0,
+              floorLive: displayOn,
+            })!,
           },
           {
+            id: "floor-status",
             label: "Floor status",
             value: displayOn ? "Live" : "Hidden",
+            drill: clubAdminDrill("floor-status", {
+              gmv: sales,
+              credits: venue.credit_balance,
+              openSession:
+                activeVenueId === DEMO_CLUB.id
+                  ? DEMO_SESSION.total_session_spend
+                  : 0,
+              floorLive: displayOn,
+            })!,
           },
         ]}
       />

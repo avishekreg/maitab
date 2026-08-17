@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import { AdminNav, type AdminNavRole } from "@/components/admin/admin-nav";
-import { KpiDrillDrawer } from "@/components/admin/KpiDrillDrawer";
+import {
+  InteractiveKpiCard,
+  KpiDrillDrawer,
+  type KpiDrillContent,
+} from "@/components/admin/KpiDrillDrawer";
 import { cn } from "@/lib/utils";
 import type { UserRole } from "@/lib/types";
 
@@ -101,7 +105,7 @@ export function KpiStrip({
     value: string;
     tone?: "gold" | "ruby" | "default";
     valueClassName?: string;
-    drill?: import("@/components/admin/KpiDrillDrawer").KpiDrillContent;
+    drill?: KpiDrillContent;
   }[];
 }) {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -109,44 +113,45 @@ export function KpiStrip({
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div
+        className={cn(
+          "grid grid-cols-2 gap-3",
+          items.length === 3 ? "md:grid-cols-3" : "md:grid-cols-4"
+        )}
+      >
         {items.map((item) => {
           const interactive = Boolean(item.drill && item.id);
+          if (interactive && item.id) {
+            return (
+              <InteractiveKpiCard
+                key={item.label}
+                label={item.label}
+                value={item.value}
+                tone={item.tone}
+                valueClassName={item.valueClassName}
+                onClick={() => setOpenId(item.id!)}
+              />
+            );
+          }
           return (
-            <button
+            <div
               key={item.label}
-              type="button"
-              disabled={!interactive}
-              onClick={() => interactive && item.id && setOpenId(item.id)}
-              className={cn(
-                "group relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/80 p-5 text-left shadow-xl backdrop-blur-xl",
-                interactive &&
-                  "cursor-pointer transition-all hover:scale-[1.02] hover:border-zinc-600 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] active:scale-[0.99]"
-              )}
+              className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/80 p-5 shadow-xl backdrop-blur-xl"
             >
               <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-400">
                 {item.label}
               </p>
               <p
                 className={cn(
-                  "mt-2 font-display font-extrabold tracking-tight",
-                  item.valueClassName ||
-                    "text-2xl xl:text-3xl whitespace-nowrap",
-                  item.tone === "gold" && !item.valueClassName && "text-amber-400",
+                  "mt-2 font-display font-extrabold tracking-tight text-2xl xl:text-3xl whitespace-nowrap",
+                  item.tone === "gold" && "text-amber-400",
                   item.tone === "ruby" && "text-rose-400",
-                  (!item.tone || item.tone === "default") &&
-                    !item.valueClassName &&
-                    "text-white"
+                  (!item.tone || item.tone === "default") && "text-white"
                 )}
               >
                 {item.value}
               </p>
-              {interactive ? (
-                <span className="mt-3 inline-flex rounded-full border border-zinc-700 bg-zinc-950/80 px-2 py-0.5 text-[10px] font-medium text-zinc-400 opacity-0 transition-opacity group-hover:opacity-100">
-                  View Details ➔
-                </span>
-              ) : null}
-            </button>
+            </div>
           );
         })}
       </div>

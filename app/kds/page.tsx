@@ -3,6 +3,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { BrandLockup } from "@/components/branding/brand-lockup";
+import {
+  InteractiveKpiCard,
+  KpiDrillDrawer,
+} from "@/components/admin/KpiDrillDrawer";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -11,6 +15,7 @@ import { fetchClubOrders } from "@/lib/data/orders";
 import { providerLabel } from "@/lib/discounts/bridge";
 import { useDiscountBridgeRealtime } from "@/lib/hooks/use-discount-bridge-realtime";
 import { useOrdersRealtime } from "@/lib/hooks/use-orders-realtime";
+import { kdsDrill } from "@/lib/admin/kpi-drills";
 import { DEMO_BAR_COUNTERS } from "@/lib/kds/routing";
 import { publishBus } from "@/lib/realtime/bus";
 import { formatTokenDisplay } from "@/lib/kds/token";
@@ -33,6 +38,7 @@ export default function KdsPage() {
   const [toast, setToast] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [counterFilter, setCounterFilter] = useState<string>("ALL");
+  const [drillId, setDrillId] = useState<string | null>(null);
 
   const counters = useMemo(
     () => DEMO_BAR_COUNTERS.filter((c) => c.venue_id === venueId),
@@ -173,6 +179,17 @@ export default function KdsPage() {
     return order.assigned_counter_id === counterFilter;
   });
 
+  const pendingTickets = queue.filter((o) =>
+    ["PENDING", "PREPARING"].includes(o.status)
+  ).length;
+  const bottlesTonight = 53.8;
+  const avgPrepMin = 2.4;
+  const kdsCtx = {
+    pending: pendingTickets,
+    bottles: bottlesTonight,
+    avgPrepMin,
+  };
+
   return (
     <div className="min-h-[100dvh] bg-nightlife-radial px-4 py-5 text-foreground">
       <div className="mx-auto max-w-6xl">
@@ -205,6 +222,30 @@ export default function KdsPage() {
             <StatusPill label="BARTENDER" tone="gold" />
           </div>
         </div>
+
+        <div className="mb-5 grid gap-3 sm:grid-cols-3">
+          <InteractiveKpiCard
+            label="Pending drink tickets"
+            value={String(pendingTickets)}
+            tone="gold"
+            onClick={() => setDrillId("pending-tickets")}
+          />
+          <InteractiveKpiCard
+            label="Bottles depleted tonight"
+            value={bottlesTonight.toFixed(1)}
+            onClick={() => setDrillId("bottles-depleted")}
+          />
+          <InteractiveKpiCard
+            label="Avg ticket prep time"
+            value={`${avgPrepMin.toFixed(1)} min`}
+            onClick={() => setDrillId("avg-prep")}
+          />
+        </div>
+        <KpiDrillDrawer
+          open={Boolean(drillId)}
+          onClose={() => setDrillId(null)}
+          content={drillId ? kdsDrill(drillId, kdsCtx) : null}
+        />
 
         <AnimatePresence>
           {toast ? (

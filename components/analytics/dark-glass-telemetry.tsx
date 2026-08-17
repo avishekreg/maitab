@@ -17,7 +17,7 @@ import {
   YAxis,
 } from "recharts";
 import { Activity, Droplets, FileText, Gauge, Shield, Zap } from "lucide-react";
-import { KpiDrillDrawer } from "@/components/admin/KpiDrillDrawer";
+import { KpiDrillDrawer, KPI_HOVER_CLASS } from "@/components/admin/KpiDrillDrawer";
 import { telemetryDrill } from "@/lib/admin/kpi-drills";
 import {
   BRAND_PARTNER_SCOPES,
@@ -41,8 +41,7 @@ import { formatINR } from "@/lib/utils";
 const CARD =
   "overflow-hidden bg-zinc-900/70 border border-zinc-800/80 backdrop-blur-2xl rounded-2xl p-6 shadow-2xl";
 
-const KPI_CARD =
-  "group relative text-left cursor-pointer transition-all hover:scale-[1.02] hover:border-zinc-600 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] active:scale-[0.99]";
+const KPI_CARD = KPI_HOVER_CLASS;
 
 const CYAN = "#06b6d4";
 const AMBER = "#f59e0b";

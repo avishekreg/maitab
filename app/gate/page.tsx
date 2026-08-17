@@ -4,9 +4,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Camera, ShieldCheck, UserRound } from "lucide-react";
 import { Html5Qrcode } from "html5-qrcode";
 import { BrandLockup } from "@/components/branding/brand-lockup";
+import {
+  InteractiveKpiCard,
+  KpiDrillDrawer,
+} from "@/components/admin/KpiDrillDrawer";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
+import { gateDrill } from "@/lib/admin/kpi-drills";
 import { DEMO_CUSTOMER, DEMO_GATE_EVENTS } from "@/lib/demo/data";
 import { emitGateEntry, fetchRecentGateEvents } from "@/lib/data/gate";
 import { useGateRealtime } from "@/lib/hooks/use-gate-realtime";
@@ -27,6 +32,7 @@ export default function GateScannerPage() {
   const [error, setError] = useState<string | null>(null);
   const [guest, setGuest] = useState<ScannedGuest | null>(null);
   const [events, setEvents] = useState<GateEntryEvent[]>(DEMO_GATE_EVENTS);
+  const [drillId, setDrillId] = useState<string | null>(null);
   const scannerRef = useRef<Html5Qrcode | null>(null);
 
   const onRealtimeEvent = useCallback((event: GateEntryEvent) => {
@@ -157,6 +163,40 @@ export default function GateScannerPage() {
           </div>
           <StatusPill label="GATE_STAFF" tone="violet" />
         </div>
+
+        <div className="mb-5 grid gap-3 sm:grid-cols-3">
+          <InteractiveKpiCard
+            label="Today's total entries"
+            value={String(Math.max(events.length, 186))}
+            onClick={() => setDrillId("todays-entries")}
+          />
+          <InteractiveKpiCard
+            label="Current inside count"
+            value="104 / 135"
+            hint="Headcount vs licensed capacity"
+            onClick={() => setDrillId("inside-count")}
+          />
+          <InteractiveKpiCard
+            label="Denied / fake token alerts"
+            value="3"
+            tone="ruby"
+            onClick={() => setDrillId("denied-alerts")}
+          />
+        </div>
+        <KpiDrillDrawer
+          open={Boolean(drillId)}
+          onClose={() => setDrillId(null)}
+          content={
+            drillId
+              ? gateDrill(drillId, {
+                  entries: Math.max(events.length, 186),
+                  inside: 104,
+                  capacity: 135,
+                  denied: 3,
+                })
+              : null
+          }
+        />
 
         <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
           <GlassPanel className="p-4">

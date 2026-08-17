@@ -10,6 +10,7 @@ import { StaffCrudAndCaptainPanel } from "@/components/admin/StaffCrudAndCaptain
 import { ComplianceBanner } from "@/components/compliance/ComplianceBanner";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
+import { managerDrill } from "@/lib/admin/kpi-drills";
 import { DEMO_BAR_COUNTERS } from "@/lib/kds/routing";
 import { selectActiveVenue, useVenueStore } from "@/lib/store/venue-store";
 import {
@@ -106,21 +107,38 @@ export default function FloorManagerPage() {
         <KpiStrip
           items={[
             {
-              label: "Active waiters",
-              value: String(waiters.filter((w) => w.active_status).length),
+              id: "active-tables",
+              label: "Active tables",
+              value: "3",
+              drill: managerDrill("active-tables", {
+                activeWaiters: waiters.filter((w) => w.active_status).length,
+                zoneCount: zones.length || 2,
+                barCount: counters.length,
+              })!,
             },
             {
-              label: "Zones",
-              value: String(zones.length || 2),
+              id: "service-calls",
+              label: "Pending service calls",
+              value: "3",
+              tone: "ruby",
+              drill: managerDrill("service-calls", {
+                activeWaiters: waiters.filter((w) => w.active_status).length,
+                zoneCount: zones.length || 2,
+                barCount: counters.length,
+              })!,
             },
             {
-              label: "Bar counters",
-              value: String(counters.length),
-              tone: "gold",
-            },
-            {
-              label: "Live GMV",
-              value: `₹${Math.round(venue.live_gmv / 1000)}k`,
+              id: "staff-duty",
+              label: "Staff on-duty",
+              value: String(
+                waiters.filter((w) => w.active_status).length +
+                  bartenders.filter((b) => b.active_status).length
+              ),
+              drill: managerDrill("staff-duty", {
+                activeWaiters: waiters.filter((w) => w.active_status).length,
+                zoneCount: zones.length || 2,
+                barCount: counters.length,
+              })!,
             },
           ]}
         />
