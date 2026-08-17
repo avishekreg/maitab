@@ -4,6 +4,8 @@ import { cookies } from "next/headers";
 import {
   DEMO_PASSWORD,
   PUBLIC_DEMO_USERS,
+  pinMatchesRole,
+  resolveDemoEmail,
 } from "@/lib/auth/demo-users";
 import { isSuperAdminEmail } from "@/lib/auth/google";
 import {
@@ -15,7 +17,7 @@ import { ROLE_HOME, type UserRole } from "@/lib/types";
 
 export async function POST(request: Request) {
   const body = (await request.json()) as { email?: string; pin?: string };
-  const email = (body.email || "").trim().toLowerCase();
+  const email = resolveDemoEmail(body.email || "");
   const pin = body.pin || "";
 
   if (!email || !pin) {
@@ -26,14 +28,17 @@ export async function POST(request: Request) {
   }
 
   const expectedPin = process.env.STAFF_ACCESS_PIN || DEMO_PASSWORD;
-  if (pin !== expectedPin) {
-    return NextResponse.json(
-      { ok: false, reason: "Invalid email or PIN" },
-      { status: 401 }
-    );
-  }
+  const pinOk =
+    pin === expectedPin ||
+    (isSuperAdminEmail(email) && pin === expectedPin);
 
   if (isSuperAdminEmail(email)) {
+    if (!pinOk) {
+      return NextResponse.json(
+        { ok: false, reason: "Invalid email or PIN" },
+        { status: 401 }
+      );
+    }
     const response = NextResponse.json({
       ok: true,
       role: "SUPER_ADMIN",
@@ -55,6 +60,13 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { ok: false, reason: "No staff profile for this email" },
       { status: 404 }
+    );
+  }
+
+  if (!pinMatchesRole(pin, account.role as UserRole)) {
+    return NextResponse.json(
+      { ok: false, reason: "Invalid email or PIN" },
+      { status: 401 }
     );
   }
 

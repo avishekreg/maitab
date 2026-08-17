@@ -3,8 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminShell } from "@/components/admin/AdminShell";
-import { NeonButton } from "@/components/ui/NeonButton";
-import { StatusPill } from "@/components/ui/StatusPill";
 import type { ConfigGroup, PlatformConfigRow } from "@/lib/admin/platform-config";
 import { cn } from "@/lib/utils";
 
@@ -85,67 +83,85 @@ export default function SuperAdminVaultPage() {
   return (
     <AdminShell
       role="SUPER_ADMIN"
+      hideTitle
       title="Sovereign no-code configuration"
       subtitle="Live API keys, webhook endpoints, and dynamic pricing. Access is Google OAuth email gated via SUPER_ADMIN_EMAILS."
     >
-      {note ? (
-        <p className="mb-4 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-300">
-          {note}
+      <div className="min-h-full bg-[#faf9f5] text-zinc-900">
+        <h1 className="font-display text-3xl font-extrabold tracking-tight text-zinc-950 md:text-4xl">
+          Sovereign no-code configuration
+        </h1>
+        <p className="mt-2 max-w-2xl text-sm font-medium text-zinc-600">
+          Live API keys, webhook endpoints, and dynamic pricing. Access is Google
+          OAuth email gated via SUPER_ADMIN_EMAILS.
         </p>
-      ) : null}
 
-      <div className="flex gap-2 overflow-x-auto pb-1">
-        {GROUPS.map((g) => (
-          <button
-            key={g}
-            type="button"
-            onClick={() => setGroup(g)}
-            className={cn(
-              "shrink-0 rounded-lg px-3 py-2 text-xs font-medium uppercase tracking-[0.1em]",
-              group === g
-                ? "bg-zinc-800 text-zinc-100 ring-1 ring-cyan-400/40"
-                : "bg-zinc-950 text-zinc-400 ring-1 ring-zinc-800"
-            )}
-          >
-            {g.replaceAll("_", " ")}
-          </button>
-        ))}
-      </div>
+        {note ? (
+          <p className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-800">
+            {note}
+          </p>
+        ) : null}
 
-      <ul className="mt-4 space-y-3">
-        {filtered.map((row) => (
-          <li
-            key={row.config_key}
-            className="rounded-xl border border-zinc-800 bg-zinc-950/80 px-4 py-4"
-          >
-            <div className="flex flex-wrap items-start justify-between gap-2">
-              <div>
-                <p className="font-medium text-zinc-100">{row.label}</p>
-                <p className="text-xs text-zinc-400">{row.config_key}</p>
+        <div className="mt-6 flex gap-2 overflow-x-auto pb-1">
+          {GROUPS.map((g) => (
+            <button
+              key={g}
+              type="button"
+              onClick={() => setGroup(g)}
+              className={cn(
+                "shrink-0 rounded-xl px-4 py-2 text-xs transition-all",
+                group === g
+                  ? "bg-zinc-900 font-bold text-white shadow-md"
+                  : "border border-zinc-200 bg-white font-medium text-zinc-600 hover:border-zinc-300 hover:text-zinc-900"
+              )}
+            >
+              {g.replaceAll("_", " ")}
+            </button>
+          ))}
+        </div>
+
+        <ul className="mt-4 space-y-3">
+          {filtered.map((row) => (
+            <li
+              key={row.config_key}
+              className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm"
+            >
+              <div className="flex flex-wrap items-start justify-between gap-2">
+                <div>
+                  <p className="font-display text-sm font-bold text-zinc-900">
+                    {row.label}
+                  </p>
+                  <p className="font-mono text-xs text-zinc-500">{row.config_key}</p>
+                </div>
+                <span className="rounded-md border border-amber-300/60 bg-amber-100 px-2 py-0.5 font-mono text-[10px] font-bold text-amber-900">
+                  {row.is_secret ? "SECRET" : "RUNTIME"}
+                </span>
               </div>
-              <StatusPill
-                label={row.is_secret ? "Secret" : "Runtime"}
-                tone={row.is_secret ? "gold" : "muted"}
-              />
-            </div>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <input
-                className="min-w-[220px] flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-sm text-zinc-100"
-                value={drafts[row.config_key] ?? row.value_encrypted}
-                onChange={(e) =>
-                  setDrafts((d) => ({
-                    ...d,
-                    [row.config_key]: e.target.value,
-                  }))
-                }
-              />
-              <NeonButton size="sm" disabled={busy} onClick={() => void saveRow(row)}>
-                Save
-              </NeonButton>
-            </div>
-          </li>
-        ))}
-      </ul>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <input
+                  className="min-w-[220px] flex-1 rounded-xl border border-zinc-300 bg-zinc-50 px-4 py-2.5 font-mono text-sm text-zinc-900 placeholder:text-zinc-400 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-violet-500"
+                  value={drafts[row.config_key] ?? row.value_encrypted}
+                  placeholder="Paste value"
+                  onChange={(e) =>
+                    setDrafts((d) => ({
+                      ...d,
+                      [row.config_key]: e.target.value,
+                    }))
+                  }
+                />
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => void saveRow(row)}
+                  className="rounded-xl bg-violet-600 px-5 py-2.5 font-semibold text-white shadow-sm transition-all hover:bg-violet-500 disabled:opacity-40"
+                >
+                  Save
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </AdminShell>
   );
 }

@@ -4,6 +4,25 @@ import { ROLE_HOME } from "@/lib/types";
 /** Shared password for public demo venue roles only (never Super Admin). */
 export const DEMO_PASSWORD = "MaiTabDemo!234";
 
+/** Short floor PINs accepted alongside DEMO_PASSWORD. */
+export const ROLE_DEMO_PINS: Partial<Record<UserRole, string>> = {
+  FLOOR_MANAGER: "1111",
+  CAPTAIN: "1111",
+  BARTENDER: "2222",
+  GATE_STAFF: "3333",
+  SAARTHI_DRIVER: "4444",
+  CLUB_ADMIN: "0000",
+};
+
+/** Alternate emails that map onto PUBLIC_DEMO_USERS. */
+export const DEMO_EMAIL_ALIASES: Record<string, string> = {
+  "owner@neon.demo": "club@maitab.demo",
+  "manager@neon.demo": "manager@maitab.demo",
+  "bar@neon.demo": "bar@maitab.demo",
+  "gate@neon.demo": "gate@maitab.demo",
+  "driver@neon.demo": "arjun.saarthi@maitab.demo",
+};
+
 export interface DemoUserAccount {
   role: UserRole;
   email: string;
@@ -113,6 +132,19 @@ export function demoUserForRole(role: UserRole): DemoUserAccount {
 
 export function isPublicDemoRole(role: UserRole): boolean {
   return PUBLIC_DEMO_USERS.some((u) => u.role === role);
+}
+
+export function resolveDemoEmail(email: string): string {
+  const key = email.trim().toLowerCase();
+  return DEMO_EMAIL_ALIASES[key] ?? key;
+}
+
+export function pinMatchesRole(pin: string, role: UserRole): boolean {
+  if (pin === DEMO_PASSWORD) return true;
+  if (process.env.STAFF_ACCESS_PIN && pin === process.env.STAFF_ACCESS_PIN) {
+    return true;
+  }
+  return ROLE_DEMO_PINS[role] === pin;
 }
 
 export function portalKeyConfigured(): boolean {

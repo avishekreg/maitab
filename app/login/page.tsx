@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
+import { QuickDemoSwitcher } from "@/components/auth/QuickDemoSwitcher";
 import { GoogleContinueButton } from "@/components/auth/GoogleContinueButton";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 import { NeonButton } from "@/components/ui/NeonButton";
@@ -183,6 +184,7 @@ function LoginHub() {
           </Link>
         </p>
       </div>
+      <QuickDemoSwitcher />
     </div>
   );
 }
