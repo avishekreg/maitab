@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Download, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -149,6 +150,11 @@ export function KpiDrillDrawer({
   const [filterId, setFilterId] = useState("all");
   const [page, setPage] = useState(0);
   const [exportOpen, setExportOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     setQuery("");
@@ -258,14 +264,16 @@ export function KpiDrillDrawer({
         : "border border-zinc-300 bg-white text-zinc-600 hover:text-zinc-900"
     );
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
       {open && content ? (
-        <div className="fixed inset-0 z-50">
+        <div className="fixed inset-0 z-[100]">
           <motion.button
             type="button"
             aria-label="Close drill-down"
-            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md transition-opacity"
+            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md transition-opacity"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -275,27 +283,27 @@ export function KpiDrillDrawer({
             role="dialog"
             aria-modal="true"
             aria-labelledby="kpi-drill-title"
-            className="fixed right-0 top-0 z-50 flex h-full w-full max-w-2xl flex-col overflow-hidden border-l border-zinc-300 bg-[#faf9f5] text-zinc-900 shadow-2xl"
+            className="fixed inset-y-0 right-0 z-[100] flex h-screen w-full max-w-2xl flex-col overflow-hidden border-l border-zinc-300 bg-[#faf9f5] text-zinc-900 shadow-2xl"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.2, ease: "easeOut" }}
           >
-            <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-zinc-200 bg-[#faf9f5] p-6">
-              <div className="min-w-0">
+            <header className="sticky top-0 z-20 flex shrink-0 items-start justify-between gap-4 border-b border-zinc-200 bg-[#faf9f5] px-6 pb-5 pt-7">
+              <div className="min-w-0 overflow-visible">
                 {content.role ? (
-                  <p className="mb-1 text-[11px] font-mono font-bold uppercase tracking-widest text-violet-600">
+                  <p className="mb-1 block text-[11px] font-mono font-bold uppercase tracking-widest text-violet-600">
                     {ROLE_PILL[content.role]} · Audit
                   </p>
                 ) : null}
                 <h2
                   id="kpi-drill-title"
-                  className="font-display text-2xl font-black tracking-tight text-zinc-950"
+                  className="font-display text-2xl font-black leading-tight tracking-tight text-zinc-950"
                 >
                   {content.title}
                 </h2>
                 {content.subtitle ? (
-                  <p className="mt-0.5 text-xs font-medium text-zinc-600">
+                  <p className="mt-1 text-xs font-medium text-zinc-600">
                     {content.subtitle}
                   </p>
                 ) : null}
@@ -304,13 +312,13 @@ export function KpiDrillDrawer({
                 type="button"
                 onClick={onClose}
                 aria-label="Close"
-                className="cursor-pointer rounded-full border border-zinc-300 bg-white p-2 text-zinc-600 shadow-sm transition-all hover:bg-zinc-100 hover:text-zinc-950"
+                className="shrink-0 cursor-pointer rounded-full border border-zinc-300 bg-white p-2 text-zinc-600 shadow-sm transition-all hover:bg-zinc-100 hover:text-zinc-950"
               >
                 <X className="h-4 w-4" />
               </button>
             </header>
 
-            <div className="space-y-3 border-b border-zinc-200 bg-[#faf9f5] px-6 py-3">
+            <div className="shrink-0 space-y-3 border-b border-zinc-200 bg-[#faf9f5] px-6 py-3">
               <label className="relative block">
                 <Search className="pointer-events-none absolute left-3.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
                 <input
@@ -418,7 +426,7 @@ export function KpiDrillDrawer({
               ) : null}
             </div>
 
-            <footer className="flex items-center justify-between gap-3 border-t border-zinc-200 bg-[#faf9f5] p-4 text-xs text-zinc-600">
+            <footer className="flex shrink-0 items-center justify-between gap-3 border-t border-zinc-200 bg-[#faf9f5] p-4 text-xs text-zinc-600">
               <p>
                 Showing {showingFrom}–{showingTo} of {filteredTableRows.length}{" "}
                 records
@@ -488,6 +496,7 @@ export function KpiDrillDrawer({
           </motion.aside>
         </div>
       ) : null}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
