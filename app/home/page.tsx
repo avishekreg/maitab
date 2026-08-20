@@ -164,9 +164,14 @@ function HomeBody() {
           <Sparkles className="h-4 w-4" style={{ color: theme.accent }} />
           <h3 className="type-title text-lg text-foreground">Quick moves</h3>
         </div>
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { href: "/tab", title: "Add to Tab", copy: "Prepaid, no re-auth." },
+            {
+              href: "/tab/cloak",
+              title: "🎭 mAI Cloak",
+              copy: "Ghost chat & mystery match.",
+            },
             {
               href: "/game",
               title: "Surprise Me",

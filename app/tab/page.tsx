@@ -277,24 +277,26 @@ function TabBody() {
 
       <Link
         href="/tab/cloak"
-        className="mb-4 flex items-center justify-between gap-3 rounded-2xl border border-violet-500/30 bg-zinc-950/80 px-4 py-3 text-zinc-100 shadow-lg transition hover:border-violet-400/50 active:scale-[0.99]"
+        className="relative mb-5 block overflow-hidden rounded-3xl border border-violet-500/40 bg-zinc-950/90 p-5 text-zinc-100 shadow-[0_0_40px_rgba(139,92,246,0.25)] transition hover:border-violet-400/60 active:scale-[0.995]"
       >
-        <div className="flex items-center gap-3">
-          <span className="grid h-10 w-10 place-items-center rounded-xl border border-violet-500/40 bg-violet-500/15 text-violet-200">
-            <Ghost className="h-5 w-5" aria-hidden />
-          </span>
-          <div>
-            <p className="font-display text-sm font-bold text-white">
-              mAI Cloak · Shadow Chat
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(500px_220px_at_0%_0%,rgba(139,92,246,0.35),transparent_55%),radial-gradient(420px_200px_at_100%_20%,rgba(6,182,212,0.18),transparent_50%)]" />
+        <div className="relative flex flex-wrap items-center justify-between gap-4">
+          <div className="min-w-0">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-violet-300">
+              Live · Anonymous
             </p>
-            <p className="text-[11px] text-zinc-400">
-              Anonymous lounge whispers · zero contact leaks
+            <h2 className="mt-1 font-display text-2xl font-black text-white md:text-3xl">
+              🎭 mAI Cloak — Secret Lounge
+            </h2>
+            <p className="mt-2 max-w-md text-sm text-zinc-300">
+              Anonymous ghost chat, mystery cocktails &amp; live matchmaking.
             </p>
           </div>
+          <span className="inline-flex shrink-0 items-center gap-2 rounded-full border border-violet-400/50 bg-violet-500/25 px-4 py-2.5 text-sm font-bold text-violet-50 shadow-[0_0_20px_rgba(139,92,246,0.35)]">
+            <Ghost className="h-4 w-4" aria-hidden />
+            Enter Shadow Lounge →
+          </span>
         </div>
-        <span className="font-mono text-[10px] uppercase tracking-wider text-violet-300">
-          Enter
-        </span>
       </Link>
 
       {luckyNote ? (
