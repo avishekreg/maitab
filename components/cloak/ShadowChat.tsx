@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Dices, Lock, Send, ShieldAlert, Sparkles } from "lucide-react";
+import { Dices, Lock, Send, ShieldAlert, Sparkles, Users } from "lucide-react";
 import { cn, triggerHaptic } from "@/lib/utils";
 import {
   CLOAK_WARNING,
@@ -864,23 +864,45 @@ export function ShadowChat() {
           />
           <button
             type="button"
-            disabled={matchCooldownMs > 0}
-            onClick={runMysteryMatch}
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-fuchsia-500/45 bg-fuchsia-500/15 px-3.5 py-2 text-xs font-bold text-fuchsia-100 shadow-[0_0_18px_rgba(217,70,239,0.2)] transition hover:border-fuchsia-400/70 active:scale-[0.98] disabled:opacity-45"
-          >
-            <Dices className="h-3.5 w-3.5" aria-hidden />
-            {matchCooldownMs > 0
-              ? `Match ${Math.ceil(matchCooldownMs / 1000)}s`
-              : "Mystery Match"}
-          </button>
-          <button
-            type="button"
             onClick={endGhostSession}
             className="cursor-pointer rounded-2xl border border-zinc-800 px-3 py-2 text-xs text-zinc-500 hover:text-zinc-200"
           >
             Purge session
           </button>
         </div>
+      </div>
+
+      {/* Dual start paths: choose someone OR surprise match */}
+      <div className="relative mt-4 grid gap-2 sm:grid-cols-2">
+        <button
+          type="button"
+          onClick={() => setRosterOpen(true)}
+          className="group flex cursor-pointer flex-col items-start gap-1 rounded-2xl border border-violet-500/40 bg-violet-500/10 px-4 py-3.5 text-left transition hover:border-violet-400/70 hover:bg-violet-500/15 active:scale-[0.99]"
+        >
+          <span className="inline-flex items-center gap-2 text-sm font-bold text-violet-100">
+            <Users className="h-4 w-4 text-violet-300" aria-hidden />
+            Choose who to chat
+          </span>
+          <span className="text-[11px] leading-snug text-zinc-400">
+            Pick any online ghost from the live roster for a private whisper.
+          </span>
+        </button>
+        <button
+          type="button"
+          disabled={matchCooldownMs > 0}
+          onClick={runMysteryMatch}
+          className="group flex cursor-pointer flex-col items-start gap-1 rounded-2xl border border-fuchsia-500/45 bg-gradient-to-br from-fuchsia-600/20 to-violet-600/15 px-4 py-3.5 text-left shadow-[0_0_20px_rgba(217,70,239,0.12)] transition hover:border-fuchsia-400/70 active:scale-[0.99] disabled:opacity-45"
+        >
+          <span className="inline-flex items-center gap-2 text-sm font-bold text-fuchsia-100">
+            <Dices className="h-4 w-4 text-fuchsia-300" aria-hidden />
+            {matchCooldownMs > 0
+              ? `Mystery Match · ${Math.ceil(matchCooldownMs / 1000)}s`
+              : "Mystery Match"}
+          </span>
+          <span className="text-[11px] leading-snug text-zinc-400">
+            Random live pairing — keep the surprise. No names, no tables.
+          </span>
+        </button>
       </div>
 
       {/* Dual-channel tabs */}
@@ -912,7 +934,7 @@ export function ShadowChat() {
           </button>
         ) : (
           <span className="rounded-full border border-zinc-800 px-3.5 py-1.5 text-[11px] text-zinc-600">
-            Open roster to start a 1-on-1 whisper
+            Choose a ghost or Mystery Match to start a 1-on-1
           </span>
         )}
       </div>

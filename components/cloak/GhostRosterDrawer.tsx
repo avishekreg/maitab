@@ -86,19 +86,35 @@ export function GhostRosterDrawer({
               </button>
             </div>
 
-            <button
-              type="button"
-              disabled={busy || matchLocked}
-              onClick={onMysteryMatch}
-              className="mt-4 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-fuchsia-500/45 bg-gradient-to-r from-fuchsia-600/30 to-violet-600/25 px-3 py-3 text-sm font-bold text-fuchsia-50 shadow-[0_0_24px_rgba(217,70,239,0.2)] transition hover:border-fuchsia-400/70 active:scale-[0.98] disabled:opacity-45"
-            >
-              <Dices className="h-4 w-4" aria-hidden />
-              {matchLocked
-                ? `Rematch in ${Math.ceil(matchCooldownMs / 1000)}s`
-                : "Mystery Match"}
-            </button>
-            <p className="mt-2 font-mono text-[10px] uppercase tracking-wider text-zinc-600">
-              Random 1-on-1 · aliases only · no tables · no phones
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              <div className="rounded-2xl border border-violet-500/30 bg-violet-500/10 px-3 py-2.5">
+                <p className="text-[11px] font-bold text-violet-100">
+                  1 · Choose
+                </p>
+                <p className="mt-0.5 text-[10px] leading-snug text-zinc-500">
+                  Tap Whisper on any ghost below
+                </p>
+              </div>
+              <button
+                type="button"
+                disabled={busy || matchLocked}
+                onClick={onMysteryMatch}
+                className="cursor-pointer rounded-2xl border border-fuchsia-500/45 bg-gradient-to-r from-fuchsia-600/30 to-violet-600/25 px-3 py-2.5 text-left transition hover:border-fuchsia-400/70 active:scale-[0.98] disabled:opacity-45"
+              >
+                <p className="inline-flex items-center gap-1.5 text-[11px] font-bold text-fuchsia-100">
+                  <Dices className="h-3.5 w-3.5" aria-hidden />
+                  2 ·{" "}
+                  {matchLocked
+                    ? `Match ${Math.ceil(matchCooldownMs / 1000)}s`
+                    : "Surprise"}
+                </p>
+                <p className="mt-0.5 text-[10px] leading-snug text-zinc-500">
+                  Random live Mystery Match
+                </p>
+              </button>
+            </div>
+            <p className="mt-3 font-mono text-[10px] uppercase tracking-wider text-zinc-600">
+              Online ghosts · aliases only · no tables · no phones
             </p>
 
             <ul className="mt-4 flex-1 space-y-3 overflow-y-auto pr-1">
