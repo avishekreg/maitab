@@ -258,9 +258,9 @@ export function ShadowChat() {
               inv,
               Date.now() + WINGMAN_SUPPRESS_MS
             );
-            for (const [key, ctrl] of [
-              ...pendingWingmanRef.current.entries(),
-            ]) {
+            for (const [key, ctrl] of Array.from(
+              pendingWingmanRef.current.entries()
+            )) {
               if (key.endsWith(`::${env.message.fromId}`)) {
                 ctrl.cancel();
                 pendingWingmanRef.current.delete(key);
@@ -284,9 +284,9 @@ export function ShadowChat() {
               }
             }
             // Whisper typing from the expected peer → cancel that thread's AI
-            for (const [key, ctrl] of [
-              ...pendingWingmanRef.current.entries(),
-            ]) {
+            for (const [key, ctrl] of Array.from(
+              pendingWingmanRef.current.entries()
+            )) {
               if (
                 env.peerId &&
                 (key.endsWith(`::${env.fromId}`) ||
@@ -589,7 +589,9 @@ export function ShadowChat() {
     (value: string) => {
       setDraft(value);
       if (!persona) return;
-      for (const [key, ctrl] of [...pendingWingmanRef.current.entries()]) {
+      for (const [key, ctrl] of Array.from(
+        pendingWingmanRef.current.entries()
+      )) {
         if (key.endsWith(`::${persona.id}`)) {
           ctrl.cancel();
           pendingWingmanRef.current.delete(key);
