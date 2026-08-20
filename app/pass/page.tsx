@@ -30,15 +30,27 @@ function PassBody() {
       params.set("mandate", user.autopay_mandate_id);
     }
 
-    void fetch(`/api/pass/token?${params.toString()}`)
-      .then((r) => r.json())
-      .then((data: { ok?: boolean; token?: string; reason?: string }) => {
-        if (data.ok && data.token) {
+    void fetch(`/api/pass/token?${params.toString()}`, {
+      credentials: "same-origin",
+      cache: "no-store",
+    })
+      .then(async (r) => {
+        const data = (await r.json().catch(() => null)) as {
+          ok?: boolean;
+          token?: string;
+          reason?: string;
+          error?: string;
+        } | null;
+        if (data?.ok && data.token) {
           setToken(data.token);
           setTokenError(null);
-        } else {
-          setTokenError(data.reason ?? "Could not mint pass token");
+          return;
         }
+        setTokenError(
+          data?.reason ||
+            data?.error ||
+            (r.ok ? "Could not mint pass token" : `Pass mint failed (${r.status})`)
+        );
       })
       .catch(() => setTokenError("Could not mint pass token"));
   }, [

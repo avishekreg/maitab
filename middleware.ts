@@ -186,16 +186,35 @@ export async function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith("/api")) {
+    const guestCustomerApis = [
+      "/api/pass/token",
+      "/api/payments/settle",
+      "/api/discounts/request",
+      "/api/orders/handshake",
+    ] as const;
+    const isGuestCustomerApi = guestCustomerApis.some(
+      (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+    );
+
     if (
       !role &&
-      (pathname.startsWith("/api/pass/") ||
-        pathname.startsWith("/api/sessions/") ||
-        pathname.startsWith("/api/payments/settle") ||
-        pathname.startsWith("/api/discounts/request") ||
-        pathname.startsWith("/api/orders/handshake"))
+      (isGuestCustomerApi ||
+        pathname.startsWith("/api/pass/") ||
+        pathname.startsWith("/api/sessions/"))
     ) {
       role = "CUSTOMER";
       bootstrappedGuest = true;
+    }
+
+    // Mirror guest page behavior: /pass loads under staff leftovers, but the
+    // mint endpoint was still RBAC-blocked by FLOOR_MANAGER / GATE / CLUB JWT
+    // or demo cookies — causing "Could not mint pass token" on live.
+    if (isGuestCustomerApi && role && role !== "SUPER_ADMIN") {
+      const probe = apiRoleAllowed(pathname, role);
+      if (!probe.ok) {
+        role = "CUSTOMER";
+        bootstrappedGuest = true;
+      }
     }
 
     if (
