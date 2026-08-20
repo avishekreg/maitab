@@ -22,7 +22,7 @@ import { formatTokenDisplay } from "@/lib/kds/token";
 import { useSessionStore } from "@/lib/store/session-store";
 import { selectActiveVenue, useVenueStore } from "@/lib/store/venue-store";
 import type { ActiveSession } from "@/lib/types";
-import { triggerHaptic } from "@/lib/utils";
+import { cn, triggerHaptic } from "@/lib/utils";
 
 type PendingDeal = DiscountBridgePayload & { seenAt: number };
 
@@ -192,15 +192,15 @@ export default function KdsPage() {
 
   return (
     <div className="min-h-[100dvh] bg-zinc-950 px-4 py-5 text-zinc-100 theme-dark-capsule">
-      <div className="mx-auto max-w-6xl">
-        <div className="optimus-glass mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl px-4 py-3">
+      <div className="mx-auto max-w-6xl animate-lux-enter">
+        <div className="lux-glass-dark mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl px-4 py-3">
           <div className="flex min-w-0 items-center gap-3">
             <BrandLockup />
             <div className="min-w-0">
-              <h1 className="font-display text-3xl font-bold text-foreground">
+              <h1 className="font-display text-3xl font-bold text-zinc-50">
                 Bar KDS
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-zinc-400">
                 {venue.short_name} · multi-counter routing · token handshake
               </p>
             </div>
@@ -311,17 +311,34 @@ export default function KdsPage() {
         ) : null}
 
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {queue.map((order, index) => (
+          {queue.map((order, index) => {
+            const ageMs =
+              Date.now() - new Date(order.created_at || Date.now()).getTime();
+            const aging =
+              (order.status === "PENDING" || order.status === "PREPARING") &&
+              ageMs > 4 * 60_000;
+            return (
             <motion.div
               key={order.id}
               layout
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.04 }}
+              exit={{ opacity: 0, scale: 0.96, filter: "blur(2px)" }}
+              transition={{ delay: index * 0.04, ease: [0.16, 1, 0.3, 1] }}
             >
               <GlassPanel
-                className="flex min-h-[220px] flex-col p-4"
-                glow={order.status === "READY" ? "emerald" : "none"}
+                className={cn(
+                  "flex min-h-[220px] flex-col p-4",
+                  aging && "animate-priority-pulse border-amber-400/70"
+                )}
+                glow={
+                  order.status === "READY"
+                    ? "emerald"
+                    : aging
+                      ? "gold"
+                      : "none"
+                }
+                interactive
               >
                 <div className="flex items-start justify-between gap-2">
                   <p className="font-display text-5xl font-extrabold tracking-tight text-[#E2B857] drop-shadow-[0_0_18px_rgba(226,184,87,0.35)]">
@@ -336,6 +353,7 @@ export default function KdsPage() {
                           ? "violet"
                           : "gold"
                     }
+                    pulse={aging}
                   />
                 </div>
                 {order.assigned_counter_name ? (
@@ -391,7 +409,8 @@ export default function KdsPage() {
                 )}
               </GlassPanel>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

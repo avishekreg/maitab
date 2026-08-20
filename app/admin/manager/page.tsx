@@ -182,6 +182,12 @@ export default function FloorManagerPage() {
                     <StatusPill
                       label={w.active_status ? "ON SHIFT" : "OFF"}
                       tone={w.active_status ? "emerald" : "muted"}
+                      pulse={!w.active_status}
+                      className={
+                        !w.active_status
+                          ? "border-amber-400/50 bg-amber-500/10 text-amber-700"
+                          : undefined
+                      }
                     />
                     <select
                       className="rounded-lg border border-border bg-background px-2 py-1.5 text-sm"
@@ -243,9 +249,9 @@ export default function FloorManagerPage() {
                           onBartenderCounter(b.bartender_id, c.id)
                         }
                         className={cn(
-                          "rounded-lg border px-3 py-2 text-left text-sm transition",
+                          "lux-interactive lux-focus-ring rounded-lg border px-3 py-2 text-left text-sm transition-all duration-lux ease-lux",
                           active
-                            ? "border-accent-gold bg-accent-gold/15 text-accent-gold"
+                            ? "border-accent-gold bg-accent-gold/15 text-accent-gold shadow-[0_0_16px_rgba(217,119,6,0.2)]"
                             : "border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground"
                         )}
                       >

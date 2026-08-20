@@ -374,19 +374,28 @@ function TabBody() {
                       <div className="flex items-center gap-2">
                         <button
                           type="button"
-                          onClick={() => bump(item.name, -1)}
-                          className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-secondary"
+                          onClick={() => {
+                            bump(item.name, -1);
+                            void triggerHaptic(12);
+                          }}
+                          className="lux-interactive lux-focus-ring grid h-9 w-9 place-items-center rounded-lg border border-border bg-secondary"
                         >
                           <Minus className="h-4 w-4" />
                         </button>
-                        <span className="w-6 text-center tabular-nums text-foreground">
+                        <span
+                          key={`${item.name}-${qty[item.name] ?? 0}`}
+                          className="w-6 animate-counter-bounce text-center tabular-nums text-foreground"
+                        >
                           {qty[item.name] ?? 0}
                         </span>
                         <button
                           type="button"
-                          onClick={() => bump(item.name, 1)}
+                          onClick={() => {
+                            bump(item.name, 1);
+                            void triggerHaptic(18);
+                          }}
                           className={cn(
-                            "grid h-9 w-9 place-items-center rounded-lg border",
+                            "lux-interactive lux-focus-ring grid h-9 w-9 place-items-center rounded-lg border",
                             theme.headerBadge
                           )}
                         >
@@ -422,7 +431,7 @@ function TabBody() {
               disabled={!cart.length || orderingFrozen}
               onClick={() => void placeOrder()}
               className={cn(
-                "inline-flex h-11 items-center rounded-xl px-4 text-sm font-semibold disabled:opacity-40",
+                "lux-interactive lux-focus-ring inline-flex h-11 items-center rounded-xl px-4 text-sm font-semibold disabled:opacity-40",
                 theme.button
               )}
             >

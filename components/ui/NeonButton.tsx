@@ -2,6 +2,7 @@
 
 import { motion, type HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { LUX_EASE } from "@/lib/ui/motion";
 
 type NeonButtonProps = HTMLMotionProps<"button"> & {
   tone?: "violet" | "gold" | "emerald" | "ghost" | "cyan" | "purple" | "primary";
@@ -40,12 +41,13 @@ export function NeonButton({
 }: NeonButtonProps) {
   return (
     <motion.button
-      whileTap={disabled ? undefined : { scale: 0.97 }}
-      whileHover={disabled ? undefined : { y: -1 }}
+      whileTap={disabled ? undefined : { scale: 0.98 }}
+      whileHover={disabled ? undefined : { y: -2 }}
+      transition={{ duration: 0.18, ease: LUX_EASE }}
       type={type}
       disabled={disabled}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg font-semibold tracking-wide transition disabled:cursor-not-allowed disabled:opacity-40",
+        "lux-focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg font-semibold tracking-wide transition-[box-shadow,filter,background-color] duration-lux ease-lux disabled:cursor-not-allowed disabled:opacity-40",
         TONE[tone],
         SIZE[size],
         className

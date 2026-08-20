@@ -41,7 +41,7 @@ export type KpiDrillContent = {
 };
 
 export const KPI_HOVER_CLASS =
-  "cursor-pointer transition-all hover:scale-[1.02] hover:border-zinc-300 hover:shadow-md active:scale-[0.99] group";
+  "lux-sheen lux-interactive group cursor-pointer transition-all duration-lux ease-lux hover:border-zinc-300 hover:shadow-md";
 
 const PAGE_SIZE = 8;
 
@@ -101,7 +101,7 @@ export function InteractiveKpiCard({
       type="button"
       onClick={onClick}
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-5 text-left shadow-sm",
+        "relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/90 p-5 text-left shadow-sm backdrop-blur-xl",
         KPI_HOVER_CLASS,
         className
       )}
@@ -287,7 +287,7 @@ export function KpiDrillDrawer({
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
           >
             <header className="sticky top-0 z-20 flex shrink-0 items-start justify-between gap-4 border-b border-zinc-200 bg-[#faf9f5] px-6 pb-5 pt-7">
               <div className="min-w-0 overflow-visible">

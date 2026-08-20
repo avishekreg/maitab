@@ -148,20 +148,20 @@ export default function GateScannerPage() {
 
   return (
     <div className="min-h-[100dvh] bg-zinc-950 px-4 py-6 text-zinc-100 theme-dark-capsule">
-      <div className="mx-auto max-w-5xl">
-        <div className="optimus-glass mb-6 flex items-center justify-between gap-3 rounded-xl px-4 py-3">
+      <div className="mx-auto max-w-5xl animate-lux-enter">
+        <div className="lux-glass-dark mb-6 flex items-center justify-between gap-3 rounded-xl px-4 py-3">
           <div className="flex min-w-0 items-center gap-3">
             <BrandLockup />
             <div className="min-w-0">
-              <h1 className="font-display text-2xl font-bold text-foreground">
+              <h1 className="font-display text-2xl font-bold text-zinc-50">
                 Gate Scanner
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-zinc-400">
                 Live channel · gate_entry_events · zero revenue access
               </p>
             </div>
           </div>
-          <StatusPill label="GATE_STAFF" tone="violet" />
+          <StatusPill label="GATE_STAFF" tone="violet" className="border-violet-400/40 bg-violet-500/15 text-violet-200" />
         </div>
 
         <div className="mb-5 grid gap-3 sm:grid-cols-3">
@@ -199,16 +199,16 @@ export default function GateScannerPage() {
         />
 
         <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-          <GlassPanel className="p-4">
+          <GlassPanel className="border-zinc-800/80 bg-zinc-950/60 p-4" interactive>
             <div
               id="gate-qr-reader"
-              className="overflow-hidden rounded-xl border border-border bg-slate-200/80"
+              className="overflow-hidden rounded-xl border border-emerald-500/20 bg-zinc-900 shadow-[inset_0_0_40px_rgba(16,185,129,0.08)]"
             />
             {!scanning ? (
               <div className="grid min-h-[240px] place-items-center text-center">
                 <div>
-                  <Camera className="mx-auto h-10 w-10 text-accent-violet" />
-                  <p className="mt-3 text-sm text-muted-foreground">
+                  <Camera className="mx-auto h-10 w-10 text-cyan-400 drop-shadow-[0_0_12px_rgba(34,211,238,0.45)]" />
+                  <p className="mt-3 text-sm text-zinc-400">
                     Request camera permission to scan Member Passes.
                   </p>
                 </div>
@@ -265,10 +265,25 @@ export default function GateScannerPage() {
                 </div>
                 <div className="mt-5 rounded-xl border border-border bg-secondary p-3">
                   <div className="flex items-center gap-2">
-                    <ShieldCheck className="h-4 w-4 text-accent-emerald" />
+                    <ShieldCheck
+                      className={
+                        guest.microHold?.ok
+                          ? "h-4 w-4 text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.55)]"
+                          : "h-4 w-4 text-rose-400 drop-shadow-[0_0_8px_rgba(251,113,133,0.45)]"
+                      }
+                    />
                     <p className="text-sm font-medium text-foreground">
                       Micro-hold check
                     </p>
+                    <span
+                      className={
+                        guest.microHold?.ok
+                          ? "ml-auto rounded-full border border-emerald-400/40 bg-emerald-500/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-300"
+                          : "ml-auto rounded-full border border-rose-400/40 bg-rose-500/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-rose-300"
+                      }
+                    >
+                      {guest.microHold?.ok ? "Verified" : "Denied"}
+                    </span>
                   </div>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {guest.microHold?.ok
@@ -285,18 +300,27 @@ export default function GateScannerPage() {
           </GlassPanel>
         </div>
 
-        <GlassPanel className="mt-4 p-4">
-          <p className="mb-3 text-xs uppercase tracking-[0.18em] text-muted-foreground">
+        <GlassPanel className="mt-4 border-zinc-800/80 bg-zinc-950/50 p-4">
+          <p className="mb-3 text-xs uppercase tracking-[0.18em] text-zinc-400">
             Recent entries (realtime)
           </p>
           <div className="space-y-2">
             {events.map((event) => (
               <div
                 key={event.id}
-                className="flex items-center justify-between gap-3 border-b border-border pb-2 text-sm last:border-0"
+                className="lux-interactive flex items-center justify-between gap-3 border-b border-zinc-800/80 pb-2 text-sm last:border-0"
               >
-                <span className="text-foreground">{event.guest_name}</span>
-                <span className="text-accent-gold">{event.spend_tier}</span>
+                <div className="min-w-0">
+                  <span className="block truncate text-zinc-100">
+                    {event.guest_name}
+                  </span>
+                  <span className="font-mono text-[10px] text-zinc-500">
+                    {new Date(event.created_at).toLocaleTimeString()}
+                  </span>
+                </div>
+                <span className="shrink-0 rounded-full border border-emerald-400/35 bg-emerald-500/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-300">
+                  {event.spend_tier}
+                </span>
               </div>
             ))}
           </div>

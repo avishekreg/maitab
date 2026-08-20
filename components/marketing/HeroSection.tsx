@@ -60,14 +60,14 @@ export function HeroSection() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={ready ? { opacity: 1, y: 0 } : undefined}
-          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           className="w-full max-w-xl sm:max-w-2xl lg:max-w-3xl xl:max-w-4xl"
         >
-          <p className="mb-4 inline-flex max-w-full items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-[#FFFFFF] backdrop-blur-md sm:mb-5 sm:text-[11px] sm:tracking-[0.18em]">
+          <p className="mb-4 inline-flex max-w-full animate-badge-glow items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-[#FFFFFF] backdrop-blur-md sm:mb-5 sm:text-[11px] sm:tracking-[0.18em]">
             Nightlife OS · prepaid · self-settling
           </p>
 
-          <h1 className="font-display text-[1.85rem] font-extrabold leading-[1.18] tracking-tight text-[#FFFFFF] drop-shadow-[0_2px_24px_rgba(0,0,0,0.65)] sm:text-4xl sm:leading-[1.15] lg:text-5xl">
+          <h1 className="font-display text-[1.85rem] font-extrabold leading-[1.15] tracking-tight text-[#FFFFFF] drop-shadow-[0_2px_24px_rgba(0,0,0,0.65)] sm:text-4xl sm:leading-[1.12] lg:text-5xl lg:leading-[1.1]">
             <span className="block text-[#FFFFFF]">Turn every night into</span>
             <span className="relative mt-1.5 block min-h-[3.55em] sm:mt-2 sm:min-h-[3.9em] lg:min-h-[4.35em]">
               <AnimatePresence mode="wait">
@@ -77,7 +77,7 @@ export function HeroSection() {
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 >
                   {phrase}
                 </motion.span>
@@ -85,7 +85,7 @@ export function HeroSection() {
             </span>
           </h1>
 
-          <p className="mt-3 max-w-xl font-sans text-[0.95rem] font-medium leading-relaxed tracking-normal text-slate-200 sm:mt-4 sm:text-lg">
+          <p className="mt-3 max-w-xl font-sans text-[0.95rem] font-medium leading-relaxed tracking-normal text-slate-200 sm:mt-4 sm:text-lg sm:leading-relaxed">
             Cryptographic table tabs, gate hospitality, bartender KDS, AV
             legends, 105 surprise games, and geo-fenced AutoPay — zero new
             hardware on the floor.
@@ -94,13 +94,13 @@ export function HeroSection() {
           <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap">
             <a
               href="#system"
-              className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-[#FFFFFF] px-5 font-sans text-sm font-semibold tracking-normal text-neutral-950 transition hover:bg-white/90 sm:w-auto"
+              className="lux-interactive lux-focus-ring inline-flex h-12 w-full items-center justify-center rounded-xl bg-[#FFFFFF] px-5 font-sans text-sm font-semibold tracking-normal text-neutral-950 shadow-[0_8px_32px_rgba(255,255,255,0.12)] transition-shadow duration-lux ease-lux hover:bg-white/90 sm:w-auto"
             >
               See how the system works
             </a>
             <Link
               href="/login"
-              className="inline-flex h-12 w-full items-center justify-center rounded-xl border border-white/40 bg-white/10 px-5 font-sans text-sm font-semibold tracking-normal text-[#FFFFFF] backdrop-blur-md transition hover:border-white/60 hover:bg-white/15 sm:w-auto"
+              className="lux-interactive lux-focus-ring inline-flex h-12 w-full items-center justify-center rounded-xl border border-white/40 bg-white/10 px-5 font-sans text-sm font-semibold tracking-normal text-[#FFFFFF] backdrop-blur-md transition-all duration-lux ease-lux hover:border-white/60 hover:bg-white/15 sm:w-auto"
             >
               Open live demo roles
             </Link>

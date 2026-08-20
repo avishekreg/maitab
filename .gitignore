@@ -46,3 +46,6 @@ android/local.properties
 *.keystore
 !public/downloads/maitab-latest.apk
 .env*
+
+# Cursor MCP secrets (API keys live in local mcp.json)
+.cursor/mcp.json

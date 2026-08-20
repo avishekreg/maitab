@@ -141,13 +141,23 @@ const config: Config = {
           "sans-serif",
         ],
       },
+      transitionTimingFunction: {
+        lux: "cubic-bezier(0.16, 1, 0.3, 1)",
+      },
+      transitionDuration: {
+        lux: "280ms",
+        "lux-fast": "180ms",
+      },
       boxShadow: {
         soft: "0 12px 40px rgba(8, 5, 3, 0.05)",
+        lux: "0 8px 32px rgba(0, 0, 0, 0.36)",
+        "lux-cream": "0 10px 30px -10px rgba(0, 0, 0, 0.08)",
         glow: "0 10px 28px rgba(124, 58, 237, 0.18)",
         "glow-violet": "0 10px 28px rgba(124, 58, 237, 0.20)",
         "glow-gold": "0 10px 24px rgba(217, 119, 6, 0.18)",
         "glow-emerald": "0 10px 24px rgba(5, 150, 105, 0.18)",
         "glow-mint": "0 10px 24px rgba(5, 150, 105, 0.18)",
+        "glow-cyan": "0 10px 28px rgba(6, 182, 212, 0.22)",
       },
       backgroundImage: {
         "nightlife-radial":
@@ -168,6 +178,12 @@ const config: Config = {
         "hero-burst": "hero-burst 3s ease-out forwards",
         "party-float": "party-float 4s ease-in-out infinite",
         "char-in": "char-in 0.45s ease-out both",
+        "lux-enter": "lux-enter 0.32s cubic-bezier(0.16,1,0.3,1) both",
+        "lux-float": "lux-float 5s ease-in-out infinite",
+        "priority-pulse": "priority-pulse 1.8s ease-in-out infinite",
+        "badge-glow": "badge-glow 2.4s ease-in-out infinite",
+        "wipe-out": "wipe-out 0.28s cubic-bezier(0.16,1,0.3,1) forwards",
+        "counter-bounce": "counter-bounce 0.35s cubic-bezier(0.16,1,0.3,1)",
       },
       keyframes: {
         "char-in": {
@@ -207,6 +223,41 @@ const config: Config = {
         "party-float": {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-4px)" },
+        },
+        "lux-enter": {
+          "0%": { opacity: "0", transform: "translateY(8px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "lux-float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-6px)" },
+        },
+        "priority-pulse": {
+          "0%, 100%": {
+            boxShadow: "0 0 0 0 rgba(226,184,87,0.45)",
+            borderColor: "rgba(226,184,87,0.55)",
+          },
+          "50%": {
+            boxShadow: "0 0 0 8px rgba(226,184,87,0)",
+            borderColor: "rgba(226,184,87,0.95)",
+          },
+        },
+        "badge-glow": {
+          "0%, 100%": {
+            boxShadow: "0 0 12px rgba(124,58,237,0.25), 0 0 0 1px rgba(255,255,255,0.12)",
+          },
+          "50%": {
+            boxShadow: "0 0 22px rgba(6,182,212,0.35), 0 0 0 1px rgba(255,255,255,0.22)",
+          },
+        },
+        "wipe-out": {
+          "0%": { opacity: "1", transform: "scale(1)", filter: "blur(0)" },
+          "100%": { opacity: "0", transform: "scale(0.96)", filter: "blur(2px)" },
+        },
+        "counter-bounce": {
+          "0%": { transform: "scale(1)" },
+          "40%": { transform: "scale(1.18)" },
+          "100%": { transform: "scale(1)" },
         },
       },
       backdropBlur: {

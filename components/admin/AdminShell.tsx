@@ -42,7 +42,7 @@ export function AdminShell({
 
       <div className="relative mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-7xl flex-col px-4 pb-10 pt-6 sm:px-6">
         {!hideTitle ? (
-        <div className="print:hidden flex flex-wrap items-end justify-between gap-4">
+        <div className="print:hidden flex flex-wrap items-end justify-between gap-4 animate-lux-enter">
           <div>
             <h1
               className={
@@ -61,7 +61,7 @@ export function AdminShell({
         </div>
         ) : null}
 
-        <div className="mt-6 flex-1">{children}</div>
+        <div className="mt-6 flex-1 animate-lux-enter">{children}</div>
       </div>
     </div>
   );
@@ -81,8 +81,8 @@ export function AdminSection({
   className?: string;
 }) {
   return (
-    <section className={cn("overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm", className)}>
-      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-zinc-200 px-5 py-4">
+    <section className={cn("lux-glass-cream overflow-hidden rounded-2xl", className)}>
+      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-zinc-200/80 px-5 py-4">
         <div>
           <h2 className="font-display text-2xl font-bold tracking-wide text-zinc-900">{title}</h2>
           {description ? (

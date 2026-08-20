@@ -9,6 +9,7 @@ import { ResponsibleBadges } from "@/components/branding/responsible-badges";
 import { SaarthiProvider } from "@/components/saarthi/SaarthiProvider";
 import { TierBadge } from "@/components/theme/TierChrome";
 import { TierThemeProvider } from "@/components/theme/TierThemeProvider";
+import { PageEnter } from "@/components/ui/PageEnter";
 import { useSessionStore } from "@/lib/store/session-store";
 import { getTierTheme } from "@/lib/theme/tiers";
 import { cn } from "@/lib/utils";
@@ -44,7 +45,7 @@ export function AppShell({
       <div className="relative min-h-[100dvh] bg-background text-foreground">
         <div className={cn("pointer-events-none absolute inset-0", theme.ambient)} />
 
-        <header className="optimus-glass sticky top-0 z-40 rounded-none border-x-0 border-t-0">
+        <header className="optimus-glass sticky top-0 z-40 rounded-none border-x-0 border-t-0 backdrop-blur-2xl">
           <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
             <div className="flex min-w-0 items-center gap-3">
               <BrandLockup href="/home" />
@@ -59,7 +60,7 @@ export function AppShell({
               <Link
                 href="/pass"
                 className={cn(
-                  "inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1.5 text-xs",
+                  "lux-interactive lux-focus-ring inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1.5 text-xs",
                   theme.headerBadge
                 )}
               >
@@ -72,11 +73,11 @@ export function AppShell({
         </header>
 
         <main className="relative mx-auto w-full max-w-6xl px-4 pb-40 pt-6">
-          {children}
+          <PageEnter>{children}</PageEnter>
         </main>
 
         {showNav ? (
-          <nav className="optimus-glass fixed inset-x-0 bottom-0 z-40 rounded-none border-x-0 border-b-0">
+          <nav className="optimus-glass fixed inset-x-0 bottom-0 z-40 rounded-none border-x-0 border-b-0 backdrop-blur-2xl">
             <div className="mx-auto grid max-w-lg grid-cols-5 px-2 py-2">
               {NAV.map((item) => {
                 const active = pathname.startsWith(item.href);
@@ -86,7 +87,7 @@ export function AppShell({
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "flex flex-col items-center gap-1 rounded-lg px-2 py-2 text-[11px] transition",
+                      "lux-interactive lux-focus-ring flex flex-col items-center gap-1 rounded-lg px-2 py-2 text-[11px] transition-colors duration-lux ease-lux",
                       active
                         ? theme.navActive
                         : "text-muted-foreground hover:text-foreground"

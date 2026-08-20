@@ -13,6 +13,7 @@ interface StatusPillProps {
     | "ready"
     | "danger";
   className?: string;
+  pulse?: boolean;
 }
 
 const TONE: Record<NonNullable<StatusPillProps["tone"]>, string> = {
@@ -31,12 +32,14 @@ export function StatusPill({
   label,
   tone = "muted",
   className,
+  pulse = false,
 }: StatusPillProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-md border px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wide",
+        "inline-flex items-center rounded-md border px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wide transition-shadow duration-lux ease-lux",
         TONE[tone],
+        pulse && "animate-priority-pulse",
         className
       )}
     >

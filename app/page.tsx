@@ -306,7 +306,7 @@ export default function MarketingLandingPage() {
       <HeroSection />
 
       <div className="relative z-10 -mt-8 flex justify-center px-4 pb-6 sm:-mt-10">
-        <div className="inline-flex max-w-full overflow-x-auto rounded-full border border-white/10 bg-zinc-950/80 px-3 py-2 shadow-[0_12px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+        <div className="inline-flex max-w-full animate-lux-float overflow-x-auto rounded-full border border-white/10 bg-zinc-950/80 px-3 py-2 shadow-[0_12px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl">
           <ResponsibleBadges density="micro" />
         </div>
       </div>
@@ -423,7 +423,7 @@ export default function MarketingLandingPage() {
                   whileTap={{ scale: 0.985 }}
                   viewport={{ once: true, amount: 0.35 }}
                   transition={{ delay: i * 0.07, duration: 0.35 }}
-                  className="group relative overflow-hidden rounded-2xl border border-slate-900/15 bg-gradient-to-br from-white via-[#F8FAFC] to-[#EEF2FF]/90 p-6 text-left shadow-[0_12px_40px_rgba(15,23,42,0.1)] backdrop-blur-xl transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A38B5E] sm:p-7"
+                className="lux-sheen lux-interactive group relative overflow-hidden rounded-2xl border border-slate-900/15 bg-gradient-to-br from-white via-[#F8FAFC] to-[#EEF2FF]/90 p-6 text-left shadow-[0_12px_40px_rgba(15,23,42,0.1)] backdrop-blur-xl transition-all duration-lux ease-lux focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A38B5E] sm:p-7"
                 >
                   <div
                     className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100"
@@ -596,7 +596,7 @@ export default function MarketingLandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.35 }}
                 transition={{ delay: i * 0.08 }}
-                className="rounded-3xl border border-zinc-800 bg-zinc-950/90 p-8 shadow-xl backdrop-blur-2xl"
+                className="lux-glass-dark lux-sheen rounded-3xl p-8"
               >
                 <span
                   className={`inline-flex rounded-full border px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] ${card.badgeClass}`}
@@ -653,7 +653,7 @@ export default function MarketingLandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="rounded-xl border border-[#DAD7D0] bg-white/80 p-5 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.08)] backdrop-blur-xl"
+                className="lux-glass-cream lux-interactive rounded-xl p-5"
               >
                 <div className="mb-4 h-px w-10 bg-[#A38B5E]" />
                 <h3 className="type-title text-lg text-[#080503]">
@@ -751,7 +751,7 @@ export default function MarketingLandingPage() {
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href="mailto:hello@maitab.app?subject=mAITab%20venue%20walkthrough"
-              className="inline-flex h-12 items-center rounded-xl bg-accent-violet px-5 text-sm font-semibold text-white shadow-glow-violet transition hover:brightness-110"
+              className="lux-interactive lux-focus-ring inline-flex h-12 items-center rounded-xl bg-accent-violet px-5 text-sm font-semibold text-white shadow-glow-violet transition-all duration-lux ease-lux hover:brightness-110"
             >
               Book a venue walkthrough
             </a>

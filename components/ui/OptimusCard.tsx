@@ -4,6 +4,7 @@ interface OptimusCardProps {
   children: React.ReactNode;
   className?: string;
   padded?: boolean;
+  interactive?: boolean;
 }
 
 /** Crisp Optimus glass card — use for interactive surfaces */
@@ -11,11 +12,13 @@ export function OptimusCard({
   children,
   className,
   padded = true,
+  interactive = false,
 }: OptimusCardProps) {
   return (
     <div
       className={cn(
-        "optimus-glass rounded-xl",
+        "optimus-glass lux-sheen rounded-xl",
+        interactive && "lux-interactive",
         padded && "p-5",
         className
       )}
@@ -35,13 +38,15 @@ export function OptimusSectionHeader({
   description?: string;
 }) {
   return (
-    <div className="mb-5">
+    <div className="mb-5 animate-lux-enter">
       {eyebrow ? (
         <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="mt-2 font-display text-3xl text-foreground">{title}</h2>
+      <h2 className="mt-2 font-display text-3xl leading-tight text-foreground">
+        {title}
+      </h2>
       {description ? (
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           {description}
