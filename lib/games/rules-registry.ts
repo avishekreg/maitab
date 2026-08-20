@@ -432,6 +432,158 @@ export const FORMAT_RULES: Record<string, GameRule> = {
       ...HOUSE_DONTS,
     ],
   }),
+  dice_duel: rule({
+    id: "dice_duel",
+    name: "Dice Duel",
+    category: "MULTIPLAYER",
+    tagline: "Two cubes. One target. Tab on the line.",
+    objective: "Roll two dice and beat the house target number.",
+    howToPlay: [
+      "Tap Roll to throw both neon dice.",
+      "Sum the faces — meet or beat the target to win immunity.",
+      "Miss the target and the roller buys the mapped penalty.",
+    ],
+    winCondition: "Hitting the target banks arcade credits + table immunity.",
+    lossCondition: "Under the target triggers the loser penalty SKU.",
+    drawOrTieRule: "Exact target counts as a win.",
+    penaltiesAndRewards: {
+      winner: "Table Immunity + 40 arcade credits",
+      loser: "Mapped shot SKU on personal tab",
+    },
+  }),
+  hot_seat: rule({
+    id: "hot_seat",
+    name: "Hot Seat",
+    category: "TABLE_DARES",
+    tagline: "Timer on. Spotlight on. Answer or drink.",
+    objective: "Survive the confession timer without bailing.",
+    howToPlay: [
+      "One player takes the hot seat.",
+      "A prompt drops with a live countdown.",
+      "Answer honestly before time runs out — or take the forfeit.",
+    ],
+    winCondition: "Finishing the answer before zero unlocks loyalty points.",
+    lossCondition: "Bail / silence / timeout bills the penalty.",
+    drawOrTieRule: "Pass is always allowed — next player inherits the seat.",
+    penaltiesAndRewards: {
+      winner: "Hot Seat Crown + 30 credits",
+      loser: "Shot SKU or skip next dare",
+    },
+  }),
+  memory_flash: rule({
+    id: "memory_flash",
+    name: "Memory Flash",
+    category: "REFLEX",
+    tagline: "Watch the pads. Replay the glow.",
+    objective: "Repeat the neon pad sequence without a miss.",
+    howToPlay: [
+      "Watch the pads light in order.",
+      "Tap the same sequence back.",
+      "One miss ends the round.",
+    ],
+    winCondition: "Clearing the full sequence awards reflex credits.",
+    lossCondition: "Wrong pad ends the streak — loser pays.",
+    drawOrTieRule: "N/A — solo versus the house sequence.",
+    penaltiesAndRewards: {
+      winner: "Reflex badge + coupon chance",
+      loser: "Mapped shooter on tab",
+    },
+  }),
+  beat_tap: rule({
+    id: "beat_tap",
+    name: "Beat Tap",
+    category: "REFLEX",
+    tagline: "Lock the kick before last call.",
+    objective: "Hit the bass pad the required number of times as fast as you can.",
+    howToPlay: [
+      "Tap the glowing pad to the imagined kick.",
+      "Reach the required tap count.",
+      "Faster clears earn bigger arcade credit bursts.",
+    ],
+    winCondition: "Completing the tap goal banks points.",
+    lossCondition: "Walking away mid-run forfeits the turn.",
+    drawOrTieRule: "N/A",
+    penaltiesAndRewards: {
+      winner: "Bassline coupon chance",
+      loser: "Buy the next round",
+    },
+  }),
+  two_truths: rule({
+    id: "two_truths",
+    name: "Two Truths One Lie",
+    category: "TABLE_DARES",
+    tagline: "Smell the fake. Call it out.",
+    objective: "Identify which statement is the lie.",
+    howToPlay: [
+      "Read all three statements.",
+      "Tap the one you think is fake.",
+      "Correct calls toast the table; misses drink.",
+    ],
+    winCondition: "Catching the lie earns clash points.",
+    lossCondition: "Wrong pick takes the forfeit.",
+    drawOrTieRule: "If contested, re-deal a new pack.",
+    penaltiesAndRewards: {
+      winner: "Lie Detector chip",
+      loser: "Penalty SKU",
+    },
+  }),
+  red_light: rule({
+    id: "red_light",
+    name: "Red Light Freeze",
+    category: "MULTIPLAYER",
+    tagline: "Green moves. Red freezes. Don't flinch.",
+    objective: "Hold the freeze cue when the pad turns red.",
+    howToPlay: [
+      "Start the round — green means move/hype.",
+      "When red hits, freeze in the shown cue pose.",
+      "Confirm the table held it to complete.",
+    ],
+    winCondition: "Clean freeze awards multiplayer sync points.",
+    lossCondition: "Anyone who moves on red pays.",
+    drawOrTieRule: "Disputed freezes re-run once.",
+    penaltiesAndRewards: {
+      winner: "Sync points",
+      loser: "Shot for the flinchers",
+    },
+  }),
+  charades: rule({
+    id: "charades",
+    name: "Midnight Charades",
+    category: "TABLE_DARES",
+    tagline: "Act the night. No talking.",
+    objective: "Get the table to guess the nightlife prompt silently.",
+    howToPlay: [
+      "Reveal the prompt only to the actor.",
+      "Act it out before the timer ends.",
+      "Tap guessed when the table lands it.",
+    ],
+    winCondition: "A correct guess before timeout wins the round.",
+    lossCondition: "Timeout bills the actor's penalty.",
+    drawOrTieRule: "Partial guesses can award a re-prompt.",
+    penaltiesAndRewards: {
+      winner: "Stage credits",
+      loser: "Mapped penalty",
+    },
+  }),
+  high_low: rule({
+    id: "high_low",
+    name: "High-Low Streak",
+    category: "MULTIPLAYER",
+    tagline: "Call the next card. Ride the streak.",
+    objective: "Guess whether the next card is higher or lower.",
+    howToPlay: [
+      "See the current card face.",
+      "Tap Higher or Lower.",
+      "Build a streak to the house goal without busting.",
+    ],
+    winCondition: "Hitting the streak goal awards jackpot credits.",
+    lossCondition: "A bust ends the run — loser pays.",
+    drawOrTieRule: "Equal cards count as a successful call.",
+    penaltiesAndRewards: {
+      winner: "Streak jackpot chance",
+      loser: "Buy the round",
+    },
+  }),
 };
 
 const TYPE_TO_FORMAT: Record<GameType, string> = {
@@ -453,6 +605,14 @@ const TYPE_TO_FORMAT: Record<GameType, string> = {
   SCRATCH_WIN: "scratch_win",
   MYSTERY_VAULT: "mystery_vault",
   SOBRIETY_REFLEX: "sobriety_reflex",
+  DICE_DUEL: "dice_duel",
+  HOT_SEAT: "hot_seat",
+  MEMORY_FLASH: "memory_flash",
+  BEAT_TAP: "beat_tap",
+  TWO_TRUTHS: "two_truths",
+  RED_LIGHT: "red_light",
+  CHARADES: "charades",
+  HIGH_LOW: "high_low",
 };
 
 export const RULE_CATEGORIES: { id: GameRuleCategory | "ALL"; label: string }[] = [
@@ -480,7 +640,7 @@ export function ruleForGame(type: GameType, title?: string): GameRule {
   };
 }
 
-/** One rulebook card per catalog title (110+), inheriting format mechanics. */
+/** One rulebook card per catalog title (200+), inheriting format mechanics. */
 export function catalogRulebook(): GameRule[] {
   return GAMES_CATALOG.map((game) => ruleForGame(game.game_type, game.title));
 }

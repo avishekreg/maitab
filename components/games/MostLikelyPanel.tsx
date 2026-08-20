@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { Crown } from "lucide-react";
 import { cn, triggerHaptic } from "@/lib/utils";
 import { burstConfetti } from "@/lib/games/confetti";
 import { playWinSting } from "@/lib/games/arcade-sfx";
@@ -11,6 +13,7 @@ const PASS_ID = "__pass__";
 
 type Tallies = Record<string, number>;
 
+/** Named-player table accusation / Most Likely To engine */
 export function MostLikelyPanel({
   prompt,
   onComplete,
@@ -25,6 +28,11 @@ export function MostLikelyPanel({
   const [picked, setPicked] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
   const [revealed, setRevealed] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     setTallies({});
@@ -59,6 +67,7 @@ export function MostLikelyPanel({
     if (!passWins) burstConfetti(1600);
     const name = passWins ? "Pass" : leader?.name ?? "the table";
     onComplete(`${prompt} → ${name}`);
+    void triggerHaptic([40, 30, 60]);
   }
 
   return (
@@ -78,7 +87,7 @@ export function MostLikelyPanel({
       </motion.div>
 
       <p className="font-mono text-[11px] uppercase tracking-wider text-zinc-500">
-        Who fits this prompt?
+        Accuse a named player at the table
       </p>
       <div className="grid grid-cols-2 gap-2">
         {players.map((player) => (
@@ -88,6 +97,7 @@ export function MostLikelyPanel({
             active={picked === player.id}
             votes={tallies[player.id] ?? 0}
             showCount={revealed || total > 0}
+            crowned={revealed && !passWins && leader?.id === player.id}
             onClick={() => voteFor(player.id)}
           />
         ))}
@@ -95,11 +105,12 @@ export function MostLikelyPanel({
           type="button"
           onClick={() => voteFor(PASS_ID)}
           className={cn(
-            "rounded-2xl border border-zinc-800 bg-zinc-900/60 px-4 py-3 text-xs font-semibold text-zinc-400 transition-all",
-            picked === PASS_ID && "ring-2 ring-zinc-400"
+            "cursor-pointer rounded-2xl border border-zinc-800 bg-zinc-900/60 px-4 py-3 text-xs font-semibold text-zinc-400 transition-all active:scale-[0.98]",
+            picked === PASS_ID &&
+              "ring-2 ring-zinc-300 shadow-[0_0_16px_rgba(212,212,216,0.35)]"
           )}
         >
-          ⏭️ Pass / Skip
+          Pass
         </button>
       </div>
 
@@ -119,47 +130,76 @@ export function MostLikelyPanel({
         />
         <button
           type="submit"
-          className="shrink-0 rounded-xl border border-zinc-700 bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-200"
+          className="shrink-0 cursor-pointer rounded-xl border border-zinc-700 bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-200 active:scale-[0.98]"
         >
           Add
         </button>
       </form>
 
+      {/* Live / reveal percentage bars per occupant */}
       {total > 0 ? (
-        <div className="space-y-2">
-          <div className="flex h-2 overflow-hidden rounded-full bg-zinc-800">
-            {ranked.map((p) =>
-              p.votes ? (
-                <div
-                  key={p.id}
-                  className={cn(
-                    "h-full transition-all duration-300",
-                    p.isSelf ? "bg-violet-500" : "bg-amber-400"
-                  )}
-                  style={{ width: `${(p.votes / Math.max(total, 1)) * 100}%` }}
-                />
-              ) : null
-            )}
-            {passVotes ? (
-              <div
-                className="h-full bg-zinc-600 transition-all duration-300"
-                style={{ width: `${(passVotes / Math.max(total, 1)) * 100}%` }}
-              />
-            ) : null}
-          </div>
-          {revealed
-            ? ranked
-                .filter((p) => p.votes > 0)
-                .map((p) => (
-                  <p
-                    key={p.id}
-                    className="font-mono text-xs font-bold text-zinc-300"
+        <div className="space-y-2.5 rounded-2xl border border-zinc-800 bg-zinc-950/80 p-3">
+          <p className="font-mono text-[10px] uppercase tracking-wider text-zinc-500">
+            {revealed ? "Final tally" : "Live votes"}
+          </p>
+          {ranked.map((p) => {
+            const pct = Math.round((p.votes / Math.max(total, 1)) * 100);
+            const isLeader = revealed && !passWins && leader?.id === p.id;
+            return (
+              <div key={p.id} className="space-y-1">
+                <div className="flex items-center justify-between gap-2 text-xs">
+                  <span
+                    className={cn(
+                      "font-semibold text-zinc-200",
+                      isLeader && "text-amber-300"
+                    )}
                   >
-                    {p.name}: {p.votes} votes (
-                    {Math.round((p.votes / Math.max(total, 1)) * 100)}%)
-                  </p>
-                ))
-            : null}
+                    {isLeader ? (
+                      <Crown className="mr-1 inline h-3.5 w-3.5 text-amber-300" />
+                    ) : null}
+                    {p.isSelf ? `${p.name} (Me)` : p.name}
+                  </span>
+                  <span className="font-mono tabular-nums text-zinc-400">
+                    {p.votes} · {pct}%
+                  </span>
+                </div>
+                <div className="h-2.5 overflow-hidden rounded-full bg-zinc-800">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${pct}%` }}
+                    transition={{ type: "spring", stiffness: 120, damping: 20 }}
+                    className={cn(
+                      "h-full rounded-full",
+                      isLeader
+                        ? "bg-gradient-to-r from-amber-400 to-rose-500 shadow-[0_0_12px_rgba(245,158,11,0.55)]"
+                        : p.isSelf
+                          ? "bg-violet-500"
+                          : "bg-cyan-500/80"
+                    )}
+                  />
+                </div>
+              </div>
+            );
+          })}
+          {passVotes > 0 ? (
+            <div className="space-y-1">
+              <div className="flex items-center justify-between text-xs text-zinc-400">
+                <span>Pass</span>
+                <span className="font-mono tabular-nums">
+                  {passVotes} ·{" "}
+                  {Math.round((passVotes / Math.max(total, 1)) * 100)}%
+                </span>
+              </div>
+              <div className="h-2.5 overflow-hidden rounded-full bg-zinc-800">
+                <div
+                  className="h-full rounded-full bg-zinc-500"
+                  style={{
+                    width: `${(passVotes / Math.max(total, 1)) * 100}%`,
+                  }}
+                />
+              </div>
+            </div>
+          ) : null}
         </div>
       ) : null}
 
@@ -167,27 +207,33 @@ export function MostLikelyPanel({
         type="button"
         onClick={reveal}
         disabled={total === 0}
-        className="w-full rounded-xl bg-violet-600 py-3 text-sm font-bold text-white transition-all hover:bg-violet-500 disabled:opacity-40"
+        className="w-full cursor-pointer rounded-xl bg-violet-600 py-3 text-sm font-bold text-white transition-all hover:bg-violet-500 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
       >
         Lock Votes / Reveal
       </button>
 
-      <AnimatePresence>
-        {revealed ? (
-          <CalloutModal
-            passWins={passWins}
-            leader={leader}
-            total={total}
-            selfId={self.id}
-            onClose={() => setRevealed(false)}
-            onBill={() => {
-              if (leader && !passWins) onBillPenalty?.(leader.name);
-              setRevealed(false);
-            }}
-            onImmunity={() => setRevealed(false)}
-          />
-        ) : null}
-      </AnimatePresence>
+      {mounted
+        ? createPortal(
+            <AnimatePresence mode="wait">
+              {revealed ? (
+                <CalloutModal
+                  key="accuse-reveal"
+                  passWins={passWins}
+                  leader={leader}
+                  total={total}
+                  selfId={self.id}
+                  onClose={() => setRevealed(false)}
+                  onBill={() => {
+                    if (leader && !passWins) onBillPenalty?.(leader.name);
+                    setRevealed(false);
+                  }}
+                  onImmunity={() => setRevealed(false)}
+                />
+              ) : null}
+            </AnimatePresence>,
+            document.body
+          )
+        : null}
     </div>
   );
 }
@@ -197,12 +243,14 @@ function PlayerChip({
   active,
   votes,
   showCount,
+  crowned,
   onClick,
 }: {
   player: RosterPlayer;
   active: boolean;
   votes: number;
   showCount: boolean;
+  crowned?: boolean;
   onClick: () => void;
 }) {
   return (
@@ -210,19 +258,29 @@ function PlayerChip({
       type="button"
       onClick={onClick}
       className={cn(
-        "rounded-2xl px-4 py-3 text-left font-display text-sm font-bold transition-all",
+        "relative cursor-pointer rounded-2xl px-4 py-3 text-left font-display text-sm font-bold transition-all active:scale-[0.98]",
         player.isSelf
           ? "border border-violet-500/50 bg-violet-950/40 text-violet-200 hover:bg-violet-600 hover:text-white"
           : "border border-zinc-700/80 bg-zinc-900 text-zinc-100 hover:border-amber-400 hover:bg-amber-500/20 hover:text-amber-200",
         active &&
           (player.isSelf
             ? "ring-2 ring-violet-400 shadow-[0_0_18px_rgba(167,139,250,0.55)]"
-            : "ring-2 ring-amber-400 shadow-[0_0_18px_rgba(251,191,36,0.45)]")
+            : "ring-2 ring-amber-400 shadow-[0_0_18px_rgba(251,191,36,0.45)]"),
+        crowned && "border-amber-400/70 shadow-[0_0_24px_rgba(245,158,11,0.35)]"
       )}
     >
-      {player.isSelf ? "🙋‍♂️ " : "👤 "}
-      {player.name}
-      {player.isSelf ? " (Me)" : ""}
+      {crowned ? (
+        <Crown className="absolute right-2 top-2 h-3.5 w-3.5 text-amber-300" />
+      ) : null}
+      <span className="mr-1.5 inline-flex h-6 w-6 items-center justify-center rounded-full bg-zinc-800 text-[11px] font-mono text-zinc-300">
+        {player.isSelf ? "Me" : player.name.slice(0, 1).toUpperCase()}
+      </span>
+      {player.isSelf ? `${player.name}` : player.name}
+      {player.isSelf ? (
+        <span className="ml-1 font-mono text-[10px] font-normal opacity-70">
+          (Me)
+        </span>
+      ) : null}
       {showCount ? (
         <span className="ml-2 font-mono text-[11px] opacity-80">{votes}</span>
       ) : null}
@@ -249,35 +307,43 @@ function CalloutModal({
 }) {
   const selfWon = !passWins && leader?.id === selfId;
   const title = passWins
-    ? "Everyone chickened out! 2× stakes on next prompt."
+    ? "Everyone passed — 2× stakes next prompt."
     : selfWon
-      ? `Self-Aware Legend! ${leader?.name} owned it.`
-      : `🔥 ${leader?.name ?? "Someone"} GOT CALLED OUT!`;
+      ? `Self-aware — ${leader?.name} owned it.`
+      : `${leader?.name ?? "Someone"} got called out`;
   const body = passWins
     ? "Pass won the table. Next prompt runs at double stakes."
     : selfWon
       ? "The table drinks on you — or take immunity."
-      : "Guilty as charged! The table has spoken.";
+      : "Guilty as charged. The table has spoken.";
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[75] grid place-items-center bg-black/70 p-4 backdrop-blur-md"
+      className="fixed inset-0 z-[999] grid place-items-center bg-black/80 p-4 backdrop-blur-md"
       onClick={onClose}
     >
       <motion.div
         initial={{ scale: 0.92, y: 12 }}
         animate={{ scale: 1, y: 0 }}
-        className="w-full max-w-md rounded-3xl border border-amber-400/40 bg-zinc-950 p-6 text-white shadow-[0_0_50px_rgba(245,158,11,0.25)]"
+        exit={{ scale: 0.96, opacity: 0 }}
+        className="relative z-[1000] w-full max-w-md rounded-3xl border border-amber-400/40 bg-zinc-950 p-6 text-white shadow-[0_0_50px_rgba(245,158,11,0.25)]"
         onClick={(e) => e.stopPropagation()}
       >
+        {!passWins ? (
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-500/10 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-amber-200">
+            <Crown className="h-3.5 w-3.5" />
+            Most accused
+          </div>
+        ) : null}
         <p className="font-display text-2xl font-black leading-snug">{title}</p>
         <p className="mt-2 text-sm text-zinc-300">{body}</p>
         {!passWins && leader ? (
           <p className="mt-3 font-mono text-xs font-bold text-amber-300">
-            {leader.votes} out of {total} table votes
+            {leader.votes} of {total} table votes · 1× Penalty Shooter billed to{" "}
+            {leader.name}&apos;s tab
           </p>
         ) : null}
         <div className="mt-5 grid gap-2">
@@ -286,23 +352,23 @@ function CalloutModal({
               <button
                 type="button"
                 onClick={onBill}
-                className="rounded-xl bg-amber-500 py-3 text-sm font-bold text-zinc-950"
+                className="cursor-pointer rounded-xl bg-amber-500 py-3 text-sm font-bold text-zinc-950 active:scale-[0.98]"
               >
-                🥃 Bill 1x Penalty Shot (₹280) to {leader?.name}&apos;s Tab
+                Bill 1× Penalty Shot (₹280) to {leader?.name}&apos;s Tab
               </button>
               <button
                 type="button"
                 onClick={onImmunity}
-                className="rounded-xl border border-zinc-700 bg-zinc-900 py-3 text-sm font-semibold text-zinc-200"
+                className="cursor-pointer rounded-xl border border-zinc-700 bg-zinc-900 py-3 text-sm font-semibold text-zinc-200 active:scale-[0.98]"
               >
-                ⚡ Forfeit Immunity
+                Forfeit Immunity
               </button>
             </>
           ) : (
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl bg-violet-600 py-3 text-sm font-bold text-white"
+              className="cursor-pointer rounded-xl bg-violet-600 py-3 text-sm font-bold text-white active:scale-[0.98]"
             >
               Next prompt at 2× stakes
             </button>
@@ -312,3 +378,5 @@ function CalloutModal({
     </motion.div>
   );
 }
+
+export { MostLikelyPanel as MostLikelyTo };

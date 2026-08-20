@@ -2,6 +2,7 @@ import type { GameType, OrderItem } from "@/lib/types";
 import { PENALTIES, type PenaltyKey } from "@/lib/games/penalties";
 import rawCatalog from "@/lib/games/100_games_catalog.raw.json";
 import { ARCADE_EXPANSION } from "@/lib/games/arcade-expansion";
+import { ARCADE_WAVE2 } from "@/lib/games/arcade-wave2";
 
 export type GameCategory =
   | "SHOT_ROULETTE"
@@ -70,10 +71,11 @@ function hydrate(def: CatalogGameDefinition): HydratedCatalogGame {
   };
 }
 
-/** Full curated nightlife catalog — 110+ interactive variants. */
+/** Full curated nightlife catalog — 200+ interactive variants. */
 export const GAMES_CATALOG: HydratedCatalogGame[] = [
   ...(rawCatalog as CatalogGameDefinition[]),
   ...ARCADE_EXPANSION,
+  ...ARCADE_WAVE2,
 ].map(hydrate);
 
 export const GAMES_CATALOG_COUNT = GAMES_CATALOG.length;

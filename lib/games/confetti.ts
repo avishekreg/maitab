@@ -18,7 +18,7 @@ export function burstConfetti(durationMs = 2200) {
   const canvas = document.createElement("canvas");
   canvas.setAttribute("data-maitab-confetti", "1");
   canvas.style.cssText =
-    "position:fixed;inset:0;z-index:80;pointer-events:none;width:100%;height:100%";
+    "position:fixed;inset:0;z-index:1100;pointer-events:none;width:100%;height:100%";
   document.body.appendChild(canvas);
   const ctx = canvas.getContext("2d");
   if (!ctx) {

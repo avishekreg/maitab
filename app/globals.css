@@ -221,6 +221,121 @@ nav {
   color: #ffffff;
 }
 
+/* Nightlife arcade stage — beat global cream h1/input styles */
+.arcade-stage {
+  color-scheme: dark;
+}
+
+.arcade-stage h1,
+.arcade-stage h2,
+.arcade-stage h3 {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff;
+  background: none !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+}
+
+.arcade-stage ::selection {
+  background: rgba(124, 58, 237, 0.45);
+  color: #ffffff;
+}
+
+.arcade-stage input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="hidden"]):not([type="color"]):not([type="button"]):not([type="submit"]):not([type="reset"]),
+.arcade-stage select,
+.arcade-stage textarea {
+  background-color: rgb(24 24 27 / 0.95) !important;
+  border-color: rgb(63 63 70 / 0.9) !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.arcade-stage input::placeholder,
+.arcade-stage textarea::placeholder {
+  color: #71717a !important;
+}
+
+.arcade-stage input:focus,
+.arcade-stage select:focus,
+.arcade-stage textarea:focus {
+  border-color: #8b5cf6 !important;
+  box-shadow:
+    0 0 0 2px rgb(139 92 246 / 0.22),
+    inset 0 1px 2px rgba(0, 0, 0, 0.35) !important;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* 21st-inspired glowing arcade cards (glass + light ray) */
+.arcade-glow-card {
+  isolation: isolate;
+}
+
+.arcade-glow-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.35),
+    transparent 40%,
+    rgba(6, 182, 212, 0.25)
+  );
+  opacity: 0;
+  transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.arcade-glow-card:hover::before,
+.arcade-glow-card:focus-visible::before {
+  opacity: 1;
+}
+
+.arcade-glow-card:focus-visible {
+  outline: 2px solid rgba(167, 139, 250, 0.85);
+  outline-offset: 2px;
+}
+
+.arcade-glow-ray {
+  position: absolute;
+  top: -40%;
+  left: -20%;
+  width: 55%;
+  height: 180%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 45%,
+    transparent 70%
+  );
+  transform: rotate(18deg);
+  opacity: 0;
+  transition: opacity 320ms ease, transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.arcade-glow-card:hover .arcade-glow-ray {
+  opacity: 1;
+  transform: rotate(18deg) translateX(18%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arcade-glow-card::before,
+  .arcade-glow-ray {
+    transition: none !important;
+  }
+}
+
 @layer components {
   .optimus-glass {
     @apply border backdrop-blur-2xl;

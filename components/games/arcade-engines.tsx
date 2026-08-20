@@ -627,3 +627,472 @@ export function SobrietyReflexEngine({
     </button>
   );
 }
+
+export function DiceDuelEngine({
+  target = 8,
+  onComplete,
+}: {
+  target?: number;
+  onComplete: (label: string) => void;
+}) {
+  const [dice, setDice] = useState<[number, number] | null>(null);
+  const [rolling, setRolling] = useState(false);
+
+  return (
+    <div className={CARD + " text-center"}>
+      <p className="font-mono text-[11px] uppercase tracking-wider text-amber-300">
+        Dice duel · beat {target}
+      </p>
+      <div className="mt-6 flex items-center justify-center gap-4">
+        {(dice ?? [0, 0]).map((n, i) => (
+          <motion.div
+            key={i}
+            animate={rolling ? { rotate: [0, 18, -12, 0], scale: [1, 1.08, 1] } : {}}
+            transition={{ duration: 0.35, repeat: rolling ? 3 : 0 }}
+            className="grid h-20 w-20 place-items-center rounded-2xl border border-violet-400/40 bg-gradient-to-br from-violet-700/40 to-zinc-950 font-display text-3xl font-black text-white shadow-[0_0_24px_rgba(124,58,237,0.25)]"
+          >
+            {dice ? n : "?"}
+          </motion.div>
+        ))}
+      </div>
+      <PlayButton
+        disabled={rolling}
+        onClick={() => {
+          setRolling(true);
+          void triggerHaptic(25);
+          window.setTimeout(() => {
+            const next: [number, number] = [
+              1 + Math.floor(Math.random() * 6),
+              1 + Math.floor(Math.random() * 6),
+            ];
+            setDice(next);
+            setRolling(false);
+            const sum = next[0] + next[1];
+            playWinSting();
+            onComplete(
+              sum >= target
+                ? `High roll ${sum} — table immunity`
+                : `Rolled ${sum} — loser buys`
+            );
+          }, 700);
+        }}
+      >
+        {rolling ? "Rolling…" : "Roll the table dice"}
+      </PlayButton>
+    </div>
+  );
+}
+
+export function HotSeatEngine({
+  prompts,
+  seconds = 20,
+  onComplete,
+}: {
+  prompts: string[];
+  seconds?: number;
+  onComplete: (label: string) => void;
+}) {
+  const [prompt, setPrompt] = useState(prompts[0] ?? "Take the hot seat.");
+  const [left, setLeft] = useState(seconds);
+  const [live, setLive] = useState(false);
+
+  useEffect(() => {
+    if (!live) return;
+    if (left <= 0) {
+      setLive(false);
+      playWinSting();
+      onComplete(prompt);
+      return;
+    }
+    const id = window.setTimeout(() => setLeft((n) => n - 1), 1000);
+    return () => window.clearTimeout(id);
+  }, [left, live, onComplete, prompt]);
+
+  return (
+    <div className={CARD}>
+      <p className="font-mono text-[11px] uppercase tracking-wider text-rose-300">
+        Hot seat · {left}s
+      </p>
+      <h3 className="mt-4 font-display text-xl font-black leading-snug text-white">
+        {prompt}
+      </h3>
+      <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-zinc-800">
+        <div
+          className="h-full bg-gradient-to-r from-rose-500 to-amber-400 transition-all duration-1000"
+          style={{ width: `${(left / seconds) * 100}%` }}
+        />
+      </div>
+      <PlayButton
+        onClick={() => {
+          const next =
+            prompts[Math.floor(Math.random() * prompts.length)] ?? prompt;
+          setPrompt(next);
+          setLeft(seconds);
+          setLive(true);
+          void triggerHaptic(20);
+        }}
+      >
+        {live ? "Stay in the seat…" : "Put someone on the seat"}
+      </PlayButton>
+    </div>
+  );
+}
+
+const FLASH_COLORS = ["#7c3aed", "#06b6d4", "#f59e0b", "#e11d48"] as const;
+
+export function MemoryFlashEngine({
+  levels = 4,
+  onComplete,
+}: {
+  levels?: number;
+  onComplete: (label: string) => void;
+}) {
+  const [seq, setSeq] = useState<number[]>([]);
+  const [input, setInput] = useState<number[]>([]);
+  const [lit, setLit] = useState<number | null>(null);
+  const [phase, setPhase] = useState<"idle" | "show" | "play" | "done">("idle");
+
+  async function playSequence(next: number[]) {
+    setPhase("show");
+    for (const idx of next) {
+      setLit(idx);
+      await new Promise((r) => setTimeout(r, 420));
+      setLit(null);
+      await new Promise((r) => setTimeout(r, 160));
+    }
+    setPhase("play");
+  }
+
+  function start() {
+    const next = Array.from({ length: levels }, () =>
+      Math.floor(Math.random() * FLASH_COLORS.length)
+    );
+    setSeq(next);
+    setInput([]);
+    void playSequence(next);
+  }
+
+  function tap(i: number) {
+    if (phase !== "play") return;
+    const next = [...input, i];
+    setInput(next);
+    void triggerHaptic(12);
+    const ok = next.every((v, idx) => v === seq[idx]);
+    if (!ok) {
+      setPhase("done");
+      onComplete(`Memory miss · ${next.length - 1}/${seq.length}`);
+      return;
+    }
+    if (next.length === seq.length) {
+      setPhase("done");
+      playWinSting();
+      burstConfetti(900);
+      onComplete(`Memory clear · ${seq.length} flashes`);
+    }
+  }
+
+  return (
+    <div className={CARD + " text-center"}>
+      <p className="font-mono text-[11px] uppercase tracking-wider text-cyan-300">
+        Memory flash · {levels} hits
+      </p>
+      <div className="mx-auto mt-5 grid max-w-xs grid-cols-2 gap-3">
+        {FLASH_COLORS.map((c, i) => (
+          <button
+            key={c}
+            type="button"
+            onClick={() => tap(i)}
+            className="h-16 rounded-2xl border border-white/10 transition-transform active:scale-95"
+            style={{
+              background: lit === i ? c : `${c}55`,
+              boxShadow: lit === i ? `0 0 28px ${c}` : undefined,
+            }}
+            aria-label={`Pad ${i + 1}`}
+          />
+        ))}
+      </div>
+      <PlayButton disabled={phase === "show"} onClick={start}>
+        {phase === "idle" || phase === "done" ? "Start sequence" : "Watch… then repeat"}
+      </PlayButton>
+    </div>
+  );
+}
+
+export function BeatTapEngine({
+  taps = 10,
+  onComplete,
+}: {
+  taps?: number;
+  onComplete: (label: string) => void;
+}) {
+  const [count, setCount] = useState(0);
+  const [pulse, setPulse] = useState(false);
+  const started = useRef(0);
+
+  return (
+    <div className={CARD + " text-center"}>
+      <p className="font-mono text-[11px] uppercase tracking-wider text-violet-300">
+        Beat tap · {count}/{taps}
+      </p>
+      <motion.button
+        type="button"
+        animate={pulse ? { scale: [1, 1.08, 1] } : {}}
+        onClick={() => {
+          if (count === 0) started.current = performance.now();
+          const next = count + 1;
+          setCount(next);
+          setPulse(true);
+          window.setTimeout(() => setPulse(false), 120);
+          void triggerHaptic(8);
+          if (next >= taps) {
+            const ms = Math.round(performance.now() - started.current);
+            playWinSting();
+            onComplete(`Bassline locked · ${ms}ms for ${taps} taps`);
+          }
+        }}
+        className="mx-auto mt-6 grid h-36 w-36 place-items-center rounded-full border border-violet-400/50 bg-gradient-to-br from-violet-600 to-cyan-500 font-display text-2xl font-black text-white shadow-[0_0_40px_rgba(124,58,237,0.35)] active:scale-95"
+      >
+        TAP
+      </motion.button>
+      <p className="mt-4 text-sm text-zinc-400">Hit the pad on the imagined kick.</p>
+    </div>
+  );
+}
+
+export function TwoTruthsEngine({
+  statements,
+  lieIndex,
+  onComplete,
+}: {
+  statements: string[];
+  lieIndex: number;
+  onComplete: (label: string) => void;
+}) {
+  const [picked, setPicked] = useState<number | null>(null);
+  return (
+    <div className={CARD}>
+      <p className="font-mono text-[11px] uppercase tracking-wider text-amber-300">
+        Two truths · one lie — find the fake
+      </p>
+      <div className="mt-4 space-y-2">
+        {statements.map((s, i) => {
+          const revealed = picked !== null;
+          const isLie = i === lieIndex;
+          return (
+            <button
+              key={s}
+              type="button"
+              disabled={revealed}
+              onClick={() => {
+                setPicked(i);
+                playWinSting();
+                onComplete(
+                  i === lieIndex
+                    ? `Caught the lie · ${s.slice(0, 42)}…`
+                    : `Missed — lie was #${lieIndex + 1}`
+                );
+                void triggerHaptic(20);
+              }}
+              className={cn(
+                "w-full rounded-xl border px-4 py-3 text-left text-sm transition-all",
+                revealed && isLie
+                  ? "border-rose-400 bg-rose-500/20 text-rose-100"
+                  : revealed && picked === i
+                    ? "border-zinc-600 bg-zinc-900 text-zinc-400"
+                    : "border-zinc-700 bg-zinc-900 text-zinc-100 hover:border-violet-400"
+              )}
+            >
+              {s}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export function RedLightEngine({
+  cues,
+  onComplete,
+}: {
+  cues: string[];
+  onComplete: (label: string) => void;
+}) {
+  const [mode, setMode] = useState<"green" | "red" | "idle">("idle");
+  const [cue, setCue] = useState(cues[0] ?? "Freeze");
+
+  function arm() {
+    setMode("green");
+    setCue(cues[Math.floor(Math.random() * cues.length)] ?? "Freeze");
+    window.setTimeout(() => {
+      setMode("red");
+      void triggerHaptic([20, 40, 20]);
+    }, 1200 + Math.random() * 1800);
+  }
+
+  return (
+    <div className={CARD + " text-center"}>
+      <p className="font-mono text-[11px] uppercase tracking-wider text-emerald-300">
+        Red light freeze frame
+      </p>
+      <motion.div
+        animate={{
+          backgroundColor:
+            mode === "red" ? "#e11d48" : mode === "green" ? "#059669" : "#18181b",
+        }}
+        className="mx-auto mt-5 grid min-h-[140px] w-full place-items-center rounded-2xl border border-white/10 px-4"
+      >
+        <p className="font-display text-2xl font-black text-white">
+          {mode === "idle" ? "Ready?" : mode === "green" ? "MOVE" : "FREEZE"}
+        </p>
+        {mode === "red" ? (
+          <p className="mt-2 text-sm text-white/90">{cue}</p>
+        ) : null}
+      </motion.div>
+      <PlayButton
+        onClick={() => {
+          if (mode === "red") {
+            playWinSting();
+            onComplete(`Freeze held · ${cue}`);
+            setMode("idle");
+            return;
+          }
+          arm();
+        }}
+      >
+        {mode === "red" ? "We held it" : mode === "green" ? "Waiting for red…" : "Start round"}
+      </PlayButton>
+    </div>
+  );
+}
+
+export function CharadesEngine({
+  prompts,
+  seconds = 45,
+  onComplete,
+}: {
+  prompts: string[];
+  seconds?: number;
+  onComplete: (label: string) => void;
+}) {
+  const [prompt, setPrompt] = useState(
+    () => prompts[Math.floor(Math.random() * prompts.length)] ?? "Act it out"
+  );
+  const [left, setLeft] = useState(seconds);
+  const [running, setRunning] = useState(false);
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    if (!running) return;
+    if (left <= 0) {
+      setRunning(false);
+      onComplete(`Charades timeout · ${prompt}`);
+      return;
+    }
+    const id = window.setTimeout(() => setLeft((n) => n - 1), 1000);
+    return () => window.clearTimeout(id);
+  }, [left, onComplete, prompt, running]);
+
+  return (
+    <div className={CARD}>
+      <p className="font-mono text-[11px] uppercase tracking-wider text-cyan-300">
+        Midnight charades · {left}s
+      </p>
+      <div className="mt-4 min-h-[100px] rounded-2xl border border-zinc-700 bg-zinc-900/80 p-5">
+        <p className="font-display text-lg font-black text-white">
+          {revealed ? prompt : "Pass the phone · actor only"}
+        </p>
+      </div>
+      <div className="mt-3 flex flex-wrap gap-2">
+        <button
+          type="button"
+          className="rounded-full border border-zinc-700 px-4 py-2 text-xs font-semibold text-zinc-200"
+          onClick={() => setRevealed((v) => !v)}
+        >
+          {revealed ? "Hide prompt" : "Reveal for actor"}
+        </button>
+        <button
+          type="button"
+          className="rounded-full border border-zinc-700 px-4 py-2 text-xs font-semibold text-zinc-200"
+          onClick={() => {
+            setPrompt(
+              prompts[Math.floor(Math.random() * prompts.length)] ?? prompt
+            );
+            setLeft(seconds);
+            setRunning(true);
+            setRevealed(true);
+          }}
+        >
+          New prompt
+        </button>
+      </div>
+      <PlayButton
+        onClick={() => {
+          playWinSting();
+          onComplete(`Guessed · ${prompt}`);
+        }}
+      >
+        Table guessed it
+      </PlayButton>
+    </div>
+  );
+}
+
+export function HighLowEngine({
+  rounds = 5,
+  onComplete,
+}: {
+  rounds?: number;
+  onComplete: (label: string) => void;
+}) {
+  const [card, setCard] = useState(() => 2 + Math.floor(Math.random() * 12));
+  const [streak, setStreak] = useState(0);
+  const [done, setDone] = useState(false);
+
+  function guess(dir: "high" | "low") {
+    if (done) return;
+    const next = 2 + Math.floor(Math.random() * 12);
+    const win =
+      (dir === "high" && next >= card) || (dir === "low" && next <= card);
+    const nextStreak = win ? streak + 1 : 0;
+    setCard(next);
+    setStreak(nextStreak);
+    void triggerHaptic(win ? 18 : 8);
+    if (!win || nextStreak >= rounds) {
+      setDone(true);
+      playWinSting();
+      onComplete(
+        win
+          ? `High-Low streak ${nextStreak}/${rounds}`
+          : `Busted on ${next} after ${streak}`
+      );
+    }
+  }
+
+  return (
+    <div className={CARD + " text-center"}>
+      <p className="font-mono text-[11px] uppercase tracking-wider text-amber-300">
+        High-Low · streak {streak}/{rounds}
+      </p>
+      <p className="mt-6 font-display text-6xl font-black text-white">{card}</p>
+      <div className="mt-6 grid grid-cols-2 gap-3">
+        <button
+          type="button"
+          disabled={done}
+          onClick={() => guess("high")}
+          className="rounded-2xl border border-emerald-500/40 bg-emerald-500/15 py-3 font-bold text-emerald-200 active:scale-95 disabled:opacity-40"
+        >
+          Higher
+        </button>
+        <button
+          type="button"
+          disabled={done}
+          onClick={() => guess("low")}
+          className="rounded-2xl border border-rose-500/40 bg-rose-500/15 py-3 font-bold text-rose-200 active:scale-95 disabled:opacity-40"
+        >
+          Lower
+        </button>
+      </div>
+    </div>
+  );
+}

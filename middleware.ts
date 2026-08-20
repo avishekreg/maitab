@@ -191,6 +191,7 @@ export async function middleware(request: NextRequest) {
       "/api/payments/settle",
       "/api/discounts/request",
       "/api/orders/handshake",
+      "/api/cloak",
     ] as const;
     const isGuestCustomerApi = guestCustomerApis.some(
       (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)

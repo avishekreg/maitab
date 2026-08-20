@@ -47,7 +47,15 @@ export type GameType =
   | "AV_POLL"
   | "SCRATCH_WIN"
   | "MYSTERY_VAULT"
-  | "SOBRIETY_REFLEX";
+  | "SOBRIETY_REFLEX"
+  | "DICE_DUEL"
+  | "HOT_SEAT"
+  | "MEMORY_FLASH"
+  | "BEAT_TAP"
+  | "TWO_TRUTHS"
+  | "RED_LIGHT"
+  | "CHARADES"
+  | "HIGH_LOW";
 
 export type ExternalProvider =
   | "ZOMATO_DISTRICT"

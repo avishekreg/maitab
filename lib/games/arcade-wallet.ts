@@ -23,6 +23,10 @@ export function writeArcadeWallet(wallet: ArcadeWallet) {
 
 export function creditArcadeReward(label: string): ArcadeWallet {
   const current = readArcadeWallet();
+  // Never treat bill discounts as arcade coupons — club-promoted only.
+  if (/(\d+\s*%|\boff\b|\bdiscount\b)/i.test(label)) {
+    return current;
+  }
   const next: ArcadeWallet = {
     points: current.points + 25,
     coupons: label.toLowerCase().includes("spin again")

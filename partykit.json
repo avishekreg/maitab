@@ -1,0 +1,5 @@
+{
+  "name": "maitab-table-arcade",
+  "main": "party/table-arcade.ts",
+  "compatibilityDate": "2024-12-01"
+}

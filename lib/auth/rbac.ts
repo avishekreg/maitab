@@ -133,6 +133,7 @@ export const PROTECTED_API_ROUTES: { prefix: string; roles: UserRole[] }[] = [
     prefix: "/api/pass/verify",
     roles: ["GATE_STAFF", "CLUB_ADMIN", "SUPER_ADMIN"],
   },
+  { prefix: "/api/cloak", roles: ["CUSTOMER", "SUPER_ADMIN"] },
   { prefix: "/api/payments/settle", roles: ["CUSTOMER", "SUPER_ADMIN"] },
 ];
 

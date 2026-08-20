@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { BellRing, Minus, Plus } from "lucide-react";
+import { BellRing, Minus, Plus, Ghost } from "lucide-react";
+import Link from "next/link";
 import {
   ExternalDealApprovedModal,
   ExternalDealCard,
@@ -273,6 +274,28 @@ function TabBody() {
         venueId={session.club_id || NEON_CLUB_ID}
         className="mb-4"
       />
+
+      <Link
+        href="/tab/cloak"
+        className="mb-4 flex items-center justify-between gap-3 rounded-2xl border border-violet-500/30 bg-zinc-950/80 px-4 py-3 text-zinc-100 shadow-lg transition hover:border-violet-400/50 active:scale-[0.99]"
+      >
+        <div className="flex items-center gap-3">
+          <span className="grid h-10 w-10 place-items-center rounded-xl border border-violet-500/40 bg-violet-500/15 text-violet-200">
+            <Ghost className="h-5 w-5" aria-hidden />
+          </span>
+          <div>
+            <p className="font-display text-sm font-bold text-white">
+              mAI Cloak · Shadow Chat
+            </p>
+            <p className="text-[11px] text-zinc-400">
+              Anonymous lounge whispers · zero contact leaks
+            </p>
+          </div>
+        </div>
+        <span className="font-mono text-[10px] uppercase tracking-wider text-violet-300">
+          Enter
+        </span>
+      </Link>
 
       {luckyNote ? (
         <div className="mb-4 rounded-2xl border border-accent-gold/40 bg-accent-gold/10 px-4 py-3 text-sm text-accent-gold">

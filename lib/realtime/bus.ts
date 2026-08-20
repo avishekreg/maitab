@@ -11,7 +11,8 @@ export type RealtimeTopic =
   | "lucky_draw_awards"
   | "game_session_votes"
   | "game_session_rounds"
-  | "discount_bridge";
+  | "discount_bridge"
+  | "cloak_lounge";
 
 export interface BusEnvelope<T = unknown> {
   topic: RealtimeTopic;

@@ -2,6 +2,8 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 
+const SPRING = { type: "spring" as const, stiffness: 300, damping: 25 };
+
 export function GameFlipCard({
   flipKey,
   children,
@@ -14,10 +16,10 @@ export function GameFlipCard({
       <AnimatePresence mode="wait">
         <motion.div
           key={flipKey}
-          initial={{ rotateY: 90, opacity: 0, scale: 0.94 }}
-          animate={{ rotateY: 0, opacity: 1, scale: 1 }}
-          exit={{ rotateY: -90, opacity: 0, scale: 0.94 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ rotateY: 72, opacity: 0, scale: 0.96, y: 10 }}
+          animate={{ rotateY: 0, opacity: 1, scale: 1, y: 0 }}
+          exit={{ rotateY: -56, opacity: 0, scale: 0.97, y: -6 }}
+          transition={SPRING}
           className="transform-gpu"
           style={{ transformStyle: "preserve-3d" }}
         >
@@ -39,19 +41,20 @@ export function PromptRevealCard({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, scale: 0.94, y: 8 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={SPRING}
       className="relative flex min-h-[140px] w-full flex-col justify-center overflow-hidden rounded-2xl border border-zinc-700/80 bg-zinc-900/90 p-6 shadow-lg md:p-8"
     >
       {flash ? (
         <motion.div
-          className="pointer-events-none absolute inset-0 bg-accent-violet/20"
+          className="pointer-events-none absolute inset-0 bg-violet-500/20"
           initial={{ opacity: 0.9 }}
           animate={{ opacity: 0 }}
           transition={{ duration: 0.6 }}
         />
       ) : null}
-      <p className="mb-2 text-xs font-mono font-bold uppercase tracking-widest text-amber-400">
+      <p className="mb-2 font-mono text-xs font-bold uppercase tracking-widest text-amber-400">
         {title}
       </p>
       <p className="text-left font-display text-lg font-extrabold leading-relaxed text-white md:text-xl">

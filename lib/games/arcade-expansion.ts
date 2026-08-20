@@ -3,21 +3,21 @@ import type { CatalogGameDefinition, GameCategory } from "@/lib/games/100_games_
 
 export const LUCKY_WHEEL_SEGMENTS = [
   "Free Craft Shooter",
-  "15% Off Total Bill",
-  "VIP Fast-Pass Entry",
-  "DJ Song Dedication",
-  "mAI Saarthi ₹200 Chauffeur Credit",
+  "₹200 Saarthi Ride Voucher",
+  "Table Dare",
+  "DJ Song Request",
   "Spin Again",
+  "Free Craft Shooter",
 ] as const;
 
 export type HubFilter = "all" | "wheels" | "dares" | "reflex" | "clash";
 
 export const HUB_TABS: { id: HubFilter; label: string }[] = [
-  { id: "all", label: "🔥 All Games (110+)" },
-  { id: "wheels", label: "🎡 Wheels & Vaults" },
-  { id: "dares", label: "🃏 Table Dares" },
-  { id: "reflex", label: "⚡ Reflex Arcade" },
-  { id: "clash", label: "👥 Multiplayer Clash" },
+  { id: "all", label: "All Games (200+)" },
+  { id: "wheels", label: "Wheels & Vaults" },
+  { id: "dares", label: "Table Dares" },
+  { id: "reflex", label: "Reflex Arcade" },
+  { id: "clash", label: "Multiplayer Clash" },
 ];
 
 export function hubFilterFor(type: GameType): Exclude<HubFilter, "all"> {
@@ -32,11 +32,16 @@ export function hubFilterFor(type: GameType): Exclude<HubFilter, "all"> {
     case "TRUTH_OR_SHOT":
     case "TRUTH_OR_TAB":
     case "KINGS_CUP":
+    case "HOT_SEAT":
+    case "TWO_TRUTHS":
+    case "CHARADES":
       return "dares";
     case "REACTION_POUR":
     case "NEON_RUNNER":
     case "COCKTAIL_SHAKER":
     case "SOBRIETY_REFLEX":
+    case "MEMORY_FLASH":
+    case "BEAT_TAP":
       return "reflex";
     default:
       return "clash";
