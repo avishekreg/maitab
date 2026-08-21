@@ -1,10 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { pageEnter } from "@/lib/ui/motion";
 
-/** Route/section entrance — fade + slight slide-up. Visual only. */
+/** Simple page wrapper — no entrance animation (foundation repair). */
 export function PageEnter({
   children,
   className,
@@ -12,14 +10,5 @@ export function PageEnter({
   children: React.ReactNode;
   className?: string;
 }) {
-  return (
-    <motion.div
-      className={cn("lux-enter", className)}
-      initial={pageEnter.initial}
-      animate={pageEnter.animate}
-      transition={pageEnter.transition}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className={cn(className)}>{children}</div>;
 }

@@ -52,7 +52,7 @@ export interface SaarthiTrip {
 
 export const SAARTHI_BASE_FARE = 899;
 
-export const SAARTHI_BRAND = "mAI Saarthi";
+export const SAARTHI_BRAND = "mAISaarthi";
 
 export const SAARTHI_TAGLINE = "Personal Chauffeur Service • Safe Night Transit";
 

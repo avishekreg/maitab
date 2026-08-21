@@ -153,6 +153,14 @@ export type ApiGuardResult =
   | { ok: false; status: 401 | 403; reason: string };
 
 export function roleAllowed(pathname: string, role: UserRole | null): boolean {
+  // Public chauffeur enrollment (landing CTAs → signup)
+  if (
+    pathname === "/saarthi/driver-signup" ||
+    pathname.startsWith("/saarthi/driver-signup/")
+  ) {
+    return true;
+  }
+
   const match = Object.entries(PROTECTED_ROUTES).find(
     ([prefix]) => pathname === prefix || pathname.startsWith(`${prefix}/`)
   );

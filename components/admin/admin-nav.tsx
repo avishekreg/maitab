@@ -40,6 +40,7 @@ const MANAGER_NAV = [
 
 const SUPER_NAV = [
   { href: "/admin/super", label: "Command" },
+  { href: "/admin/super/drivers", label: "mAISaarthi" },
   { href: "/admin/super/telemetry", label: "Telemetry" },
   { href: "/admin/super/config", label: "Integrations" },
   { href: "/admin/super/vault", label: "Vault" },

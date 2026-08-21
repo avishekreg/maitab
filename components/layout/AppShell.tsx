@@ -14,6 +14,7 @@ import { BrandLockup } from "@/components/branding/brand-lockup";
 import { GuestHeaderMenu } from "@/components/layout/GuestHeaderMenu";
 import { ResponsibleBadges } from "@/components/branding/responsible-badges";
 import { SaarthiProvider } from "@/components/saarthi/SaarthiProvider";
+import { CognitiveSafetyMonitor } from "@/components/safety/CognitiveSafetyMonitor";
 import { TierBadge } from "@/components/theme/TierChrome";
 import { TierThemeProvider } from "@/components/theme/TierThemeProvider";
 import { PageEnter } from "@/components/ui/PageEnter";
@@ -52,7 +53,7 @@ export function AppShell({
   return (
     <TierThemeProvider tier={tier}>
       <SaarthiProvider>
-        <div className="relative min-h-[100dvh] bg-background text-foreground">
+        <div className="relative min-h-[100dvh] w-full max-w-full overflow-x-hidden bg-background text-foreground">
           <div
             className={cn("pointer-events-none absolute inset-0", theme.ambient)}
           />
@@ -101,9 +102,15 @@ export function AppShell({
             <GuestHeaderMenu />
           </header>
 
-          <main className="relative mx-auto w-full max-w-6xl px-4 pb-40 pt-6">
+          <main className="relative mx-auto w-full max-w-6xl overflow-x-hidden px-4 pb-28 pt-6 sm:pb-32">
             <PageEnter>{children}</PageEnter>
           </main>
+
+          {showComplianceStrip ? (
+            <div className="relative z-0 mx-auto mb-24 flex w-full max-w-6xl justify-center overflow-x-auto px-4 pb-4">
+              <ResponsibleBadges />
+            </div>
+          ) : null}
 
           {showNav ? (
             <nav className="optimus-glass fixed inset-x-0 bottom-0 z-40 rounded-none border-x-0 border-b-0 backdrop-blur-2xl">
@@ -122,7 +129,7 @@ export function AppShell({
                       key={item.href}
                       href={item.href}
                       className={cn(
-                        "lux-interactive lux-focus-ring relative flex flex-col items-center gap-1 rounded-lg px-2 py-2 text-[11px] transition-colors duration-lux ease-lux",
+                        "lux-interactive lux-focus-ring relative flex flex-col items-center gap-1 rounded-lg px-2 py-2 text-[11px] transition-transform duration-lux ease-lux active:scale-95",
                         isCloak
                           ? active
                             ? "text-violet-100"
@@ -158,13 +165,7 @@ export function AppShell({
             </nav>
           ) : null}
 
-          {showComplianceStrip ? (
-            <div className="pointer-events-none fixed inset-x-0 bottom-[4.75rem] z-30 flex justify-center px-3 sm:bottom-[5.25rem]">
-              <div className="pointer-events-auto max-w-full overflow-x-auto">
-                <ResponsibleBadges density="micro" />
-              </div>
-            </div>
-          ) : null}
+          <CognitiveSafetyMonitor />
         </div>
       </SaarthiProvider>
     </TierThemeProvider>

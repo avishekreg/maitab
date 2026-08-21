@@ -65,7 +65,7 @@ export function TransitNudgeCard({
               }
               className="inline-flex h-11 flex-1 items-center justify-center rounded-xl bg-gradient-to-r from-cyan-500 to-teal-400 px-3 text-xs font-semibold text-zinc-950"
             >
-              🚗 Book mAI Saarthi Chauffeur
+              🚗 Book mAISaarthi Chauffeur
             </button>
           </div>
         </motion.aside>

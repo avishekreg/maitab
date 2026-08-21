@@ -419,7 +419,7 @@ export const FORMAT_RULES: Record<string, GameRule> = {
     lossCondition: "Slower averages do not punish — they still route you to book a chauffeur.",
     drawOrTieRule: "Equal averages share the perk.",
     penaltiesAndRewards: {
-      winner: "Saarthi perk unlocked",
+      winner: "mAISaarthi perk unlocked",
       loser: "No tab hit — book Saarthi anyway",
     },
     dos: [

@@ -107,12 +107,19 @@ export default function SuperAdminPage() {
       title="Command Center"
       subtitle="Platform GMV, geofence policy, feature flags, and fraud health in one calm workspace."
       actions={
-        <Link href="/admin/super/config">
-          <NeonButton size="sm">
-            <KeyRound className="h-4 w-4" />
-            Integrations
-          </NeonButton>
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <Link href="/admin/super/drivers">
+            <NeonButton size="sm" tone="cyan">
+              mAISaarthi verify
+            </NeonButton>
+          </Link>
+          <Link href="/admin/super/config">
+            <NeonButton size="sm">
+              <KeyRound className="h-4 w-4" />
+              Integrations
+            </NeonButton>
+          </Link>
+        </div>
       }
     >
       <KpiStrip
@@ -301,12 +308,12 @@ export default function SuperAdminPage() {
             </Link>
           }
         >
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-4">
               <p className="text-[11px] uppercase tracking-[0.16em] text-zinc-500">
                 Secrets
               </p>
-              <p className="mt-2 overflow-hidden text-ellipsis whitespace-nowrap font-display text-2xl font-extrabold tracking-tight text-amber-600 xl:text-3xl">
+              <p className="mt-2 break-words font-display text-[clamp(1.25rem,4vw,1.875rem)] font-extrabold tracking-tight text-amber-600">
                 {secretCount}
               </p>
             </div>
@@ -314,7 +321,7 @@ export default function SuperAdminPage() {
               <p className="text-[11px] uppercase tracking-[0.16em] text-zinc-500">
                 Runtime keys
               </p>
-              <p className="mt-2 overflow-hidden text-ellipsis whitespace-nowrap font-display text-2xl font-extrabold tracking-tight text-amber-600 xl:text-3xl">
+              <p className="mt-2 break-words font-display text-[clamp(1.25rem,4vw,1.875rem)] font-extrabold tracking-tight text-amber-600">
                 {configs.filter((c) => !c.is_secret).length}
               </p>
             </div>

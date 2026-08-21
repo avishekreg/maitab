@@ -116,7 +116,7 @@ export const ARCADE_EXPANSION: CatalogGameDefinition[] = [
         a: 1,
       },
       {
-        q: "What does a mAI Saarthi chauffeur drive you home in?",
+        q: "What does a mAISaarthi chauffeur drive you home in?",
         options: ["A cab", "Your own car", "A rickshaw", "A helicopter"],
         a: 1,
       },

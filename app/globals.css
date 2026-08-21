@@ -57,8 +57,12 @@
 html,
 body {
   min-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background: var(--background);
   color: var(--foreground);
+  scroll-behavior: smooth;
 }
 
 body {
@@ -151,11 +155,12 @@ nav {
       "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
     font-weight: 800;
     letter-spacing: -0.04em;
-    color: #09090b;
+    /* Inherit from surface — never force #09090b (breaks dark pages) */
+    color: inherit;
   }
 
   label {
-    color: #52525b;
+    color: inherit;
     font-weight: 600;
     font-size: 0.75rem;
     letter-spacing: 0.025em;
@@ -201,6 +206,21 @@ nav {
 }
 
 /* Dark operator capsules (KDS, Gate, Login) — scoped dark form theme */
+.theme-dark-capsule {
+  color: #f8fafc;
+}
+
+.theme-dark-capsule h1,
+.theme-dark-capsule h2,
+.theme-dark-capsule h3 {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff;
+}
+
+.theme-dark-capsule label {
+  color: #cbd5e1 !important;
+}
+
 .theme-dark-capsule input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="hidden"]):not([type="color"]):not([type="button"]):not([type="submit"]):not([type="reset"]),
 .theme-dark-capsule select,
 .theme-dark-capsule textarea {
@@ -389,7 +409,7 @@ nav {
 
   /* Pressable interactive tile */
   .lux-interactive {
-    @apply cursor-pointer transition-transform duration-100 ease-lux hover:-translate-y-0.5 active:scale-[0.98];
+    @apply cursor-pointer transition-transform duration-100 ease-lux hover:-translate-y-0.5 active:scale-95;
   }
 
   /* Violet→cyan sheen overlay (parent must be relative overflow-hidden) */

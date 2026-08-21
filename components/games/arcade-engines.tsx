@@ -608,8 +608,8 @@ export function SobrietyReflexEngine({
           playWinSting();
           onComplete(
             avg < 320
-              ? `Saarthi perk unlocked · ${avg}ms avg`
-              : `Book Saarthi anyway · ${avg}ms avg`
+              ? `mAISaarthi perk unlocked · ${avg}ms avg`
+              : `Book mAISaarthi anyway · ${avg}ms avg`
           );
         } else {
           setRound((n) => n + 1);

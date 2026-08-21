@@ -7,9 +7,8 @@ import {
   MarketingFooter,
   MarketingHeader,
 } from "@/components/marketing/MarketingChrome";
-import { ResponsibleBadges } from "@/components/branding/responsible-badges";
 import { SaarthiProvider } from "@/components/saarthi/SaarthiProvider";
-import { HeroSection } from "@/components/marketing/HeroSection";
+import { HeroSection } from "@/components/landing/HeroSection";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
 import { CapacitorLoginRedirect } from "@/components/native/CapacitorLoginRedirect";
 
@@ -233,7 +232,7 @@ const SAFETY_SHOWCASE = [
     badgeClass:
       "border-amber-400/40 bg-amber-500/10 text-amber-300 shadow-[0_0_18px_rgba(245,158,11,0.28)]",
     title: "Your Car, Our Verified Chauffeur",
-    kicker: "mAI Saarthi — On-Demand Valet Chauffeur Network",
+    kicker: "mAISaarthi — On-Demand Valet Chauffeur Network",
     body: "Guests never leave luxury wheels behind. With 1-tap dispatch, police-verified chauffeurs certified for premium AT/DCT/EV transmissions arrive at the valet to drive guests home in their own car.",
     pills: [
       "🛡️ Police Verified",
@@ -287,8 +286,8 @@ function SectionTitle({
     <h2
       className={
         onDark
-          ? "mt-3 max-w-3xl font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-[2.75rem]"
-          : "mt-3 max-w-3xl font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-[2.75rem]"
+          ? "mt-3 max-w-3xl font-display text-[clamp(1.5rem,5vw,2.75rem)] font-bold tracking-tight text-white"
+          : "mt-3 max-w-3xl font-display text-[clamp(1.5rem,5vw,2.75rem)] font-bold tracking-tight text-zinc-900"
       }
     >
       {children}
@@ -299,22 +298,16 @@ function SectionTitle({
 export default function MarketingLandingPage() {
   return (
     <SaarthiProvider>
-    <div className="min-h-[100dvh] bg-[#FAF9F5] text-[#080503]">
+    <div className="min-h-[100dvh] w-full max-w-full overflow-x-hidden bg-[#FAF9F5] text-zinc-900">
       <CapacitorLoginRedirect />
       <MarketingHeader />
 
       <HeroSection />
 
-      <div className="relative z-10 -mt-8 flex justify-center px-4 pb-6 sm:-mt-10">
-        <div className="inline-flex max-w-full animate-lux-float overflow-x-auto rounded-full border border-white/10 bg-zinc-950/80 px-3 py-2 shadow-[0_12px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-          <ResponsibleBadges density="micro" />
-        </div>
-      </div>
-
-      {/* PROBLEM */}
+      {/* PROBLEM — top pad clears capsule dipping into cream via translate-y-1/2 */}
       <section
         id="problem"
-        className="scroll-mt-20 border-t border-border bg-secondary/70"
+        className="scroll-mt-24 border-t border-border bg-secondary/70 pt-20 sm:pt-24"
       >
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>The problem</SectionEyebrow>
@@ -337,7 +330,8 @@ export default function MarketingLandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ delay: i * 0.06 }}
-                className="border-t border-border pt-6"
+                whileHover={{ x: 4 }}
+                className="border-t border-border pt-6 transition-colors"
               >
                 <h3 className="type-title text-xl text-foreground sm:text-2xl">
                   {pain.title}
@@ -352,7 +346,7 @@ export default function MarketingLandingPage() {
       </section>
 
       {/* SYSTEM */}
-      <section id="system" className="scroll-mt-20 border-t border-border">
+      <section id="system" className="scroll-mt-24 border-t border-border">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>The system</SectionEyebrow>
           <SectionTitle>
@@ -444,10 +438,10 @@ export default function MarketingLandingPage() {
                         style={{ background: item.accent }}
                       />
                     </div>
-                    <h3 className="type-title mt-4 text-xl text-zinc-100 sm:text-2xl">
+                    <h3 className="mt-4 font-sans text-xl font-bold text-zinc-900 sm:text-2xl">
                       {item.title}
                     </h3>
-                    <p className="type-body mt-3 text-base leading-relaxed text-slate-800 sm:text-lg">
+                    <p className="mt-3 font-sans text-base leading-relaxed text-zinc-700 sm:text-lg">
                       {item.body}
                     </p>
                     <p
@@ -464,10 +458,149 @@ export default function MarketingLandingPage() {
         </div>
       </section>
 
+      {/* NEW ENGINES SHOWCASE — Cloak · Arcade · Saarthi */}
+      <section
+        id="engines"
+        className="scroll-mt-24 border-t border-white/10 bg-zinc-950 text-zinc-300"
+      >
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+          <SectionEyebrow onDark>Built for the floor</SectionEyebrow>
+          <SectionTitle onDark>
+            Three new engines already shipping inside the guest night.
+          </SectionTitle>
+          <p className="mt-5 max-w-3xl font-sans text-lg leading-relaxed text-zinc-300">
+            Anonymous social, tactile party play, and zero-liability rides —
+            each wired into the same tab session so venues monetize the night
+            without new hardware.
+          </p>
+
+          <div className="mt-14 grid gap-6 lg:grid-cols-3">
+            {[
+              {
+                href: "/tab/cloak",
+                cta: "Preview Cloak →",
+                kicker: "mAI Cloak",
+                kickerClass: "text-violet-300",
+                title: "In-Venue Anonymous Shadow Lounge",
+                body: (
+                  <>
+                    3-Tier AI Privacy Firewall, Zero Contact Leaks, Randomized
+                    Cyber Personas{" "}
+                    <span className="text-violet-200">(Neon Lynx #42)</span>, and
+                    Mystery Drink Gifting — whisper without exposing the phone
+                    number.
+                  </>
+                ),
+                points: [
+                  "Guardrailed lounge + 1:1 whisper channels",
+                  "Mystery Match + AI wingman when the floor is quiet",
+                  "Persona roster with live presence",
+                ],
+                cardClass:
+                  "border-violet-500/35 bg-gradient-to-b from-violet-500/15 to-zinc-900/80 shadow-[0_0_40px_rgba(139,92,246,0.12)] hover:border-violet-400/60 hover:shadow-[0_0_48px_rgba(139,92,246,0.28)]",
+                ctaClass:
+                  "border-violet-400/50 bg-violet-500/20 text-violet-100 hover:bg-violet-500/30",
+              },
+              {
+                href: "/game",
+                cta: "Open Arcade →",
+                kicker: "Party Arcade",
+                kickerClass: "text-fuchsia-300",
+                title: "Tactile Multiplayer & Arcade Party Engine",
+                body: (
+                  <>
+                    Inertia-Physics Prize Wheel, Live Table Voting & Accusations
+                    (Jackbox / PartyKit style), and Zero-Hardware Tab Penalties —
+                    every round can upsell back onto the prepaid tab.
+                  </>
+                ),
+                points: [
+                  "105+ nightlife prompts & surprise games",
+                  "Lucky wheel without bill % discount leaks",
+                  "Table party sync for shared rounds",
+                ],
+                cardClass:
+                  "border-fuchsia-500/35 bg-gradient-to-b from-fuchsia-500/15 to-zinc-900/80 shadow-[0_0_40px_rgba(217,70,239,0.12)] hover:border-fuchsia-400/60 hover:shadow-[0_0_48px_rgba(217,70,239,0.28)]",
+                ctaClass:
+                  "border-fuchsia-400/50 bg-fuchsia-500/20 text-fuchsia-100 hover:bg-fuchsia-500/30",
+              },
+              {
+                href: "/saarthi",
+                cta: "Book mAISaarthi →",
+                secondaryHref: "/saarthi/driver-signup",
+                secondaryCta: "Drive with us →",
+                kicker: "mAISaarthi",
+                kickerClass: "text-cyan-300",
+                title: "Zero-Liability Return Ride Network",
+                body: (
+                  <>
+                    Safe guest drop-off integration, direct chauffeur dispatch,
+                    and instant club liability protection when the tab is still
+                    open and the night is ending.
+                  </>
+                ),
+                points: [
+                  "Verified chauffeur booking from the guest app",
+                  "Venue-branded “Don't Drink & Drive” CTA",
+                  "Closes the night without walking guests to risk",
+                ],
+                cardClass:
+                  "border-cyan-500/35 bg-gradient-to-b from-cyan-500/15 to-zinc-900/80 shadow-[0_0_40px_rgba(6,182,212,0.12)] hover:border-cyan-400/60 hover:shadow-[0_0_48px_rgba(6,182,212,0.28)]",
+                ctaClass:
+                  "border-cyan-400/50 bg-cyan-500/20 text-cyan-100 hover:bg-cyan-500/30",
+              },
+            ].map((card, i) => (
+              <motion.article
+                key={card.kicker}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.35 }}
+                transition={{ delay: i * 0.1, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -8, scale: 1.015 }}
+                className={`flex flex-col rounded-2xl border p-6 transition-shadow duration-300 ${card.cardClass}`}
+              >
+                <p
+                  className={`font-mono text-[10px] font-semibold uppercase tracking-[0.2em] ${card.kickerClass}`}
+                >
+                  {card.kicker}
+                </p>
+                <h3 className="mt-3 font-display text-2xl font-bold text-white">
+                  {card.title}
+                </h3>
+                <p className="mt-4 flex-1 font-sans text-sm leading-relaxed text-zinc-300 sm:text-base">
+                  {card.body}
+                </p>
+                <ul className="mt-5 space-y-2 font-sans text-sm text-zinc-400">
+                  {card.points.map((p) => (
+                    <li key={p}>• {p}</li>
+                  ))}
+                </ul>
+                <div className="mt-8 flex flex-col gap-2">
+                  <Link
+                    href={card.href}
+                    className={`inline-flex h-11 items-center justify-center rounded-xl border text-sm font-semibold transition-colors ${card.ctaClass}`}
+                  >
+                    {card.cta}
+                  </Link>
+                  {"secondaryHref" in card && card.secondaryHref ? (
+                    <Link
+                      href={card.secondaryHref}
+                      className="inline-flex h-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-sm font-semibold text-zinc-200 transition hover:bg-white/10"
+                    >
+                      {card.secondaryCta}
+                    </Link>
+                  ) : null}
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* JOURNEY — typography reference surface (dark) */}
       <section
-        id="experience"
-        className="scroll-mt-20 border-t border-white/10 bg-black"
+        id="how-it-works"
+        className="scroll-mt-24 border-t border-white/10 bg-zinc-950 text-zinc-300"
       >
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow onDark>How it works</SectionEyebrow>
@@ -477,34 +610,30 @@ export default function MarketingLandingPage() {
 
           <div className="mt-12 space-y-0">
             {GUEST_STEPS.map((step, i) => (
-              <motion.div
+              <div
                 key={step.n}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.35 }}
-                transition={{ delay: i * 0.05 }}
                 className="grid gap-4 border-t border-white/10 py-8 md:grid-cols-[88px_1fr]"
               >
-                <p className="font-sans text-sm font-normal tracking-normal text-white/55">
+                <p className="font-sans text-sm font-normal tracking-normal text-zinc-400">
                   {step.n}
                 </p>
                 <div>
-                  <h3 className="type-title text-xl text-white sm:text-2xl">
+                  <h3 className="font-sans text-xl font-bold tracking-normal text-white sm:text-2xl">
                     {step.title}
                   </h3>
-                  <p className="type-body mt-3 max-w-3xl text-base text-white/75 sm:text-lg">
+                  <p className="mt-3 max-w-3xl font-sans text-base leading-relaxed text-zinc-300 sm:text-lg">
                     {step.copy}
                   </p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
 
           <div className="mt-16">
-            <h3 className="type-title text-2xl text-white">
+            <h3 className="font-sans text-2xl font-bold text-white">
               Meanwhile, every staff role stays on-mission
             </h3>
-            <p className="type-body mt-3 max-w-2xl text-base text-white/75 sm:text-lg">
+            <p className="mt-3 max-w-2xl font-sans text-base leading-relaxed text-zinc-300 sm:text-lg">
               RBAC isn’t a checkbox — it’s how you keep the floor fast. Each
               surface is purpose-built and deliberately incomplete for anyone
               outside that job.
@@ -515,10 +644,10 @@ export default function MarketingLandingPage() {
                   key={row.role}
                   className="grid gap-2 py-5 sm:grid-cols-[160px_1fr] sm:gap-8"
                 >
-                  <p className="type-title text-base text-[#A38B5E]">
+                  <p className="font-sans text-base font-bold text-[#A38B5E]">
                     {row.role}
                   </p>
-                  <p className="type-body text-base text-white/75 sm:text-lg">
+                  <p className="font-sans text-base leading-relaxed text-zinc-300 sm:text-lg">
                     {row.copy}
                   </p>
                 </div>
@@ -529,8 +658,10 @@ export default function MarketingLandingPage() {
       </section>
 
       {/* FEATURES */}
-      <section id="features" className="scroll-mt-20 border-t border-border">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <section
+        id="features-section"
+        className="scroll-mt-24 border-t border-border"
+      >        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>Feature depth</SectionEyebrow>
           <SectionTitle>
             Everything that makes a night run — engineered as one product.
@@ -575,7 +706,7 @@ export default function MarketingLandingPage() {
       {/* RESPONSIBLE HOSPITALITY & SAFETY */}
       <section
         id="safety"
-        className="scroll-mt-20 border-t border-white/10 bg-[#07080c]"
+        className="scroll-mt-24 border-t border-white/10 bg-zinc-950 text-zinc-300"
       >
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow onDark>Responsible hospitality & safety</SectionEyebrow>
@@ -583,7 +714,7 @@ export default function MarketingLandingPage() {
             Social responsibility engineered into the night — not bolted on at
             last call.
           </SectionTitle>
-          <p className="type-body mt-5 max-w-3xl text-lg text-white/70">
+          <p className="mt-5 max-w-3xl font-sans text-lg leading-relaxed text-zinc-300">
             Cognitive safety telemetry plus a verified chauffeur network keep
             guests, venues, and vehicles protected when the tab is still open.
           </p>
@@ -592,31 +723,32 @@ export default function MarketingLandingPage() {
             {SAFETY_SHOWCASE.map((card, i) => (
               <motion.article
                 key={card.title}
-                initial={{ opacity: 0, y: 18 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.35 }}
                 transition={{ delay: i * 0.08 }}
-                className="lux-glass-dark lux-sheen rounded-3xl p-8"
+                whileHover={{ y: -6 }}
+                className="rounded-3xl border border-zinc-800 bg-zinc-900 p-8 transition-shadow hover:border-zinc-600 hover:shadow-[0_12px_40px_rgba(0,0,0,0.35)]"
               >
                 <span
                   className={`inline-flex rounded-full border px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] ${card.badgeClass}`}
                 >
                   {card.badge}
                 </span>
-                <p className="mt-5 text-xs font-mono font-semibold tracking-wider text-zinc-400">
+                <p className="mt-5 text-xs font-mono font-semibold tracking-wider text-zinc-300">
                   {card.emoji} {card.kicker}
                 </p>
                 <h3 className="mt-2 font-display text-2xl font-black leading-snug tracking-tight text-white">
                   {card.title}
                 </h3>
-                <p className="mt-4 text-sm font-normal leading-relaxed text-zinc-200 md:text-base">
+                <p className="mt-4 text-sm font-normal leading-relaxed text-zinc-300 md:text-base">
                   {card.body}
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
                   {card.pills.map((pill) => (
                     <span
                       key={pill}
-                      className="rounded-full border border-zinc-700/80 bg-zinc-900 px-3.5 py-1.5 font-mono text-xs text-zinc-200"
+                      className="rounded-full border border-zinc-700 bg-zinc-950 px-3.5 py-1.5 font-mono text-xs text-zinc-200"
                     >
                       {pill}
                     </span>
@@ -625,13 +757,131 @@ export default function MarketingLandingPage() {
               </motion.article>
             ))}
           </div>
+
+          <div className="mt-10 overflow-hidden rounded-3xl border border-cyan-500/35 bg-gradient-to-r from-cyan-500/15 via-zinc-900 to-zinc-950 p-6 sm:p-8">
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-cyan-300">
+              Chauffeurs
+            </p>
+            <h3 className="mt-3 font-display text-2xl font-bold text-white sm:text-3xl">
+              Drive with mAISaarthi
+            </h3>
+            <p className="mt-3 max-w-2xl font-sans text-sm leading-relaxed text-zinc-300 sm:text-base">
+              Enroll with DL, Aadhaar, police clearance, and live selfie (GPS
+              &amp; timestamp). Super Admin verifies documents, then you go live
+              for venue return rides.
+            </p>
+            <Link
+              href="/saarthi/driver-signup"
+              className="mt-6 inline-flex h-11 items-center justify-center rounded-xl border border-cyan-400/50 bg-cyan-500/25 px-5 text-sm font-bold text-cyan-50 transition hover:bg-cyan-500/40"
+            >
+              Start driver signup →
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* PRICING / GROWTH — forced light stone canvas */}
+      {/* PRICING — dedicated B2B tiers on landing */}
       <section
-        id="pricing"
-        className="scroll-mt-20 border-t border-[#DAD7D0] bg-[#FAF9F5]"
+        id="pricing-section"
+        className="scroll-mt-24 border-t border-[#DAD7D0] bg-[#FAF9F5] py-24 text-zinc-900"
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <SectionEyebrow>Pricing</SectionEyebrow>
+          <SectionTitle>
+            Venue plans built for single rooms, multi-bar floors, and group
+            owners.
+          </SectionTitle>
+          <p className="mt-5 max-w-3xl font-sans text-lg leading-relaxed text-zinc-700">
+            Transparent monthly platforms plus GMV share — no POS hardware
+            purchase, no per-terminal fees. Start with one venue or roll out
+            across the portfolio.
+          </p>
+
+          <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+            {[
+              {
+                name: "Starter",
+                price: "₹19,999/mo + 10% GMV",
+                blurb: "Single venue — gate, tab, KDS, and AutoPay.",
+                points: [
+                  "1 venue",
+                  "Floor QR & Member Pass",
+                  "Basic flash promos",
+                ],
+              },
+              {
+                name: "Pro",
+                price: "₹29,999/mo + 8% GMV",
+                blurb: "Multi-venue portfolio with floor routing.",
+                points: [
+                  "Multi-venue switcher",
+                  "Waiter / bar counter routing",
+                  "Geo flash campaigns",
+                ],
+                featured: true,
+              },
+              {
+                name: "Enterprise Group",
+                price: "Annual SLA",
+                blurb:
+                  "Group owners with dedicated onboarding & SLA.",
+                points: [
+                  "Annual contract",
+                  "Dedicated CSM",
+                  "Custom integrations",
+                ],
+              },
+            ].map((tier, i) => (
+              <motion.article
+                key={tier.name}
+                initial={{ opacity: 0, y: 22 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ delay: i * 0.08 }}
+                whileHover={{ y: -8, scale: 1.015 }}
+                className={
+                  tier.featured
+                    ? "flex flex-col rounded-2xl border-2 border-violet-500/60 bg-white p-6 shadow-[0_0_32px_rgba(139,92,246,0.15)] transition-shadow hover:shadow-[0_16px_48px_rgba(139,92,246,0.25)]"
+                    : "flex flex-col rounded-2xl border border-[#DAD7D0] bg-white p-6 transition-shadow hover:shadow-xl"
+                }
+              >
+                <p className="font-sans text-xs font-semibold uppercase tracking-[0.18em] text-[#A38B5E]">
+                  {tier.name}
+                </p>
+                <h3 className="mt-3 font-display text-2xl font-bold text-zinc-900">
+                  {tier.price}
+                </h3>
+                <p className="mt-3 font-sans text-base leading-relaxed text-zinc-700">
+                  {tier.blurb}
+                </p>
+                <ul className="mt-6 flex flex-1 flex-col gap-2.5 font-sans text-sm text-zinc-800">
+                  {tier.points.map((point) => (
+                    <li key={point} className="flex gap-2">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-violet-500" />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href="/onboard"
+                  className={
+                    tier.featured
+                      ? "mt-8 inline-flex h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#8B5CF6] via-[#A855F7] to-[#06B6D4] text-sm font-semibold text-white"
+                      : "mt-8 inline-flex h-11 items-center justify-center rounded-xl border border-zinc-900 bg-zinc-900 text-sm font-semibold text-white hover:bg-zinc-800"
+                  }
+                >
+                  Get started
+                </Link>
+              </motion.article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* GROWTH OUTCOMES */}
+      <section
+        id="growth"
+        className="scroll-mt-24 border-t border-[#DAD7D0] bg-[#FAF9F5] text-zinc-900"
       >
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>Why it grows the business</SectionEyebrow>
@@ -682,7 +932,7 @@ export default function MarketingLandingPage() {
       </section>
 
       {/* COMPARE */}
-      <section id="compare" className="scroll-mt-20 border-t border-border">
+      <section id="compare" className="scroll-mt-24 border-t border-border">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>Why mAITab vs the old way</SectionEyebrow>
           <SectionTitle>
@@ -712,7 +962,7 @@ export default function MarketingLandingPage() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="scroll-mt-20 border-t border-border bg-pastel-mint/30">
+      <section id="faq" className="scroll-mt-24 border-t border-border bg-pastel-mint/30">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <SectionEyebrow>FAQ</SectionEyebrow>
           <SectionTitle>Straight answers for operators evaluating us.</SectionTitle>
@@ -770,15 +1020,6 @@ export default function MarketingLandingPage() {
           </div>
         </div>
       </section>
-
-      <div className="border-t border-white/10 bg-[#0c0c0f] px-4 py-8 sm:px-6">
-        <div className="mx-auto flex max-w-4xl justify-center rounded-full border border-white/10 bg-zinc-950/70 px-3 py-3 shadow-[0_0_30px_rgba(6,182,212,0.1)] backdrop-blur-xl">
-          <ResponsibleBadges
-            density="strip"
-            className="justify-center"
-          />
-        </div>
-      </div>
 
       <MarketingFooter />
     </div>

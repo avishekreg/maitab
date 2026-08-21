@@ -109,9 +109,7 @@ export function SaarthiBookingDrawer({
                   id="saarthi-title"
                   className="font-display text-2xl tracking-tight text-white"
                 >
-                  <span className="text-white">m</span>
-                  <span className="text-cyan-300">AI</span>
-                  <span className="text-white"> Saarthi</span>
+                  {SAARTHI_BRAND}
                 </h2>
                 <p className="mt-1 text-sm text-zinc-400">{SAARTHI_TAGLINE}</p>
               </div>

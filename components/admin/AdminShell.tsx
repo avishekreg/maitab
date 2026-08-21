@@ -37,18 +37,18 @@ export function AdminShell({
   hideTitle = false,
 }: AdminShellProps) {
   return (
-    <div className="min-h-screen bg-[#faf9f5] text-zinc-900">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#faf9f5] text-zinc-900">
       <AdminNav role={role as AdminNavRole} showVenueSwitcher={showVenueSwitcher} />
 
-      <div className="relative mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-7xl flex-col px-4 pb-10 pt-6 sm:px-6">
+      <div className="relative mx-auto flex min-h-[calc(100dvh-4.5rem)] w-full max-w-7xl flex-col overflow-x-hidden px-4 pb-10 pt-6 sm:px-6">
         {!hideTitle ? (
         <div className="print:hidden flex flex-wrap items-end justify-between gap-4 animate-lux-enter">
-          <div>
+          <div className="min-w-0 flex-1">
             <h1
               className={
                 heroTitle
-                  ? "font-display text-4xl font-extrabold uppercase tracking-tight text-zinc-950 md:text-5xl"
-                  : "font-display text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl"
+                  ? "font-display text-[clamp(1.75rem,5vw,3rem)] font-extrabold uppercase tracking-tight text-zinc-950"
+                  : "font-display text-[clamp(1.35rem,4vw,1.875rem)] font-extrabold tracking-tight text-zinc-950"
               }
             >
               {title}
@@ -115,8 +115,8 @@ export function KpiStrip({
     <>
       <div
         className={cn(
-          "grid grid-cols-2 gap-3",
-          items.length === 3 ? "md:grid-cols-3" : "md:grid-cols-4"
+          "grid grid-cols-1 gap-3 sm:grid-cols-2",
+          items.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-3 xl:grid-cols-4"
         )}
       >
         {items.map((item) => {
@@ -143,7 +143,7 @@ export function KpiStrip({
               </p>
               <p
                 className={cn(
-                  "mt-2 font-display font-extrabold tracking-tight text-2xl xl:text-3xl whitespace-nowrap text-zinc-950",
+                  "mt-2 break-words font-display text-[clamp(1.25rem,4vw,1.875rem)] font-extrabold tracking-tight text-zinc-950",
                   item.tone === "gold" && "text-amber-600",
                   item.tone === "ruby" && "text-rose-600"
                 )}

@@ -422,7 +422,7 @@ export function DarkGlassTelemetry({
             className={`${CARD} ${KPI_CARD}`}
           >
             <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-zinc-500">
-              <Shield className="h-3.5 w-3.5 text-cyan-400" /> mAI Saarthi transit conversion
+              <Shield className="h-3.5 w-3.5 text-cyan-400" /> mAISaarthi transit conversion
             </p>
             <p className="mt-3 font-display text-3xl font-extrabold tracking-tight text-emerald-400">14.6%</p>
             <p className="mt-2 text-sm text-zinc-500">High-pour sessions transitioning to chauffeurs</p>

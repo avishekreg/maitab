@@ -50,7 +50,7 @@ const QUICK_ROLES: {
   },
   {
     role: "SAARTHI_DRIVER",
-    label: "mAI Saarthi",
+    label: "mAISaarthi",
     hint: "PIN 4444",
   },
   {
@@ -113,7 +113,7 @@ export function QuickDemoSwitcher() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 rounded-full bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-600/30 transition hover:bg-violet-500"
+        className="fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 rounded-full bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-600/30 transition hover:bg-violet-500 max-sm:bottom-6"
       >
         <Zap className="h-4 w-4" />
         Quick Demo Switcher

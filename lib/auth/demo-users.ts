@@ -99,7 +99,7 @@ export const PUBLIC_DEMO_USERS: DemoUserAccount[] = [
     password: DEMO_PASSWORD,
     name: "Arjun Khanna",
     home: ROLE_HOME.SAARTHI_DRIVER,
-    description: "mAI Saarthi chauffeur companion · verified DL + PCC",
+    description: "mAISaarthi chauffeur companion · verified DL + PCC",
   },
 ];
 

@@ -16,7 +16,7 @@ export const TEMPLATES: { id: CollateralTemplate; label: string }[] = [
   { id: "tent", label: "Table Acrylic Tent Card (4x6 inch)" },
   { id: "gate", label: "Gate Fast-Pass Entrance Poster (A4 / Standee)" },
   { id: "bar", label: "Bar Counter Quick-Pour Standee" },
-  { id: "valet", label: "Valet Desk mAI Saarthi Chauffeur QR Card" },
+  { id: "valet", label: "Valet Desk mAISaarthi Chauffeur QR Card" },
 ];
 
 export interface TableAsset {

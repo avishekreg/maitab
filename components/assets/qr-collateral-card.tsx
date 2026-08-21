@@ -24,7 +24,7 @@ export function QrCollateralCard({
       : template === "bar"
         ? "Scan for Quick-Pour · bartender KDS in seconds"
         : template === "valet"
-          ? "Scan to book a verified mAI Saarthi chauffeur"
+          ? "Scan to book a verified mAISaarthi chauffeur"
           : "Scan with Phone Camera to Open Live Tab, Order Drinks & Auto-Pay";
 
   return (

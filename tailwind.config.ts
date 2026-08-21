@@ -182,10 +182,15 @@ const config: Config = {
         "lux-float": "lux-float 5s ease-in-out infinite",
         "priority-pulse": "priority-pulse 1.8s ease-in-out infinite",
         "badge-glow": "badge-glow 2.4s ease-in-out infinite",
+        gradient: "gradient-shift 4s ease infinite",
         "wipe-out": "wipe-out 0.28s cubic-bezier(0.16,1,0.3,1) forwards",
         "counter-bounce": "counter-bounce 0.35s cubic-bezier(0.16,1,0.3,1)",
       },
       keyframes: {
+        "gradient-shift": {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
         "char-in": {
           "0%": { opacity: "0", transform: "translateY(0.55em)" },
           "100%": { opacity: "1", transform: "translateY(0)" },

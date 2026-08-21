@@ -1,9 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import { MaiTabLogo } from "@/components/branding/MaiTabLogo";
-import { DEMO_SAARTHI_DRIVER_ID } from "@/lib/saarthi/types";
+import { TelemetryCameraCapture } from "@/components/saarthi/TelemetryCameraCapture";
+import {
+  DEMO_SAARTHI_DRIVER_ID,
+  SAARTHI_BRAND,
+} from "@/lib/saarthi/types";
 import type { SaarthiDriver, SaarthiTrip } from "@/lib/saarthi/types";
+import type { EnrollmentPhoto } from "@/lib/saarthi/enrollment";
 import { cn, formatINR } from "@/lib/utils";
 
 const STATUS_STEPS = [
@@ -54,6 +60,9 @@ export default function SaarthiDriverPortal() {
   const [trips, setTrips] = useState<SaarthiTrip[]>([]);
   const [otp, setOtp] = useState("");
   const [note, setNote] = useState<string | null>(null);
+  const [faceOk, setFaceOk] = useState(false);
+  const [faceNote, setFaceNote] = useState<string | null>(null);
+  const [enrollmentPhone, setEnrollmentPhone] = useState("");
 
   const load = useCallback(async () => {
     const dRes = await fetch("/api/saarthi/drivers");
@@ -97,7 +106,45 @@ export default function SaarthiDriverPortal() {
     void load();
   }
 
+  async function verifyFace(photo: EnrollmentPhoto) {
+    setFaceNote(null);
+    const res = await fetch("/api/saarthi/drivers/verify-face", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        phone: enrollmentPhone || driver?.phone,
+        live_selfie_data_url: photo.data_url,
+        live_telemetry: {
+          lat: photo.telemetry.lat,
+          lng: photo.telemetry.lng,
+          captured_at: photo.telemetry.captured_at,
+        },
+      }),
+    });
+    const json = (await res.json()) as {
+      ok: boolean;
+      match?: boolean;
+      score?: number;
+      reason?: string;
+      error?: string;
+      method?: string;
+    };
+    if (!json.ok || !json.match) {
+      setFaceOk(false);
+      setFaceNote(json.reason || json.error || "Face verify failed");
+      return;
+    }
+    setFaceOk(true);
+    setFaceNote(
+      `Identity OK · score ${((json.score ?? 0) * 100).toFixed(0)}% · ${json.method}`
+    );
+  }
+
   async function act(id: string, action: string) {
+    if (action === "start" && !faceOk) {
+      setNote("Complete live face verify before starting the trip");
+      return;
+    }
     setNote(null);
     const res = await fetch("/api/saarthi/trips", {
       method: "PATCH",
@@ -126,10 +173,18 @@ export default function SaarthiDriverPortal() {
         </div>
       </header>
       <main className="mx-auto max-w-3xl animate-lux-enter px-4 py-8">
-        <h1 className="font-display text-3xl leading-tight">mAI Saarthi</h1>
+        <h1 className="font-display text-3xl leading-tight">{SAARTHI_BRAND}</h1>
         <p className="mt-1 text-sm text-zinc-400">
           Personal Chauffeur Service • Safe Night Transit
         </p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link
+            href="/saarthi/driver-signup"
+            className="inline-flex rounded-xl border border-cyan-500/40 bg-cyan-500/15 px-4 py-2 text-xs font-semibold text-cyan-100"
+          >
+            New driver enrollment →
+          </Link>
+        </div>
 
         {driver ? (
           <div className="lux-glass-dark lux-sheen mt-6 flex flex-wrap items-center justify-between gap-3 p-4">
@@ -159,6 +214,38 @@ export default function SaarthiDriverPortal() {
         ) : null}
 
         {note ? <p className="mt-4 text-sm text-rose-400">{note}</p> : null}
+
+        <div className="lux-glass-dark mt-6 space-y-3 p-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-400">
+            Trip-start face verify
+          </p>
+          <p className="text-sm text-zinc-400">
+            Live selfie with GPS/time must match the enrolled mAISaarthi driver
+            before Start trip.
+          </p>
+          <input
+            value={enrollmentPhone}
+            onChange={(e) => setEnrollmentPhone(e.target.value)}
+            placeholder="Enrollment phone (if not demo driver)"
+            className="w-full rounded-lg border border-zinc-700 bg-black px-3 py-2 text-sm outline-none focus:border-cyan-500/50"
+          />
+          <TelemetryCameraCapture
+            kind="SELFIE"
+            label="Live selfie for this shift"
+            facingMode="user"
+            onCaptured={(p) => void verifyFace(p)}
+          />
+          {faceNote ? (
+            <p
+              className={cn(
+                "text-sm",
+                faceOk ? "text-emerald-300" : "text-rose-400"
+              )}
+            >
+              {faceNote}
+            </p>
+          ) : null}
+        </div>
 
         <div className="mt-8 space-y-4">
           {trips.map((trip) => (

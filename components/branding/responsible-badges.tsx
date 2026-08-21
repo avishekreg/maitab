@@ -17,7 +17,7 @@ export function ResponsibleBadges({
   return (
     <div
       className={cn(
-        "inline-flex items-center gap-4 overflow-hidden rounded-full border border-zinc-800 bg-zinc-950/95 px-6 py-3 shadow-2xl backdrop-blur-2xl select-none md:gap-6",
+        "relative inline-flex max-w-full flex-wrap items-center justify-center gap-3 rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 sm:gap-4 sm:px-5",
         className
       )}
     >
@@ -29,7 +29,7 @@ export function ResponsibleBadges({
           <div className="text-xs font-mono font-bold uppercase leading-snug tracking-wider text-amber-400">
             Drink Responsibly
           </div>
-          <div className="text-[11px] font-medium leading-snug text-zinc-400">
+          <div className="text-[11px] font-medium leading-snug text-zinc-300">
             Know Your Limits • Zero Underage Service
           </div>
         </div>
@@ -40,7 +40,7 @@ export function ResponsibleBadges({
       <button
         type="button"
         onClick={open}
-        className="group flex cursor-pointer items-center gap-3 text-left outline-none transition-all"
+        className="group flex cursor-pointer items-center gap-3 text-left outline-none transition-transform active:scale-95"
       >
         <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 transition-colors group-hover:bg-cyan-500/20">
           <svg
@@ -64,7 +64,7 @@ export function ResponsibleBadges({
             Don&apos;t Drink &amp; Drive
           </div>
           <div className="text-[11px] font-medium leading-snug text-zinc-300 transition-colors group-hover:text-cyan-300">
-            Book a Verified mAI Saarthi Chauffeur ➔
+            Book a Verified mAISaarthi Chauffeur ➔
           </div>
         </div>
       </button>
