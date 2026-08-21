@@ -65,12 +65,12 @@ export function HeroSection() {
         <OptimusGlobe tone="light" className="relative h-full w-full" />
       </div>
 
-      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center justify-center px-4 pb-16 pt-8 text-center lg:min-h-[calc(100svh-4.5rem)]">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-start justify-center px-4 pb-16 pt-8 text-left lg:min-h-[calc(100svh-4.5rem)]">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={ready ? { opacity: 1, y: 0 } : undefined}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex w-full flex-col items-center"
+          className="flex w-full max-w-4xl flex-col items-start"
         >
           <motion.p
             initial={{ opacity: 0, y: 8 }}
@@ -121,13 +121,13 @@ export function HeroSection() {
             </span>
           </h1>
 
-          <p className="mx-auto my-6 max-w-xl text-sm leading-relaxed text-zinc-200 sm:text-base">
+          <p className="mr-auto my-6 max-w-xl text-sm leading-relaxed text-zinc-200 sm:text-base">
             Cryptographic table tabs, gate hospitality, bartender KDS, AV
             legends, 105 surprise games, and geo-fenced AutoPay — zero new
             hardware on the floor.
           </p>
 
-          <div className="relative z-20 mx-auto my-6 grid w-full max-w-lg grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="relative z-20 mr-auto my-6 grid w-full max-w-lg grid-cols-1 gap-3 sm:grid-cols-2">
             <Link
               href="/onboard"
               className={`${CTA_CLASS} bg-gradient-to-r from-violet-600 to-cyan-500 text-white shadow-[0_0_24px_rgba(139,92,246,0.4)]`}
