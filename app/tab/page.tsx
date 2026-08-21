@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { BellRing, Minus, Plus, Ghost } from "lucide-react";
 import Link from "next/link";
+import { PasskeyEnrollPrompt } from "@/components/auth/PasskeyEnrollPrompt";
+import { useGuestIdentityHydration } from "@/components/guest/useGuestIdentityHydration";
 import {
   ExternalDealApprovedModal,
   ExternalDealCard,
@@ -40,9 +42,11 @@ import type { OrderItem } from "@/lib/types";
 import { cn, formatINR, triggerHaptic } from "@/lib/utils";
 
 function TabBody() {
+  useGuestIdentityHydration();
   const theme = useTierTheme();
   const session = useSessionStore((s) => s.session);
   const user = useSessionStore((s) => s.user);
+  const venue = useSessionStore((s) => s.venue);
   const orders = useSessionStore((s) => s.orders);
   const settleLockRef = useRef(false);
   const orderingFrozen = useOrderingFrozen(session.club_id || NEON_CLUB_ID);
@@ -317,9 +321,13 @@ function TabBody() {
 
       {showNudge ? (
         <div className="mb-5">
-          <TransitNudgeCard venueName={DEMO_CLUB.name} />
+          <TransitNudgeCard venueName={venue?.club_name || DEMO_CLUB.name} />
         </div>
       ) : null}
+
+      <div className="mb-4">
+        <PasskeyEnrollPrompt />
+      </div>
 
       <TierGlassCard className="mb-5 p-4" showAura>
         <div className="flex flex-wrap items-end justify-between gap-4">
@@ -329,13 +337,20 @@ function TabBody() {
               style={{ color: theme.accent }}
             >
               {theme.label}
-              {theme.vip ? " · VIP" : ""} · Active session
+              {theme.vip ? " · VIP" : ""} ·{" "}
+              {venue?.club_name || DEMO_CLUB.name} · Table{" "}
+              {venue?.table_code || "—"}
             </p>
             <h1 className="mt-1 font-display text-3xl font-bold text-foreground">
               Prepaid Tab
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Add drinks without PIN or OTP.
+              {user.full_name}
+              {user.vip_tier ? ` · ${user.vip_tier}` : ""}
+              {typeof user.loyalty_points === "number"
+                ? ` · ${user.loyalty_points} pts`
+                : ""}{" "}
+              — add drinks without PIN or OTP.
             </p>
           </div>
           <div className="flex items-center gap-4">

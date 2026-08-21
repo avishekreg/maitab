@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Camera, ChevronRight, MapPin, Sparkles, Vibrate } from "lucide-react";
+import { PasskeyEnrollPrompt } from "@/components/auth/PasskeyEnrollPrompt";
+import { NightHistoryDrawer } from "@/components/guest/NightHistoryDrawer";
+import { useGuestIdentityHydration } from "@/components/guest/useGuestIdentityHydration";
 import { AppShell } from "@/components/layout/AppShell";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -20,14 +23,21 @@ function firstName(fullName: string): string {
 }
 
 function HomeBody() {
+  useGuestIdentityHydration();
   const theme = useTierTheme();
   const user = useSessionStore((s) => s.user);
   const session = useSessionStore((s) => s.session);
+  const venue = useSessionStore((s) => s.venue);
   const orders = useSessionStore((s) => s.orders);
-  const primary = DEMO_TABLES.find((t) => t.id === session.primary_table_id);
+  const primary =
+    DEMO_TABLES.find((t) => t.id === session.primary_table_id) ||
+    DEMO_TABLES.find((t) => t.table_code === venue?.table_code);
+  const clubName = venue?.club_name || DEMO_CLUB.name;
+  const tableCode = venue?.table_code || primary?.table_code || "—";
   const guestFirst = firstName(user.full_name);
   const drinkCount = sessionDrinkCount(orders, session.id);
   const showNudge = shouldShowTransitNudge({ drinkCount });
+  const vipLabel = user.vip_tier || user.global_spend_tier;
 
   return (
     <>
@@ -52,12 +62,14 @@ function HomeBody() {
                 boxShadow: "0 0 20px rgba(226,184,87,0.22)",
               }}
             >
-              {user.global_spend_tier} Tier Member
+              {vipLabel} Tier Member
             </span>
           </div>
           <p className="mt-3 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Your night at {DEMO_CLUB.name} is active. Scan, order, settle on
-            exit.
+            {venue
+              ? `Your night at ${clubName} · Table ${tableCode} is active.`
+              : `Scan a table QR to attach tonight’s venue. Loyalty wallet stays with you.`}{" "}
+            Order, settle on exit.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
@@ -78,9 +90,13 @@ function HomeBody() {
         </motion.div>
       </section>
 
+      <div className="mb-6 space-y-4">
+        <PasskeyEnrollPrompt />
+        <NightHistoryDrawer />
+      </div>
       {showNudge ? (
         <div className="mb-8">
-          <TransitNudgeCard venueName={DEMO_CLUB.name} />
+          <TransitNudgeCard venueName={clubName} />
         </div>
       ) : null}
 
@@ -92,10 +108,10 @@ function HomeBody() {
                 Active session
               </p>
               <h2 className="mt-1 font-display text-2xl font-bold text-foreground">
-                {DEMO_CLUB.name}
+                {clubName}
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Table {primary?.table_code ?? "—"} · Host {user.full_name}
+                Table {tableCode} · Host {user.full_name}
               </p>
             </div>
             <TierProgressRing value={session.total_session_spend} max={5000} />

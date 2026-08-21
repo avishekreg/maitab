@@ -18,7 +18,7 @@ function SteeringWheel({ className }: { className?: string }) {
     >
       <circle cx="12" cy="12" r="10" />
       <circle cx="12" cy="12" r="2" />
-      <path d="M12 14v8" />
+      <path d="M12 14v4" />
       <path d="m4.93 7.93 5.66 3.47" />
       <path d="m19.07 7.93-5.66 3.47" />
     </svg>

@@ -111,9 +111,15 @@ export function TableJoinClient({
       </p>
       <p className="mt-3 text-sm text-accent-emerald">
         Session {result.sessionId.slice(0, 8)}… · prepaid ordering unlocked.
+        {"clubName" in result && (result as { clubName?: string }).clubName
+          ? ` · ${(result as { clubName?: string }).clubName}`
+          : ""}
+        {"tableCode" in result && (result as { tableCode?: string }).tableCode
+          ? ` · Table ${(result as { tableCode?: string }).tableCode}`
+          : ""}
       </p>
       <Link
-        href={`/tab?session=${encodeURIComponent(result.sessionId)}`}
+        href="/tab"
         className="mt-5 inline-flex rounded-xl bg-accent-violet px-4 py-3 text-sm font-semibold text-white shadow-glow-violet"
       >
         Open Tab

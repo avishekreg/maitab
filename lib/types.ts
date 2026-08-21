@@ -95,6 +95,12 @@ export interface UserProfile {
   lifetime_visits: number;
   club_id: string | null;
   created_at: string;
+  /** Layer 1 — permanent guest wallet / loyalty (passkey identity). */
+  loyalty_points?: number;
+  lifetime_spend?: number;
+  vip_tier?: "STANDARD" | "GOLD" | "BLACK_DIAMOND";
+  email?: string | null;
+  passkey_enrolled?: boolean;
 }
 
 export interface Club {

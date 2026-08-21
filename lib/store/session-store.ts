@@ -24,6 +24,19 @@ interface SessionState {
   playedGameIds: string[];
   lastReadyToken: number | null;
   liveMode: boolean;
+  /** Live venue header from nightly attachment (Layer 2). */
+  venue: {
+    club_id: string;
+    club_name: string;
+    table_id: string;
+    table_code: string;
+  } | null;
+  hydrateGuestShell: (payload: {
+    user: UserProfile;
+    session: ActiveSession | null;
+    orders?: Order[];
+    venue?: SessionState["venue"];
+  }) => void;
   hydrateOrders: (orders: Order[]) => void;
   hydratePlayedGames: (gameIds: string[]) => void;
   patchOrder: (patch: Partial<Order> & { id: string }) => void;
@@ -46,6 +59,21 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   playedGameIds: [],
   lastReadyToken: null,
   liveMode: false,
+  venue: {
+    club_id: DEMO_SESSION.club_id,
+    club_name: "Neon District",
+    table_id: DEMO_SESSION.primary_table_id,
+    table_code: "B4",
+  },
+
+  hydrateGuestShell: (payload) =>
+    set((state) => ({
+      user: payload.user,
+      session: payload.session ?? state.session,
+      orders: payload.orders ?? state.orders,
+      venue: payload.venue ?? state.venue,
+      liveMode: true,
+    })),
 
   setLiveMode: (live) => set({ liveMode: live }),
 

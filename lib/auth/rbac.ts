@@ -146,6 +146,7 @@ export const PUBLIC_API_PREFIXES = [
   "/api/download/apk",
   "/api/download/",
   "/api/saarthi",
+  "/api/guest",
 ];
 
 export type ApiGuardResult =

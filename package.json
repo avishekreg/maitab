@@ -16,6 +16,8 @@
     "@capacitor/cli": "^7.6.8",
     "@capacitor/core": "^7.6.8",
     "@cxde/wheel-of-fortune": "^0.1.8",
+    "@simplewebauthn/browser": "^13.3.0",
+    "@simplewebauthn/server": "^13.3.2",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.47.10",
     "@tanstack/react-query": "^5.62.8",
