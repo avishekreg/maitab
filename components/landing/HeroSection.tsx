@@ -65,7 +65,7 @@ export function HeroSection() {
         <OptimusGlobe tone="light" className="relative h-full w-full" />
       </div>
 
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-start justify-center px-4 pb-16 pt-8 text-left lg:min-h-[calc(100svh-4.5rem)]">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-start justify-center px-4 pb-36 pt-8 text-left lg:min-h-[calc(100svh-4.5rem)] lg:pb-28">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={ready ? { opacity: 1, y: 0 } : undefined}
@@ -147,9 +147,14 @@ export function HeroSection() {
               See how the system works
             </a>
           </div>
-
-          <ComplianceCapsule variant="boundary" />
         </motion.div>
+
+        {/* Full-width bottom of hero plate — centered, not tied to left copy column */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center px-4 pb-2">
+          <div className="pointer-events-auto w-full max-w-2xl">
+            <ComplianceCapsule variant="boundary" />
+          </div>
+        </div>
       </div>
     </section>
   );
